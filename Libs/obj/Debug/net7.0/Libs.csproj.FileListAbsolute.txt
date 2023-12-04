@@ -1,0 +1,12 @@
+D:\Development\Projects\OOD_Petrov\Libs\bin\Debug\net7.0\Libs.deps.json
+D:\Development\Projects\OOD_Petrov\Libs\bin\Debug\net7.0\Libs.dll
+D:\Development\Projects\OOD_Petrov\Libs\bin\Debug\net7.0\Libs.pdb
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\Libs.csproj.AssemblyReference.cache
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\Libs.GeneratedMSBuildEditorConfig.editorconfig
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\Libs.AssemblyInfoInputs.cache
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\Libs.AssemblyInfo.cs
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\Libs.csproj.CoreCompileInputs.cache
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\Libs.dll
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\refint\Libs.dll
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\Libs.pdb
+D:\Development\Projects\OOD_Petrov\Libs\obj\Debug\net7.0\ref\Libs.dll
