@@ -6,8 +6,8 @@ namespace Lab2.Handlers;
 
 public class DragAndDropHandler
 {
-    private Vector2i _prevMousePosition = new();
-    public bool IsDragAndDropping { get; private set; } = false;
+    private Vector2i _prevMousePosition;
+    public bool IsDragAndDropping { get; private set; }
 
     public void OnMousePressed( IEnumerable<Shape> shapes, MouseButtonEventArgs mouseEventArgs )
     {
@@ -25,11 +25,7 @@ public class DragAndDropHandler
 
     public void OnMouseReleased()
     {
-        Vector2i currentMousePosition = Mouse.GetPosition();
-        if ( currentMousePosition == _prevMousePosition )
-        {
-            IsDragAndDropping = false;   
-        }
+        IsDragAndDropping = false;   
     }
 
     public void Update( IEnumerable<Shape> shapesToMove )

@@ -11,6 +11,8 @@ public class SelectedShapesHandler
     private readonly ShapesGroup _shapesGroup = new();
     
     public bool IsSelected( Shape shape ) => _shapesGroup.Contains( shape );
+
+    public List<Shape> GetSelected() => _shapesGroup.ToList();
     
     public void UpdateSelections( 
         IEnumerable<Shape> shapes,
@@ -31,34 +33,27 @@ public class SelectedShapesHandler
             _shapesGroup.Clear();
             return;
         }
-        
+
         bool isMultipleSelectionAllowed = 
             Keyboard.IsKeyPressed( Keyboard.Key.LShift ) || 
             Keyboard.IsKeyPressed( Keyboard.Key.RShift );
-
-        // Если уже выделенный объект нажат второй раз, убрать выделение
-        if ( _shapesGroup.Contains( clickedShape ) )
-        { 
-            bool needToUnselectAllExceptForCurrent = _shapesGroup.Count > 1;
-            _shapesGroup.Clear();
-            if ( needToUnselectAllExceptForCurrent )
+        
+        if ( !_shapesGroup.Contains( clickedShape ) )
+        {
+            if ( !isMultipleSelectionAllowed )
             {
-                _shapesGroup.Add( clickedShape );
+                _shapesGroup.Clear();
             }
-
+            
+            _shapesGroup.Add( clickedShape );
             return;
         }
 
-        // Если нельзя выделить несколько объектов за раз, нужно убрать предыдущие выделения
-        if ( !isMultipleSelectionAllowed )
+        if ( isMultipleSelectionAllowed )
         {
-            _shapesGroup.Clear();
+            _shapesGroup.Remove( clickedShape );
         }
-
-        _shapesGroup.Add( clickedShape );
     }
-
-    public List<Shape> GetSelected() => _shapesGroup.ToList();
 
     public Shape BuildSelectionMark( Shape shape )
     {

@@ -7,7 +7,6 @@ using SFML.System;
 using SFML.Window;
 
 /*
-
 Добавить функциональность, позволяющую выделить геометрическую фигуру при клике мышки на ее внутреннюю область. При 
 выделении вокруг фигуры должна появляться прямоугольная рамка с маркерами. 
 Реализовать функцию выделения нескольких фигур (Shift + Left Click), группировки(Ctrl+G)  в одну фигуру и разгруппировки (Ctrl+U). 
@@ -70,12 +69,13 @@ public class Application : BaseApplication
     private void OnMouseButtonPressed( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
         var shapes = _shapeGroups.ToList();
+        
+        _selectedShapesHandler.UpdateSelections( shapes, mouseEventArgs );
+        _dragAndDropHandler.OnMousePressed( shapes, mouseEventArgs );
     }
 
     private void OnMouseButtonReleased( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        var shapes = _shapeGroups.ToList();
-
-        _selectedShapesHandler.UpdateSelections( shapes, mouseEventArgs );
+        _dragAndDropHandler.OnMouseReleased();
     }
 }
