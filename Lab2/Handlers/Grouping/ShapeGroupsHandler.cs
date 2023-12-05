@@ -1,9 +1,8 @@
 ﻿using Lab2.Extensions;
-using Lab2.Models;
 using Lab2.Public;
 using SFML.Graphics;
 
-namespace Lab2.Handlers;
+namespace Lab2.Handlers.Grouping;
 
 public class ShapeGroupsHandler
 {

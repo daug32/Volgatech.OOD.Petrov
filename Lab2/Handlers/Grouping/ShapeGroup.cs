@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace Lab2.Models;
+namespace Lab2.Handlers.Grouping;
 
 public class ShapeGroup
 {
