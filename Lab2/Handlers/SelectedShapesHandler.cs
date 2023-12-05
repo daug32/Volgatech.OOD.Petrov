@@ -1,5 +1,4 @@
-﻿using Lab2.Models;
-using Lab2.Models.Extensions;
+﻿using Lab2.Extensions;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -8,21 +7,16 @@ namespace Lab2.Handlers;
 
 public class SelectedShapesHandler
 {
-    private readonly ShapesGroup _shapesGroup = new();
+    private readonly HashSet<Shape> _shapes = new();
 
-    public bool IsSelected( Shape shape )
-    {
-        return _shapesGroup.Contains( shape );
-    }
+    public bool IsSelected( Shape shape ) => _shapes.Contains( shape );
 
-    public List<Shape> GetSelected()
-    {
-        return _shapesGroup.ToList();
-    }
+    public List<Shape> GetSelected() => _shapes.ToList();
 
     public void OnMousePressed(
         IEnumerable<Shape> shapes,
-        MouseButtonEventArgs mouseEventArgs )
+        MouseButtonEventArgs mouseEventArgs,
+        bool isMultipleSelectionAllowed )
     {
         if ( mouseEventArgs.Button != Mouse.Button.Left )
         {
@@ -31,25 +25,23 @@ public class SelectedShapesHandler
 
         Shape? clickedShape = FindSelected( shapes, mouseEventArgs.X, mouseEventArgs.Y );
 
-        bool isMultipleSelectionAllowed = IsMultipleSelectionAllowed();
-
         if ( clickedShape is null )
         {
             // Если никакой объект не был нажат и мы не можем выбрать несколько объектов, убрать все выделения
             if ( !isMultipleSelectionAllowed )
             {
-                _shapesGroup.Clear();
+                _shapes.Clear();
             }
 
             return;
         }
 
-        if ( _shapesGroup.Contains( clickedShape ) )
+        if ( _shapes.Contains( clickedShape ) )
         {
             // Если объект уже был выбран и мы выбираем несколько объектов, снимаем выделение
             if ( isMultipleSelectionAllowed )
             {
-                _shapesGroup.Remove( clickedShape );
+                _shapes.Remove( clickedShape );
             }
 
             return;
@@ -58,35 +50,26 @@ public class SelectedShapesHandler
         // Если объект еще не был выбран и мы не можем выбрать несколько объектов, снимаем выделения
         if ( !isMultipleSelectionAllowed )
         {
-            _shapesGroup.Clear();
-            _shapesGroup.Add( clickedShape );
+            _shapes.Clear();
+            _shapes.Add( clickedShape );
             return;
         }
 
         // Если объект еще не был выбран и при этом мы можем выбрать несколько объектов, выделяем новый объект
-        _shapesGroup.Add( clickedShape );
+        _shapes.Add( clickedShape );
     }
-    
-    public Shape BuildSelectionMark( Shape shape )
-    {
-        FloatRect bounds = shape.GetGlobalBounds();
 
-        return new RectangleShape( new Vector2f( bounds.Width, bounds.Height ) )
-            .FluentSetPosition( bounds.Left, bounds.Top )
+    public Shape BuildSelectionMark( FloatRect shapeBounds )
+    {
+        return new RectangleShape( new Vector2f( shapeBounds.Width, shapeBounds.Height ) )
+            .FluentSetPosition( shapeBounds.Left, shapeBounds.Top )
             .FluentSetOutlineColor( Color.White )
             .FluentSetFillColor( Color.Transparent )
             .FluentSetOutlineThickness( 1 );
     }
 
-    private static Shape? FindSelected( IEnumerable<Shape> shapes, float mouseX, float mouseY )
-    {
-        return shapes.LastOrDefault( shape => shape
+    private static Shape? FindSelected( IEnumerable<Shape> shapes, float mouseX, float mouseY ) => 
+        shapes.LastOrDefault( shape => shape
             .GetGlobalBounds()
             .Contains( mouseX, mouseY ) );
-    }
-
-    private static bool IsMultipleSelectionAllowed()
-    {
-        return Keyboard.IsKeyPressed( Keyboard.Key.LShift ) || Keyboard.IsKeyPressed( Keyboard.Key.RShift );
-    }
 }
