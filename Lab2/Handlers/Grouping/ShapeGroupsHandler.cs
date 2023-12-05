@@ -57,26 +57,28 @@ public class ShapeGroupsHandler
 
             ShapeGroup shapeGroup = groupToSearch.GetGroup( shape )!;
             _groups.Remove( shapeGroup );
-            _groups.AddRange( shapeGroup.ChildGroups );
+            _groups.AddRange( shapeGroup.GetChildGroups() );
         }
     }
 
-    public IEnumerable<Shape> GetShapesInGroup( Shape shape )
+    public List<Shape> GetRelatedShapes( Shape shape )
     {
-        ShapeGroup? group = _groups.FirstOrDefault( x => x.Contains( shape ) );
-        if ( group is null )
+        ShapeGroup? shapeGroup = _groups.FirstOrDefault( x => x.Contains( shape ) );
+        if ( shapeGroup is null )
         {
-            return Array.Empty<Shape>();
+            return new List<Shape>();
         }
 
-        return group.GetShapes();
+        return shapeGroup.GetAllRelatedShapes();
     }
 
     public Drawable BuildGroupMark( FloatRect shapeBounds )
     {
-        uint textSize = 12;
+        uint textSize = 10;
         return new Text( "Group", Resources.Fonts.Roboto )
-            .FluentSetPosition( shapeBounds.Left - textSize, shapeBounds.Top - textSize )
+            .FluentSetPosition(
+                shapeBounds.Left - textSize,
+                shapeBounds.Top - textSize )
             .FluentSetCharacterSize( textSize );
     }
 }

@@ -9,17 +9,9 @@ public class DragAndDropHandler
     private bool _isDragAndDropping;
     private Vector2i _prevMousePosition;
 
-    public void OnMousePressed( IEnumerable<Shape> shapes, MouseButtonEventArgs mouseEventArgs )
+    public void OnMousePressed( Shape? clickedShape )
     {
-        if ( mouseEventArgs.Button != Mouse.Button.Left )
-        {
-            return;
-        }
-
-        bool isAnyShapePressed = shapes.Any( shape => shape
-            .GetGlobalBounds()
-            .Contains( mouseEventArgs.X, mouseEventArgs.Y ) );
-
+        bool isAnyShapePressed = clickedShape != null;
         _isDragAndDropping = isAnyShapePressed;
     }
 

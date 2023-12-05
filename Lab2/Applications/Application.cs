@@ -93,10 +93,19 @@ public class Application : BaseApplication
 
     private void OnMouseButtonPressed( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        var shapes = _shapes.ToList();
+        Shape? clickedShape = GetClickedShape( mouseEventArgs );
+        List<Shape> relatedShapes = clickedShape != null
+            ? _shapeGroupsHandler.GetRelatedShapes( clickedShape )
+            : new List<Shape>();
 
-        _selectedShapesHandler.OnMousePressed( shapes, mouseEventArgs, IsMultipleSelectionAllowed() );
-        _dragAndDropHandler.OnMousePressed( shapes, mouseEventArgs );
+        if ( mouseEventArgs.Button == Mouse.Button.Left )
+        {
+            _selectedShapesHandler.OnMousePressed(
+                clickedShape,
+                relatedShapes,
+                IsMultipleSelectionAllowed() );
+            _dragAndDropHandler.OnMousePressed( clickedShape );
+        }
     }
 
     private void OnMouseButtonReleased( object? sender, MouseButtonEventArgs mouseEventArgs )
@@ -107,4 +116,8 @@ public class Application : BaseApplication
     private bool IsMultipleSelectionAllowed() => 
         Keyboard.IsKeyPressed( Keyboard.Key.LShift ) || 
         Keyboard.IsKeyPressed( Keyboard.Key.RShift );
+
+    private Shape? GetClickedShape( MouseButtonEventArgs args ) => _shapes.LastOrDefault( shape => shape
+        .GetGlobalBounds()
+        .Contains( args.X, args.Y ) );
 }

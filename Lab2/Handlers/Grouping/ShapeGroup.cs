@@ -4,84 +4,44 @@ namespace Lab2.Handlers.Grouping;
 
 public class ShapeGroup
 {
+    private readonly HashSet<Shape> _shapes;
+    private readonly HashSet<ShapeGroup> _childGroups;
+    
     public int Count { get; private set; }
-    public HashSet<Shape> Shapes { get; private set; }
-    public HashSet<ShapeGroup> ChildGroups { get; private set; }
 
     public ShapeGroup()
     {
-        Shapes = new HashSet<Shape>();
-        ChildGroups = new HashSet<ShapeGroup>();
-    }
-
-    public ShapeGroup( IEnumerable<Shape> shapes )
-    {
-        Shapes = shapes.ToHashSet();
-        ChildGroups = new HashSet<ShapeGroup>();
+        _shapes = new HashSet<Shape>();
+        _childGroups = new HashSet<ShapeGroup>();
     }
 
     public void AddToGroup( Shape shape )
     {
-        if ( Shapes.Contains( shape ) )
+        if ( _shapes.Contains( shape ) )
         {
             return;
         }
 
-        Shapes.Add( shape );
+        _shapes.Add( shape );
         Count++;
     }
 
     public void AddToGroup( ShapeGroup group )
     {
-        if ( ChildGroups.Contains( group ) )
+        if ( _childGroups.Contains( group ) )
         {
             return;
         }
         
-        ChildGroups.Add( group );
+        _childGroups.Add( group );
         Count += group.Count;
     }
 
-    public void RemoveFromGroup( Shape shape )
-    {
-        Shapes.Remove( shape );
-        Count--;
-    }
-
-    public void RemoveFromGroup( ShapeGroup group )
-    {
-        if ( !ChildGroups.Contains( group ) )
-        {
-            return;
-        }
-
-        ChildGroups.Remove( group );
-        Count -= group.Count;
-    }
-
-    public List<Shape> GetShapes()
-    {
-        var result = new List<Shape>();
-
-        var groupsToVisit = new List<ShapeGroup>
-        {
-            this
-        };
-
-        while ( groupsToVisit.Any() )
-        {
-            ShapeGroup group = groupsToVisit.Last();
-            groupsToVisit.RemoveAt( groupsToVisit.Count - 1 );
-            result.AddRange( group.Shapes );
-            groupsToVisit.AddRange( group.ChildGroups );
-        }
-
-        return result;
-    }
+    public List<ShapeGroup> GetChildGroups() => _childGroups.ToList();
 
     public bool IsValid()
     {
-        bool isWrapping = ChildGroups.Count == 1 && Shapes.Count == 0;
+        bool isWrapping = _childGroups.Count == 1 && _shapes.Count == 0;
         if ( isWrapping )
         {
             return false;
@@ -93,18 +53,39 @@ public class ShapeGroup
     public bool Contains( Shape shape )
     {
         return
-            Shapes.Contains( shape ) || 
-            ChildGroups.Any( x => x.Contains( shape ) );
+            _shapes.Contains( shape ) || 
+            _childGroups.Any( x => x.Contains( shape ) );
+    }
+
+    public List<Shape> GetAllRelatedShapes()
+    {
+        var result = new List<Shape>();
+        var groupsToVisit = new List<ShapeGroup>
+        {
+            this
+        };
+
+        while ( groupsToVisit.Any() )
+        {
+            ShapeGroup group = groupsToVisit.Last();
+            
+            groupsToVisit.RemoveAt( groupsToVisit.Count - 1 );
+            groupsToVisit.AddRange( group._childGroups );
+            
+            result.AddRange( group._shapes );
+        }
+
+        return result;
     }
 
     public ShapeGroup? GetGroup( Shape shape )
     {
-        if ( Shapes.Contains( shape ) )
+        if ( _shapes.Contains( shape ) )
         {
             return this;
         }
 
-        foreach ( ShapeGroup childGroup in ChildGroups )
+        foreach ( ShapeGroup childGroup in _childGroups )
         {
             if ( !childGroup.Contains( shape ) )
             {

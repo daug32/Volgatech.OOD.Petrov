@@ -1,7 +1,7 @@
 ﻿using Lab2.Extensions;
+using Libs.Extensions;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 namespace Lab2.Handlers;
 
@@ -14,17 +14,10 @@ public class SelectedShapesHandler
     public List<Shape> GetSelected() => _shapes.ToList();
 
     public void OnMousePressed(
-        IEnumerable<Shape> shapes,
-        MouseButtonEventArgs mouseEventArgs,
+        Shape? clickedShape,
+        List<Shape> relatedShapes,
         bool isMultipleSelectionAllowed )
     {
-        if ( mouseEventArgs.Button != Mouse.Button.Left )
-        {
-            return;
-        }
-
-        Shape? clickedShape = FindSelected( shapes, mouseEventArgs.X, mouseEventArgs.Y );
-
         if ( clickedShape is null )
         {
             // Если никакой объект не был нажат и мы не можем выбрать несколько объектов, убрать все выделения
@@ -51,12 +44,11 @@ public class SelectedShapesHandler
         if ( !isMultipleSelectionAllowed )
         {
             _shapes.Clear();
-            _shapes.Add( clickedShape );
-            return;
         }
 
         // Если объект еще не был выбран и при этом мы можем выбрать несколько объектов, выделяем новый объект
         _shapes.Add( clickedShape );
+        _shapes.AddRange( relatedShapes );
     }
 
     public Shape BuildSelectionMark( FloatRect shapeBounds )
@@ -67,9 +59,4 @@ public class SelectedShapesHandler
             .FluentSetFillColor( Color.Transparent )
             .FluentSetOutlineThickness( 1 );
     }
-
-    private static Shape? FindSelected( IEnumerable<Shape> shapes, float mouseX, float mouseY ) => 
-        shapes.LastOrDefault( shape => shape
-            .GetGlobalBounds()
-            .Contains( mouseX, mouseY ) );
 }
