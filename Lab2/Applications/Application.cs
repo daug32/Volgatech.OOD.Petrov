@@ -70,7 +70,7 @@ public class Application : BaseApplication
     {
         var shapes = _shapeGroups.ToList();
         
-        _selectedShapesHandler.UpdateSelections( shapes, mouseEventArgs );
+        _selectedShapesHandler.OnMousePressed( shapes, mouseEventArgs );
         _dragAndDropHandler.OnMousePressed( shapes, mouseEventArgs );
     }
 

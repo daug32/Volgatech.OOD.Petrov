@@ -9,12 +9,18 @@ namespace Lab2.Handlers;
 public class SelectedShapesHandler
 {
     private readonly ShapesGroup _shapesGroup = new();
-    
-    public bool IsSelected( Shape shape ) => _shapesGroup.Contains( shape );
 
-    public List<Shape> GetSelected() => _shapesGroup.ToList();
-    
-    public void UpdateSelections( 
+    public bool IsSelected( Shape shape )
+    {
+        return _shapesGroup.Contains( shape );
+    }
+
+    public List<Shape> GetSelected()
+    {
+        return _shapesGroup.ToList();
+    }
+
+    public void OnMousePressed(
         IEnumerable<Shape> shapes,
         MouseButtonEventArgs mouseEventArgs )
     {
@@ -23,38 +29,44 @@ public class SelectedShapesHandler
             return;
         }
 
-        Shape? clickedShape = shapes.LastOrDefault( shape => shape
-            .GetGlobalBounds()
-            .Contains( mouseEventArgs.X, mouseEventArgs.Y ) );
+        Shape? clickedShape = FindSelected( shapes, mouseEventArgs.X, mouseEventArgs.Y );
 
-        // Если никакой объект не был нажат, убрать все выделения
+        bool isMultipleSelectionAllowed = IsMultipleSelectionAllowed();
+
         if ( clickedShape is null )
         {
-            _shapesGroup.Clear();
-            return;
-        }
-
-        bool isMultipleSelectionAllowed = 
-            Keyboard.IsKeyPressed( Keyboard.Key.LShift ) || 
-            Keyboard.IsKeyPressed( Keyboard.Key.RShift );
-        
-        if ( !_shapesGroup.Contains( clickedShape ) )
-        {
+            // Если никакой объект не был нажат и мы не можем выбрать несколько объектов, убрать все выделения
             if ( !isMultipleSelectionAllowed )
             {
                 _shapesGroup.Clear();
             }
-            
+
+            return;
+        }
+
+        if ( _shapesGroup.Contains( clickedShape ) )
+        {
+            // Если объект уже был выбран и мы выбираем несколько объектов, снимаем выделение
+            if ( isMultipleSelectionAllowed )
+            {
+                _shapesGroup.Remove( clickedShape );
+            }
+
+            return;
+        }
+
+        // Если объект еще не был выбран и мы не можем выбрать несколько объектов, снимаем выделения
+        if ( !isMultipleSelectionAllowed )
+        {
+            _shapesGroup.Clear();
             _shapesGroup.Add( clickedShape );
             return;
         }
 
-        if ( isMultipleSelectionAllowed )
-        {
-            _shapesGroup.Remove( clickedShape );
-        }
+        // Если объект еще не был выбран и при этом мы можем выбрать несколько объектов, выделяем новый объект
+        _shapesGroup.Add( clickedShape );
     }
-
+    
     public Shape BuildSelectionMark( Shape shape )
     {
         FloatRect bounds = shape.GetGlobalBounds();
@@ -64,5 +76,17 @@ public class SelectedShapesHandler
             .FluentSetOutlineColor( Color.White )
             .FluentSetFillColor( Color.Transparent )
             .FluentSetOutlineThickness( 1 );
+    }
+
+    private static Shape? FindSelected( IEnumerable<Shape> shapes, float mouseX, float mouseY )
+    {
+        return shapes.LastOrDefault( shape => shape
+            .GetGlobalBounds()
+            .Contains( mouseX, mouseY ) );
+    }
+
+    private static bool IsMultipleSelectionAllowed()
+    {
+        return Keyboard.IsKeyPressed( Keyboard.Key.LShift ) || Keyboard.IsKeyPressed( Keyboard.Key.RShift );
     }
 }

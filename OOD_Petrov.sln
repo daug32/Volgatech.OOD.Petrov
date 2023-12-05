@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Public", "Public", "{8CFD87
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1", "Lab1\Lab1.csproj", "{B6149330-A261-4FF1-96DA-7F2C45B705B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes", "Shapes\Shapes.csproj", "{6DDD4898-8D95-4E90-A18B-BC325D3246A5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,14 +46,6 @@ Global
 		{B6149330-A261-4FF1-96DA-7F2C45B705B6}.Release|x64.Build.0 = Release|Any CPU
 		{B6149330-A261-4FF1-96DA-7F2C45B705B6}.Release|x86.ActiveCfg = Release|Any CPU
 		{B6149330-A261-4FF1-96DA-7F2C45B705B6}.Release|x86.Build.0 = Release|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Debug|x64.Build.0 = Debug|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Debug|x86.Build.0 = Debug|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Release|x64.ActiveCfg = Release|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Release|x64.Build.0 = Release|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Release|x86.ActiveCfg = Release|Any CPU
-		{6DDD4898-8D95-4E90-A18B-BC325D3246A5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
