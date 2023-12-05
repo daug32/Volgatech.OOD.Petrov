@@ -1,4 +1,5 @@
 ﻿using Lab2.Extensions;
+using Lab2.Models;
 using Lab2.Public;
 using SFML.Graphics;
 
@@ -12,56 +13,51 @@ public class ShapeGroupsHandler
 
     public void Group( IEnumerable<Shape> shapes )
     {
-        var shapesWithoutGroup = new HashSet<Shape>();
-        var existentGroupsToAdd = new HashSet<ShapeGroup>();
-
+        var newGroup = new ShapeGroup();
+        
+        var groupsToVisit = _groups.ToList();
+        
         foreach ( Shape shape in shapes )
         {
-            var hasGroup = false;
+            bool hasGroup = false;
 
-            foreach ( ShapeGroup group in _groups )
+            foreach ( ShapeGroup group in groupsToVisit )
             {
                 if ( group.Contains( shape ) )
                 {
-                    existentGroupsToAdd.Add( group );
-                    _groups.Remove( group );
+                    newGroup.AddToGroup( group );
+                    groupsToVisit.Remove( group );
                     hasGroup = true;
                     break;
                 }
             }
 
-            if ( !hasGroup )
+            if ( !hasGroup && !newGroup.Contains( shape ) )
             {
-                shapesWithoutGroup.Add( shape );
+                newGroup.AddToGroup( shape );
             }
         }
 
-        // Пытаемся повторно сгруппировать объекты из одной группы
-        if ( !shapesWithoutGroup.Any() && existentGroupsToAdd.Count == 1 )
+        if ( newGroup.IsValid() )
         {
-            return;
+            _groups.Add( newGroup );
         }
-
-        var newGroup = new ShapeGroup();
-        newGroup.Add( shapesWithoutGroup );
-        newGroup.AddGroup( existentGroupsToAdd );
-        
-        _groups.Add( newGroup );
     }
 
     public void Ungroup( IEnumerable<Shape> shapes )
     {
-        foreach ( Shape shape in shapes )
+        shapes.Any();
+    }
+
+    public IEnumerable<Shape> GetShapesInGroup( Shape shape )
+    {
+        ShapeGroup? group = _groups.FirstOrDefault( x => x.Contains( shape ) );
+        if ( group is null )
         {
-            foreach ( ShapeGroup group in _groups )
-            {
-                if ( group.Contains( shape ) )
-                {
-                    _groups.Remove( group );
-                    break;
-                }
-            }
+            return Array.Empty<Shape>();
         }
+
+        return group.GetShapes();
     }
 
     public Drawable BuildGroupMark( FloatRect shapeBounds )
@@ -70,69 +66,5 @@ public class ShapeGroupsHandler
         return new Text( "Group", Resources.Fonts.Roboto )
             .FluentSetPosition( shapeBounds.Left - textSize, shapeBounds.Top - textSize )
             .FluentSetCharacterSize( textSize );
-    }
-}
-
-public class ShapeGroup
-{
-    private readonly HashSet<Shape> _shapes = new();
-    private readonly HashSet<ShapeGroup> _childGroups = new();
-
-    public int Count { get; private set; }
-
-    public bool Contains( Shape shape )
-    {
-        if ( _shapes.Contains( shape ) )
-        {
-            return true;
-        }
-
-        foreach ( ShapeGroup childGroup in _childGroups )
-        {
-            if ( childGroup.Contains( shape ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public void AddGroup( IEnumerable<ShapeGroup> groups )
-    {
-        foreach ( ShapeGroup shapeGroup in groups )
-        {
-            AddGroup( shapeGroup );
-        }
-    }
-
-    public void AddGroup( ShapeGroup group )
-    {
-        if ( group.Count < 2 || _childGroups.Contains( group ) )
-        {
-            throw new InvalidOperationException();
-        }
-
-        _childGroups.Add( group );
-        Count += group.Count;
-    }
-
-    public void Add( IEnumerable<Shape> shapes )
-    {
-        foreach ( Shape shape in shapes )
-        {
-            Add( shape );
-        }
-    }
-
-    public void Add( Shape shape )
-    {
-        if ( _childGroups.Any( x => x.Contains( shape ) ) )
-        {
-            throw new InvalidOperationException();
-        }
-
-        _shapes.Add( shape );
-        Count++;
     }
 }
