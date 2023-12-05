@@ -40,13 +40,26 @@ public class ShapeGroupsHandler
 
         if ( newGroup.IsValid() )
         {
+            _groups.Clear();
+            _groups.AddRange( groupsToVisit );
             _groups.Add( newGroup );
         }
     }
 
     public void Ungroup( IEnumerable<Shape> shapes )
     {
-        shapes.Any();
+        foreach ( Shape shape in shapes )
+        {
+            ShapeGroup? groupToSearch = _groups.FirstOrDefault( x => x.Contains( shape ) );
+            if ( groupToSearch is null )
+            {
+                continue;
+            }
+
+            ShapeGroup shapeGroup = groupToSearch.GetGroup( shape )!;
+            _groups.Remove( shapeGroup );
+            _groups.AddRange( shapeGroup.ChildGroups );
+        }
     }
 
     public IEnumerable<Shape> GetShapesInGroup( Shape shape )
