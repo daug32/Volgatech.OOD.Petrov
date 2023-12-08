@@ -41,7 +41,9 @@ public class ShapeGroup
 
     public bool IsValid()
     {
-        bool isWrapping = _childGroups.Count == 1 && _shapes.Count == 0;
+        bool isWrapping = 
+            _childGroups.Count == 1 && _shapes.Count == 0 || 
+            _childGroups.Count == 0 && _shapes.Count == 1;
         if ( isWrapping )
         {
             return false;
