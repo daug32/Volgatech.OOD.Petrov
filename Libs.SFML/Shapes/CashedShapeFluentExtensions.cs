@@ -1,9 +1,9 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace Lab2.Models;
+namespace Libs.SFML.Shapes;
 
-public static class CashedShapeExtensions
+public static class CashedShapeFluentExtensions
 {
     public static T FluentSetOutlineColor<T>( this T shape, Color outlineColor ) where T : CashedShape
     {

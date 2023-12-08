@@ -1,6 +1,6 @@
 ﻿using SFML.System;
 
-namespace Lab2.Utils;
+namespace Libs.SFML.Vertices;
 
 public static class Vector2FUtils
 {

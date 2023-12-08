@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace Lab2.Models.Dictionaries;
+namespace Libs.SFML.Colors;
 
 public static class CustomColors
 {

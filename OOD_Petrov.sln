@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1", "Lab1\Lab1.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs", "Libs\Libs.csproj", "{924E16D5-9F46-4333-9674-4A30095D1184}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs.SFML", "Libs.SFML\Libs.SFML.csproj", "{9F34601B-FE97-4122-B758-0C11459B2A95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -46,6 +48,14 @@ Global
 		{924E16D5-9F46-4333-9674-4A30095D1184}.Release|x64.Build.0 = Release|Any CPU
 		{924E16D5-9F46-4333-9674-4A30095D1184}.Release|x86.ActiveCfg = Release|Any CPU
 		{924E16D5-9F46-4333-9674-4A30095D1184}.Release|x86.Build.0 = Release|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Debug|x64.Build.0 = Debug|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Debug|x86.Build.0 = Debug|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Release|x64.ActiveCfg = Release|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Release|x64.Build.0 = Release|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Release|x86.ActiveCfg = Release|Any CPU
+		{9F34601B-FE97-4122-B758-0C11459B2A95}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,13 +1,14 @@
 ﻿using Lab2.Handlers;
 using Lab2.Handlers.Grouping;
-using Lab2.Models;
-using Lab2.Models.Dictionaries;
-using Lab2.Utils;
+using Libs.SFML;
+using Libs.SFML.Colors;
+using Libs.SFML.Shapes;
+using Libs.SFML.Vertices;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace Lab2.Applications;
+namespace Lab2;
 
 public class Application : BaseApplication
 {

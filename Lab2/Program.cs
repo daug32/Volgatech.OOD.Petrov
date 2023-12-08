@@ -1,6 +1,4 @@
-﻿using Lab2.Applications;
-
-namespace Lab2;
+﻿namespace Lab2;
 
 internal class Program
 {

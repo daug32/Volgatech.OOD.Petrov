@@ -1,4 +1,4 @@
-﻿using Lab2.Models;
+﻿using Libs.SFML.Shapes;
 
 namespace Lab2.Handlers.Grouping;
 

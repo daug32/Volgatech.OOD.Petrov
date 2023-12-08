@@ -1,4 +1,4 @@
-﻿using Lab2.Models;
+﻿using Libs.SFML.Shapes;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;

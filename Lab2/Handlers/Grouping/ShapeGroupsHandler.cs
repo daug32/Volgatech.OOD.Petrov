@@ -1,5 +1,5 @@
-﻿using Lab2.Models;
-using Lab2.Public;
+﻿using Lab2.Public;
+using Libs.SFML.Shapes;
 using SFML.Graphics;
 using SFML.System;
 

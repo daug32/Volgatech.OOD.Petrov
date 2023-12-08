@@ -1,4 +1,4 @@
-﻿using Lab1.Extensions;
+﻿using Libs.SFML.Vertices;
 using SFML.Graphics;
 using SFML.System;
 

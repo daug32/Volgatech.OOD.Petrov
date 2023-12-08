@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
 
-namespace Lab2.Applications;
+namespace Libs.SFML;
 
 public abstract class BaseApplication
 {

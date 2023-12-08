@@ -1,20 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>Libs.SFML</PackageId>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="SFML.Graphics" Version="2.5.1" />
-      <PackageReference Include="SFML.System" Version="2.5.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Libs.SFML\Libs.SFML.csproj" />
-      <ProjectReference Include="..\Libs\Libs.csproj" />
     </ItemGroup>
 
 </Project>

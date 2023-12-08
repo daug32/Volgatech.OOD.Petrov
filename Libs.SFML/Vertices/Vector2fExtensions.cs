@@ -1,6 +1,6 @@
 ﻿using SFML.System;
 
-namespace Lab1.Extensions;
+namespace Libs.SFML.Vertices;
 
 // ReSharper disable once InconsistentNaming
 public static class Vector2fExtensions
