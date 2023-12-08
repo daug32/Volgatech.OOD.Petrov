@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using Lab2.Models;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
@@ -9,7 +10,7 @@ public class DragAndDropHandler
     private bool _isDragAndDropping;
     private Vector2i _prevMousePosition;
 
-    public void OnMousePressed( Shape? clickedShape )
+    public void OnMousePressed( CashedShape? clickedShape )
     {
         bool isAnyShapePressed = clickedShape != null;
         _isDragAndDropping = isAnyShapePressed;
@@ -17,7 +18,7 @@ public class DragAndDropHandler
 
     public void OnMouseReleased() => _isDragAndDropping = false;
 
-    public void Update( IEnumerable<Shape> shapesToMove )
+    public void Update( IEnumerable<CashedShape> shapesToMove )
     {
         Vector2i currentMousePosition = Mouse.GetPosition();
 
@@ -25,7 +26,7 @@ public class DragAndDropHandler
         {
             var mouseDeltaPosition = ( Vector2f )( currentMousePosition - _prevMousePosition );
 
-            foreach ( Shape shape in shapesToMove )
+            foreach ( CashedShape shape in shapesToMove )
             {
                 shape.Position += mouseDeltaPosition;
             }

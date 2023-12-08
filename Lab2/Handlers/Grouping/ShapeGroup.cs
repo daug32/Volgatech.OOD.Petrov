@@ -1,21 +1,22 @@
-﻿using SFML.Graphics;
+﻿using Lab2.Models;
+using SFML.Graphics;
 
 namespace Lab2.Handlers.Grouping;
 
 public class ShapeGroup
 {
-    private readonly HashSet<Shape> _shapes;
+    private readonly HashSet<CashedShape> _shapes;
     private readonly HashSet<ShapeGroup> _childGroups;
     
     public int Count { get; private set; }
 
     public ShapeGroup()
     {
-        _shapes = new HashSet<Shape>();
+        _shapes = new HashSet<CashedShape>();
         _childGroups = new HashSet<ShapeGroup>();
     }
 
-    public void AddToGroup( Shape shape )
+    public void AddToGroup( CashedShape shape )
     {
         if ( _shapes.Contains( shape ) )
         {
@@ -50,16 +51,16 @@ public class ShapeGroup
         return Count > 1;
     }
 
-    public bool Contains( Shape shape )
+    public bool Contains( CashedShape shape )
     {
         return
             _shapes.Contains( shape ) || 
             _childGroups.Any( x => x.Contains( shape ) );
     }
 
-    public List<Shape> GetAllRelatedShapes()
+    public List<CashedShape> GetAllRelatedShapes()
     {
-        var result = new List<Shape>();
+        var result = new List<CashedShape>();
         var groupsToVisit = new List<ShapeGroup>
         {
             this
@@ -78,7 +79,7 @@ public class ShapeGroup
         return result;
     }
 
-    public ShapeGroup? GetGroup( Shape shape )
+    public ShapeGroup? GetGroup( CashedShape shape )
     {
         if ( _shapes.Contains( shape ) )
         {

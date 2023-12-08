@@ -1,4 +1,5 @@
 ﻿using Lab2.Extensions;
+using Lab2.Models;
 using Lab2.Public;
 using SFML.Graphics;
 
@@ -8,15 +9,15 @@ public class ShapeGroupsHandler
 {
     private readonly List<ShapeGroup> _groups = new();
 
-    public bool HasGroup( Shape shape ) => _groups.Any( x => x.Contains( shape ) );
+    public bool HasGroup( CashedShape shape ) => _groups.Any( x => x.Contains( shape ) );
 
-    public void Group( IEnumerable<Shape> shapes )
+    public void Group( IEnumerable<CashedShape> shapes )
     {
         var newGroup = new ShapeGroup();
         
         var groupsToVisit = _groups.ToList();
         
-        foreach ( Shape shape in shapes )
+        foreach ( CashedShape shape in shapes )
         {
             bool hasGroup = false;
 
@@ -45,9 +46,9 @@ public class ShapeGroupsHandler
         }
     }
 
-    public void Ungroup( IEnumerable<Shape> shapes )
+    public void Ungroup( IEnumerable<CashedShape> shapes )
     {
-        foreach ( Shape shape in shapes )
+        foreach ( CashedShape shape in shapes )
         {
             ShapeGroup? groupToSearch = _groups.FirstOrDefault( x => x.Contains( shape ) );
             if ( groupToSearch is null )
@@ -61,20 +62,25 @@ public class ShapeGroupsHandler
         }
     }
 
-    public List<Shape> GetRelatedShapes( Shape shape )
+    public List<CashedShape> GetRelatedShapes( CashedShape shape )
     {
         ShapeGroup? shapeGroup = _groups.FirstOrDefault( x => x.Contains( shape ) );
         if ( shapeGroup is null )
         {
-            return new List<Shape>();
+            return new List<CashedShape>();
         }
 
-        return shapeGroup.GetAllRelatedShapes();
+        var shapes = shapeGroup.GetAllRelatedShapes();
+        shapes.Remove( shape );
+        
+        return shapes;
     }
 
-    public Drawable BuildGroupMark( FloatRect shapeBounds )
+    public Drawable BuildGroupMark( CashedShape shape )
     {
         uint textSize = 10;
+        FloatRect shapeBounds = shape.GetGlobalBounds();
+        
         return new Text( "Group", Resources.Fonts.Roboto )
             .FluentSetPosition(
                 shapeBounds.Left - textSize,
