@@ -1,7 +1,7 @@
-﻿using Lab2.Extensions;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Public;
 using SFML.Graphics;
+using SFML.System;
 
 namespace Lab2.Handlers.Grouping;
 
@@ -19,7 +19,7 @@ public class ShapeGroupsHandler
         
         foreach ( CashedShape shape in shapes )
         {
-            bool hasGroup = false;
+            bool groupAdded = false;
 
             foreach ( ShapeGroup group in groupsToVisit )
             {
@@ -27,12 +27,12 @@ public class ShapeGroupsHandler
                 {
                     newGroup.AddToGroup( group );
                     groupsToVisit.Remove( group );
-                    hasGroup = true;
+                    groupAdded = true;
                     break;
                 }
             }
 
-            if ( !hasGroup && !newGroup.Contains( shape ) )
+            if ( !groupAdded && !newGroup.Contains( shape ) )
             {
                 newGroup.AddToGroup( shape );
             }
@@ -42,6 +42,7 @@ public class ShapeGroupsHandler
         {
             _groups.Clear();
             _groups.AddRange( groupsToVisit );
+
             _groups.Add( newGroup );
         }
     }
@@ -76,15 +77,20 @@ public class ShapeGroupsHandler
         return shapes;
     }
 
-    public Drawable BuildGroupMark( CashedShape shape )
+    public Drawable? BuildGroupMarkIfHasGroup( CashedShape shape )
     {
+        if ( !HasGroup( shape ) )
+        {
+            return null;
+        }
+        
         uint textSize = 10;
         FloatRect shapeBounds = shape.GetGlobalBounds();
         
-        return new Text( "Group", Resources.Fonts.Roboto )
-            .FluentSetPosition(
-                shapeBounds.Left - textSize,
-                shapeBounds.Top - textSize )
-            .FluentSetCharacterSize( textSize );
+        var text = new Text( "Group", Resources.Fonts.Roboto );
+        text.Position = new Vector2f( shapeBounds.Left - textSize, shapeBounds.Top - textSize );
+        text.CharacterSize = textSize;
+
+        return text;
     }
 }

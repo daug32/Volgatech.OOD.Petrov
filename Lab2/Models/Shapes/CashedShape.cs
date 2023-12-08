@@ -88,25 +88,28 @@ public class CashedShape : Drawable
 
     public FloatRect GetLocalBounds()
     {
-        if ( _hasChanges )
-        {
-            _oldLocalBounds = _shape.GetLocalBounds();
-            _hasChanges = false;
-        }
-
+        RecalculateIfNeed();
         return _oldLocalBounds;
     }
 
     public FloatRect GetGlobalBounds()
     {
-        if ( _hasChanges )
-        {
-            _oldGlobalBounds = _shape.GetGlobalBounds();
-            _hasChanges = false;
-        }
-
+        RecalculateIfNeed();
         return _oldGlobalBounds;
     }
 
     public void Draw( RenderTarget target, RenderStates states ) => _shape.Draw( target, states );
+
+    private void RecalculateIfNeed()
+    {
+        if ( !_hasChanges )
+        {
+            return;
+        }
+        
+        _oldGlobalBounds = _shape.GetGlobalBounds();
+        _oldLocalBounds = _shape.GetLocalBounds();
+        
+        _hasChanges = false;
+    }
 }

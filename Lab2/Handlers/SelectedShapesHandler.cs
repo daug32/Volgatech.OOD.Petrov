@@ -1,8 +1,5 @@
-﻿using System.Net;
-using Lab2.Extensions;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Models.Dictionaries;
-using Libs.Extensions;
 using SFML.Graphics;
 using SFML.System;
 
@@ -15,10 +12,6 @@ public class SelectedShapesHandler
     // Pseudo selected shapes are shapes that were selected by group relationships
     // These shapes are not counted as selected but they still get some handling such as marking at rendering and drag and droping 
     private readonly HashSet<CashedShape> _pseudoSelectedShapes = new();
-
-    public bool IsSelected( CashedShape shape ) => 
-        _selectedShapes.Contains( shape ) || 
-        _pseudoSelectedShapes.Contains( shape );
 
     public List<CashedShape> GetSelected() => _selectedShapes
         .Union( _pseudoSelectedShapes )
@@ -86,11 +79,11 @@ public class SelectedShapesHandler
             ? Color.White
             : CustomColors.LightGray;
         
-        return CashedShape.Create( new RectangleShape( size )
+        return CashedShape.Create( new RectangleShape( size ) )
             .FluentSetPosition( shapeBounds.Left, shapeBounds.Top )
             .FluentSetOutlineColor( outlineColor )
             .FluentSetFillColor( Color.Transparent )
-            .FluentSetOutlineThickness( 1 ) );
+            .FluentSetOutlineThickness( 1 );
     }
 
     private void MarkAsTrueSelected( CashedShape shape )
@@ -102,7 +95,7 @@ public class SelectedShapesHandler
     {
         foreach ( CashedShape shape in shapes )
         {
-            // Shape can't be pseudoselected if it's already true selected
+            // Shape can't be pseudo selected if it's already true selected
             if ( _selectedShapes.Contains( shape ) )
             {
                 continue;
