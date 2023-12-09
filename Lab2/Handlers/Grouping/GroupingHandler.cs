@@ -1,25 +1,24 @@
 ﻿using Lab2.Public;
+using Libs.Extensions;
 using Libs.SFML.Shapes;
 using SFML.Graphics;
 using SFML.System;
 
 namespace Lab2.Handlers.Grouping;
 
-public class ShapeGroupsHandler
+public class GroupingHandler
 {
     private readonly List<ShapeGroup> _groups = new();
-
-    public bool HasGroup( CashedShape shape ) => _groups.Any( x => x.Contains( shape ) );
 
     public void Group( IEnumerable<CashedShape> shapes )
     {
         var newGroup = new ShapeGroup();
-        
+
         var groupsToVisit = _groups.ToList();
-        
+
         foreach ( CashedShape shape in shapes )
         {
-            bool groupAdded = false;
+            var groupAdded = false;
 
             foreach ( ShapeGroup group in groupsToVisit )
             {
@@ -51,15 +50,27 @@ public class ShapeGroupsHandler
     {
         foreach ( CashedShape shape in shapes )
         {
-            ShapeGroup? groupToSearch = _groups.FirstOrDefault( x => x.Contains( shape ) );
-            if ( groupToSearch is null )
+            var queue = new LinkedList<ShapeGroup>( _groups );
+            var toSave = new LinkedList<ShapeGroup>();
+
+            while ( queue.Any() )
             {
-                continue;
+                ShapeGroup group = queue.Last();
+                if ( !group.Contains( shape ) )
+                {
+                    toSave.AddLast( group );
+                    queue.RemoveLast();
+                    continue;
+                }
+
+                queue.RemoveLast();
+                toSave.AddRange( queue );
+                queue.Clear();
+                queue.AddRange( group.GetChildGroups() );
             }
 
-            ShapeGroup shapeGroup = groupToSearch.GetGroup( shape )!;
-            _groups.Remove( shapeGroup );
-            _groups.AddRange( shapeGroup.GetChildGroups() );
+            _groups.Clear();
+            _groups.AddRange( toSave );
         }
     }
 
@@ -73,20 +84,21 @@ public class ShapeGroupsHandler
 
         var shapes = shapeGroup.GetAllRelatedShapes();
         shapes.Remove( shape );
-        
+
         return shapes;
     }
 
     public Drawable? BuildGroupMarkIfHasGroup( CashedShape shape )
     {
-        if ( !HasGroup( shape ) )
+        bool hasGroup = _groups.Any( x => x.Contains( shape ) );
+        if ( !hasGroup )
         {
             return null;
         }
-        
+
         uint textSize = 10;
         FloatRect shapeBounds = shape.GetGlobalBounds();
-        
+
         var text = new Text( "Group", Resources.Fonts.Roboto );
         text.Position = new Vector2f( shapeBounds.Left - textSize, shapeBounds.Top - textSize );
         text.CharacterSize = textSize;

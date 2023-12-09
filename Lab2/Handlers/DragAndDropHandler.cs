@@ -1,5 +1,5 @@
 ﻿using Libs.SFML.Shapes;
-using SFML.Graphics;
+using Libs.SFML.Vertices;
 using SFML.System;
 using SFML.Window;
 
@@ -7,31 +7,39 @@ namespace Lab2.Handlers;
 
 public class DragAndDropHandler
 {
-    private bool _isDragAndDropping;
     private Vector2i _prevMousePosition;
+    private bool _isAnyShapePressed = false;
+
+    public bool IsDragAndDropping { get; private set; }
 
     public void OnMousePressed( CashedShape? clickedShape )
     {
-        bool isAnyShapePressed = clickedShape != null;
-        _isDragAndDropping = isAnyShapePressed;
+        _isAnyShapePressed = clickedShape != null;
     }
 
-    public void OnMouseReleased() => _isDragAndDropping = false;
+    public void OnMouseReleased()
+    {
+        _isAnyShapePressed = false;
+    }
 
     public void Update( IEnumerable<CashedShape> shapesToMove )
     {
         Vector2i currentMousePosition = Mouse.GetPosition();
 
-        if ( _isDragAndDropping )
-        {
-            var mouseDeltaPosition = ( Vector2f )( currentMousePosition - _prevMousePosition );
+        var mouseDeltaPosition = ( Vector2f )( currentMousePosition - _prevMousePosition );
+        float mouseMovement = currentMousePosition.GetSquareDistance( _prevMousePosition );
 
+        IsDragAndDropping = mouseMovement > 0 && _isAnyShapePressed;
+        // Console.WriteLine( $"{mouseMovement > 0}({mouseMovement}) && {_isAnyShapePressed} = {IsDragAndDropping}" );
+
+        _prevMousePosition = currentMousePosition;
+
+        if ( IsDragAndDropping )
+        {
             foreach ( CashedShape shape in shapesToMove )
             {
                 shape.Position += mouseDeltaPosition;
             }
         }
-        
-        _prevMousePosition = currentMousePosition;
     }
 }

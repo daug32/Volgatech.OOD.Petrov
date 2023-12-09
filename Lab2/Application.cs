@@ -1,6 +1,7 @@
 ﻿using Lab2.Handlers;
 using Lab2.Handlers.Grouping;
-using Libs.SFML;
+using Lab2.Handlers.Selection;
+using Libs.SFML.Applications;
 using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
 using Libs.SFML.Vertices;
@@ -15,60 +16,62 @@ public class Application : BaseApplication
     private readonly HashSet<CashedShape> _shapes = new();
 
     private readonly DragAndDropHandler _dragAndDropHandler = new();
-    private readonly ShapeGroupsHandler _shapeGroupsHandler = new();
-    private readonly SelectedShapesHandler _selectedShapesHandler = new();
+    private readonly GroupingHandler _groupingHandler = new();
+    private readonly SelectionHandler _selectionHandler = new();
 
-    public Application() : base( new VideoMode( 800, 600 ), "Lab2 - Composite.DragAndDrop" )
+    public Application()
+        : base( new VideoMode( 800, 600 ) )
     {
         _shapes.Add(
             CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) )
                 .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2FUtils.GetRandomInBounds( Window.Size ) ) );
+                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
 
         _shapes.Add(
             CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) )
                 .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2FUtils.GetRandomInBounds( Window.Size ) ) );
+                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
 
-        _shapes.Add( 
+        _shapes.Add(
             CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) )
                 .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2FUtils.GetRandomInBounds( Window.Size ) ) );
+                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
 
-        _shapes.Add( 
+        _shapes.Add(
             CashedShape.Create( new CircleShape( 35 ) )
                 .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2FUtils.GetRandomInBounds( Window.Size ) ) );
+                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
 
-        Window.KeyPressed += OnKeyPressed;
-        Window.MouseButtonPressed += OnMouseButtonPressed;
-        Window.MouseButtonReleased += OnMouseButtonReleased;
+        KeyPressed += OnKeyPressed;
+        MouseButtonPressed += OnMouseButtonPressed;
+        MouseButtonDoublePressed += OnDoubleClick;
+        MouseButtonReleased += OnMouseButtonReleased;
     }
 
     protected override void Draw()
     {
-        Window.Clear( CustomColors.Gray );
+        ClearWindow( CustomColors.Gray );
 
-        _dragAndDropHandler.Update( _selectedShapesHandler.GetSelected() );
+        _dragAndDropHandler.Update( _selectionHandler.GetAllSelectedShapes() );
 
         foreach ( CashedShape shape in _shapes.ToList() )
         {
-            Window.Draw( shape );
+            RenderObject( shape );
 
             var shapeMarks = new List<Drawable?>
             {
-                _selectedShapesHandler.BuildSelectionMarkIfSelected( shape ),
-                _shapeGroupsHandler.BuildGroupMarkIfHasGroup( shape ),
+                _selectionHandler.BuildSelectionMarkIfSelected( shape ),
+                _groupingHandler.BuildGroupMarkIfHasGroup( shape )
             };
 
             foreach ( Drawable? shapeMark in shapeMarks )
             {
                 if ( shapeMark is not null )
                 {
-                    Window.Draw( shapeMark );
+                    RenderObject( shapeMark );
                 }
             }
-        } 
+        }
     }
 
     private void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs )
@@ -77,14 +80,15 @@ public class Application : BaseApplication
         {
             case Keyboard.Key.G when Keyboard.IsKeyPressed( Keyboard.Key.LControl ):
             {
-                var selectedItems = _selectedShapesHandler.GetSelected();
-                _shapeGroupsHandler.Group( selectedItems );
+                var selectedItems = _selectionHandler.GetAllSelectedShapes();
+                _groupingHandler.Group( selectedItems );
                 break;
             }
             case Keyboard.Key.U when Keyboard.IsKeyPressed( Keyboard.Key.LControl ):
             {
-                var selectedItems = _selectedShapesHandler.GetSelected();
-                _shapeGroupsHandler.Ungroup( selectedItems );
+                var selectedItems = _selectionHandler.GetSelectedShapes( SelectionType.TrueSelection );
+                _groupingHandler.Ungroup( selectedItems );
+                _selectionHandler.OnUngroup( selectedItems );
                 break;
             }
         }
@@ -92,34 +96,47 @@ public class Application : BaseApplication
 
     private void OnMouseButtonPressed( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        CashedShape? clickedShape = GetClickedShape( mouseEventArgs );
-
-        List<CashedShape> relatedShapes = clickedShape != null
-            ? _shapeGroupsHandler.GetRelatedShapes( clickedShape )
-            : new List<CashedShape>();
-
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
-            bool isMultipleSelectionAllowed = 
-                Keyboard.IsKeyPressed( Keyboard.Key.LShift ) || 
-                Keyboard.IsKeyPressed( Keyboard.Key.RShift );
-
-            _selectedShapesHandler.OnMousePressed(
-                clickedShape,
-                relatedShapes,
-                isMultipleSelectionAllowed );
+            CashedShape? clickedShape = GetClickedShape( mouseEventArgs );
+            var relatedShapes = GetRelatedShapes( clickedShape );
 
             _dragAndDropHandler.OnMousePressed( clickedShape );
+            _selectionHandler.OnMousePressed( clickedShape, relatedShapes );
         }
     }
 
     private void OnMouseButtonReleased( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        _dragAndDropHandler.OnMouseReleased();
+        if ( mouseEventArgs.Button == Mouse.Button.Left )
+        {
+            _dragAndDropHandler.OnMouseReleased();
+        }
     }
 
-    private CashedShape? GetClickedShape( MouseButtonEventArgs args ) => _shapes
-        .LastOrDefault( shape => shape
-            .GetGlobalBounds()
-            .Contains( args.X, args.Y ) );
+    private void OnDoubleClick( object? sender, MouseButtonEventArgs mouseEventArgs )
+    {
+        if ( mouseEventArgs.Button == Mouse.Button.Left )
+        {
+            CashedShape? clickedShape = GetClickedShape( mouseEventArgs );
+            var relatedShapes = GetRelatedShapes( clickedShape );
+
+            _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );
+        }
+    }
+
+    private CashedShape? GetClickedShape( MouseButtonEventArgs args )
+    {
+        return _shapes
+            .LastOrDefault( shape => shape
+                .GetGlobalBounds()
+                .Contains( args.X, args.Y ) );
+    }
+
+    private List<CashedShape> GetRelatedShapes( CashedShape? clickedShape )
+    {
+        return clickedShape != null
+            ? _groupingHandler.GetRelatedShapes( clickedShape )
+            : new List<CashedShape>();
+    }
 }

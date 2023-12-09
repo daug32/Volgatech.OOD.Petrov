@@ -2,9 +2,12 @@
 
 namespace Libs.SFML.Vertices;
 
-public static class Vector2FUtils
+public static class Vector2Utils
 {
-    public static Vector2f GetRandomInBounds( Vector2u bounds ) => GetRandom( bounds.X, bounds.Y );
+    public static Vector2f GetRandomInBounds( Vector2u bounds )
+    {
+        return GetRandom( bounds.X, bounds.Y );
+    }
 
     public static Vector2f GetRandom( float width, float height )
     {

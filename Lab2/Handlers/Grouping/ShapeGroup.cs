@@ -79,24 +79,4 @@ public class ShapeGroup
 
         return result;
     }
-
-    public ShapeGroup? GetGroup( CashedShape shape )
-    {
-        if ( _shapes.Contains( shape ) )
-        {
-            return this;
-        }
-
-        foreach ( ShapeGroup childGroup in _childGroups )
-        {
-            if ( !childGroup.Contains( shape ) )
-            {
-                continue;
-            }
-
-            return childGroup.GetGroup( shape );
-        }
-
-        return null;
-    }
 }
