@@ -30,7 +30,6 @@ public class DragAndDropHandler
         float mouseMovement = currentMousePosition.GetSquareDistance( _prevMousePosition );
 
         IsDragAndDropping = mouseMovement > 0 && _isAnyShapePressed;
-        // Console.WriteLine( $"{mouseMovement > 0}({mouseMovement}) && {_isAnyShapePressed} = {IsDragAndDropping}" );
 
         _prevMousePosition = currentMousePosition;
 

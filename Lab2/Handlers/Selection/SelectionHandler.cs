@@ -120,7 +120,11 @@ public class SelectionHandler
             {
                 _selectionHandler.UnselectAll();
             }
+
+            return;
         }
+
+        throw new ArgumentOutOfRangeException();
     }
 
     private void SelectNewShape( CashedShape clickedShape, IEnumerable<CashedShape> relatedShapes )
