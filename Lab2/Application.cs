@@ -2,12 +2,10 @@
 using Lab2.Handlers;
 using Lab2.Handlers.Grouping;
 using Lab2.Handlers.Selection;
-using Lab2.Public;
+using Lab2.UI;
 using Libs.SFML.Applications;
-using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
 using Libs.SFML.UI;
-using Libs.SFML.UI.Components.Buttons;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -26,15 +24,7 @@ public class Application : BaseApplication
 
     public Application() : base( new VideoMode( 800, 600 ) )
     {
-        _toolbar = new Menu( new Vector2f( WindowSize.X, 50 ) )
-        {
-            BackgroundColor = CustomColors.Purple
-        };
-
-        _toolbar.AddButton( new TextButton(
-            position: new Vector2f( 20, 10f  ),
-            text: new Text( "Button 1", Resources.Fonts.Roboto, 20 ),
-            onClick: button => Console.WriteLine( $"{button.GetGlobalBounds()}" ) ) );
+        _toolbar = new Toolbar( ( Vector2f )WindowSize );
         
         KeyPressed += OnKeyPressed;
         MouseButtonPressed += OnMouseButtonPressed;
@@ -45,7 +35,7 @@ public class Application : BaseApplication
 
     protected override void Draw()
     {
-        ClearWindow( CustomColors.PinkWhite );
+        ClearWindow( Color.White );
         
         RenderObject( _toolbar );
 

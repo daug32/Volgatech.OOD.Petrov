@@ -38,14 +38,22 @@ public class Button : IButton
         set => _background.OutlineThickness = value;
     }
 
-    public Button( Vector2f position, Vector2f size, Action<IButton> onClick )
+    public Button(
+        Action<IButton> onClick,
+        Vector2f size,
+        Vector2f position,
+        ButtonViewParams? viewParams = null )
     {
         _onClick = onClick;
-        _background = new RectangleShape( size )
-        {
-            Position = position,
-            FillColor = Color.Black
-        };
+        _background = new RectangleShape( size );
+
+        Position = position;
+        Size = size;
+
+        viewParams ??= new ButtonViewParams();
+        BackgroundColor = viewParams.BackgroundColor;
+        BorderColor = viewParams.BorderColor;
+        BorderThickness = viewParams.BorderThickness;
     }
 
     public void Execute() => _onClick.Invoke( this );

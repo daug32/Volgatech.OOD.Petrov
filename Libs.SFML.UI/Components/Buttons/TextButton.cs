@@ -6,32 +6,28 @@ namespace Libs.SFML.UI.Components.Buttons;
 public class TextButton : IButton
 {
     private readonly Text _text;
-    private readonly IButton _button;
+    private readonly Button _button;
 
-    public int CharacterSize
-    {
-        get => ( int )_text.CharacterSize;
-        set => _text.CharacterSize = ( uint )value;
-    }
+    public float? MinHeight { get; set; }
 
     public Vector2f Size
     {
         get => _button.Size;
-        set => _button.Size = value + Padding * 2;
+        set => SetSize( value );
     }
 
     public Vector2f Position
     {
         get => _button.Position;
-        set
-        {
-            _text.Position = value + Padding;
-            FloatRect textBounds = _text.GetGlobalBounds();
-            _button.Position = new Vector2f( textBounds.Left, textBounds.Top ) - Padding;
-        }
+        set => SetPosition( value );
     }
 
-    public Vector2f Padding { get; set; }
+    private Vector2f _padding;
+    public Vector2f Padding
+    {
+        get => _padding;
+        set => SetPadding( value );
+    }
 
     public Color Color
     {
@@ -57,16 +53,19 @@ public class TextButton : IButton
         set => _button.BorderThickness = value;
     }
 
-    public TextButton( Vector2f position, Text text, Action<IButton> onClick )
+    public TextButton(
+        Action<IButton> onClick,
+        Text text,
+        Vector2f position,
+        TextButtonViewParams? viewParams = null )
     {
         _text = new Text( text );
-        _button = new Button( position, new Vector2f(), onClick );
-        
-        Color = Color.White;
-        BackgroundColor = Color.Black;
-        BorderColor = Color.Transparent;
-        BorderThickness = 0;
-        Padding = new Vector2f(5, 5);
+        _button = new Button( onClick, new Vector2f(), position, viewParams );
+
+        viewParams ??= new TextButtonViewParams();
+        Color = viewParams.Color;
+        Padding = viewParams.Padding;
+        MinHeight = viewParams.MinHeight;
 
         Position = position;
         FloatRect textBounds = _text.GetGlobalBounds();
@@ -87,5 +86,31 @@ public class TextButton : IButton
     {
         _button.Draw( target, states );
         _text.Draw( target, states );
+    }
+    
+    private void SetSize( Vector2f value )
+    {
+        float height = value.Y + Padding.Y * 2;
+        if ( MinHeight.HasValue && height < MinHeight )
+        {
+            height = MinHeight.Value;
+        }
+
+        float width = value.X + Padding.X * 2;
+            
+        _button.Size = new Vector2f( width, height );
+    }
+
+    private void SetPadding( Vector2f value )
+    {
+        _padding = value;
+        Position = Position;
+    }
+    
+    private void SetPosition( Vector2f value )
+    {
+        _text.Position = value + Padding;
+        FloatRect textBounds = _text.GetGlobalBounds();
+        _button.Position = new Vector2f( textBounds.Left, textBounds.Top ) - Padding;
     }
 }
