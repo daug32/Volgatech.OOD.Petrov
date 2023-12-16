@@ -40,17 +40,14 @@ public class Button : IButton
 
     public Button(
         Action<IButton> onClick,
-        Vector2f size,
-        Vector2f position,
         ButtonViewParams? viewParams = null )
     {
-        _onClick = onClick;
-        _background = new RectangleShape( size );
-
-        Position = position;
-        Size = size;
-
         viewParams ??= new ButtonViewParams();
+
+        _onClick = onClick;
+        _background = new RectangleShape( viewParams.Size );
+
+        Position = viewParams.Position;
         BackgroundColor = viewParams.BackgroundColor;
         BorderColor = viewParams.BorderColor;
         BorderThickness = viewParams.BorderThickness;

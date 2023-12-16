@@ -56,18 +56,18 @@ public class TextButton : IButton
     public TextButton(
         Action<IButton> onClick,
         Text text,
-        Vector2f position,
         TextButtonViewParams? viewParams = null )
     {
-        _text = new Text( text );
-        _button = new Button( onClick, new Vector2f(), position, viewParams );
-
         viewParams ??= new TextButtonViewParams();
+
+        _text = new Text( text );
+        _button = new Button( onClick, viewParams );
+
         Color = viewParams.Color;
         Padding = viewParams.Padding;
         MinHeight = viewParams.MinHeight;
+        Position = viewParams.Position;
 
-        Position = position;
         FloatRect textBounds = _text.GetGlobalBounds();
         Size = new Vector2f( textBounds.Width, textBounds.Height );
     }

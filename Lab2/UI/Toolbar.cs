@@ -12,7 +12,13 @@ public class Toolbar : Menu
     public Toolbar( Vector2f windowSize ) : base( new Vector2f( windowSize.X, 50 ) )
     {
         BackgroundColor = CustomColors.Purple;
+        var buttons = BuildButtons();
+        AlignButtonsInRow( buttons );
+        AddButtons( buttons );
+    }
 
+    private static List<IButton> BuildButtons()
+    {
         var buttonViewParams = new TextButtonViewParams
         {
             Color = CustomColors.Purple,
@@ -26,46 +32,43 @@ public class Toolbar : Menu
         buttons.Add( new TextButton(
             onClick: button => Console.WriteLine( $"Add shape, {button.GetGlobalBounds()}" ),
             text: new Text( "Add shape", Resources.Fonts.Roboto, 14 ),
-            position: new Vector2f(),
             viewParams: buttonViewParams ) );
 
         buttons.Add( new TextButton(
             onClick: button => Console.WriteLine( $"Change fill color, {button.GetGlobalBounds()}" ),
             text: new Text( "Fill color", Resources.Fonts.Roboto, 14 ),
-            position: new Vector2f(),
             viewParams: buttonViewParams ) );
-        
+
         buttons.Add( new TextButton(
             onClick: button => Console.WriteLine( $"Change border color, {button.GetGlobalBounds()}" ),
             text: new Text( "Border color", Resources.Fonts.Roboto, 14 ),
-            position: new Vector2f(),
             viewParams: buttonViewParams ) );
-        
+
         buttons.Add( new TextButton(
             onClick: button => Console.WriteLine( $"Change border size, {button.GetGlobalBounds()}" ),
             text: new Text( "Border size", Resources.Fonts.Roboto, 14 ),
-            position: new Vector2f(),
             viewParams: buttonViewParams ) );
-        
+
         buttons.Add( new TextButton(
             onClick: button => Console.WriteLine( $"D&D, {button.GetGlobalBounds()}" ),
             text: new Text( "D&D", Resources.Fonts.Roboto, 14 ),
-            position: new Vector2f(),
             viewParams: buttonViewParams ) );
-        
+
         buttons.Add( new TextButton(
             onClick: button => Console.WriteLine( $"Undo, {button.GetGlobalBounds()}" ),
             text: new Text( "Undo", Resources.Fonts.Roboto, 14 ),
-            position: new Vector2f(),
             viewParams: buttonViewParams ) );
-        
+
         buttons.Add( new TextButton(
             onClick: button => Console.WriteLine( $"Redo, {button.GetGlobalBounds()}" ),
             text: new Text( "Redo", Resources.Fonts.Roboto, 14 ),
-            position: new Vector2f(),
             viewParams: buttonViewParams ) );
 
-        // Position
+        return buttons;
+    }
+
+    private static void AlignButtonsInRow( List<IButton> buttons )
+    {
         int spaceBetweenButtons = 20;
         float positionY = 10;
         float positionXOffset = spaceBetweenButtons;
@@ -74,8 +77,6 @@ public class Toolbar : Menu
         {
             button.Position = new Vector2f( button.Position.X + positionXOffset, positionY );
             positionXOffset += button.Size.X + spaceBetweenButtons;
-
-            AddButton( button );
         }
     }
 }

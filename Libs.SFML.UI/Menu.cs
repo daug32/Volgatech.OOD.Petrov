@@ -33,6 +33,14 @@ public class Menu : IMenu
         _background = new RectangleShape( size );
     }
 
+    public void AddButtons( IEnumerable<IButton> buttons )
+    {
+        foreach ( IButton button in buttons )
+        {
+            _buttons.Add( button );
+        }
+    }
+
     public void AddButton( IButton button )
     {
         _buttons.Add( button );

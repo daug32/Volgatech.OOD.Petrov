@@ -12,5 +12,6 @@ public interface IMenu : Drawable
     Vector2f Position { get; set; }
 
     void AddButton( IButton button );
+    void AddButtons( IEnumerable<IButton> buttons );
     void OnMouseReleased( object? sender, MouseButtonEventArgs args );
 }
