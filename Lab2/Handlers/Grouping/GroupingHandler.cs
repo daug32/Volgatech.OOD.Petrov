@@ -1,5 +1,6 @@
 ﻿using Lab2.Public;
 using Libs.Extensions;
+using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
 using SFML.Graphics;
 using SFML.System;
@@ -8,6 +9,8 @@ namespace Lab2.Handlers.Grouping;
 
 public class GroupingHandler
 {
+    public static readonly Color MarkColor = CustomColors.Gray;
+    
     private readonly List<ShapeGroup> _groups = new();
 
     public void Group( IEnumerable<CashedShape> shapes )
@@ -102,6 +105,7 @@ public class GroupingHandler
         var text = new Text( "Group", Resources.Fonts.Roboto );
         text.Position = new Vector2f( shapeBounds.Left - textSize, shapeBounds.Top - textSize );
         text.CharacterSize = textSize;
+        text.FillColor = MarkColor;
 
         return text;
     }

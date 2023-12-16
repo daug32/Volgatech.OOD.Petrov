@@ -57,7 +57,7 @@ public class TextButton : IButton
         set => _button.BorderThickness = value;
     }
 
-    public TextButton( Vector2f position, Text text, Action onClick )
+    public TextButton( Vector2f position, Text text, Action<IButton> onClick )
     {
         _text = new Text( text );
         _button = new Button( position, new Vector2f(), onClick );

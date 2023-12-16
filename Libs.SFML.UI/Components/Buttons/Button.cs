@@ -5,7 +5,7 @@ namespace Libs.SFML.UI.Components.Buttons;
 
 public class Button : IButton
 {
-    private readonly Action _onClick;
+    private readonly Action<IButton> _onClick;
     private readonly RectangleShape _background;
 
     public Vector2f Size
@@ -38,7 +38,7 @@ public class Button : IButton
         set => _background.OutlineThickness = value;
     }
 
-    public Button( Vector2f position, Vector2f size, Action onClick )
+    public Button( Vector2f position, Vector2f size, Action<IButton> onClick )
     {
         _onClick = onClick;
         _background = new RectangleShape( size )
@@ -48,9 +48,12 @@ public class Button : IButton
         };
     }
 
-    public void Execute() => _onClick.Invoke();
+    public void Execute() => _onClick.Invoke( this );
 
-    public FloatRect GetGlobalBounds() => _background.GetGlobalBounds();
+    public FloatRect GetGlobalBounds()
+    {
+        return _background.GetGlobalBounds();
+    }
 
     public void Draw( RenderTarget target, RenderStates states ) => _background.Draw( target, states );
 }

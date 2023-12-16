@@ -8,6 +8,8 @@ namespace Lab2.Handlers.Selection;
 
 public class SelectionHandler
 {
+    public static readonly Color MarkColor = CustomColors.Gray;
+
     private readonly SelectedShapesContainer _selectionHandler = new();
 
     public IEnumerable<CashedShape> GetAllSelectedShapes()
@@ -82,8 +84,8 @@ public class SelectionHandler
 
         var markSize = new Vector2f( shapeBounds.Width, shapeBounds.Height );
         Color markOutlineColor = selectionType == SelectionType.TrueSelection
-            ? Color.White
-            : CustomColors.LightGray;
+            ? MarkColor
+            : MarkColor.SetAlpha( 80 );
 
         return CashedShape.Create( new RectangleShape( markSize ) )
             .FluentSetPosition( shapeBounds.Left, shapeBounds.Top )

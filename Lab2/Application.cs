@@ -28,13 +28,13 @@ public class Application : BaseApplication
     {
         _toolbar = new Menu( new Vector2f( WindowSize.X, 50 ) )
         {
-            BackgroundColor = Color.Red
+            BackgroundColor = CustomColors.Purple
         };
 
         _toolbar.AddButton( new TextButton(
-            position: new Vector2f( 20, _toolbar.Size.Y / 3  ),
+            position: new Vector2f( 20, 10f  ),
             text: new Text( "Button 1", Resources.Fonts.Roboto, 20 ),
-            onClick: () => Console.WriteLine( "Button 1" ) ) );
+            onClick: button => Console.WriteLine( $"{button.GetGlobalBounds()}" ) ) );
         
         KeyPressed += OnKeyPressed;
         MouseButtonPressed += OnMouseButtonPressed;
@@ -45,7 +45,7 @@ public class Application : BaseApplication
 
     protected override void Draw()
     {
-        ClearWindow( CustomColors.Gray );
+        ClearWindow( CustomColors.PinkWhite );
         
         RenderObject( _toolbar );
 

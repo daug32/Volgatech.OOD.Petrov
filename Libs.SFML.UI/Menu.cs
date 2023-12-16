@@ -43,9 +43,9 @@ public class Menu : IMenu
         if ( args.Button != Mouse.Button.Left )
         {
             return;
-        }
+        } 
         
-        IButton? button = GetClicked( args );
+        IButton? button = GetClicked( args.X, args.Y );
         if ( button is null )
         {
             return;
@@ -63,8 +63,10 @@ public class Menu : IMenu
         }
     }
 
-    private IButton? GetClicked( MouseButtonEventArgs args ) => _buttons.LastOrDefault(
-        button => button
+    private IButton? GetClicked( float x, float y )
+    {
+        return _buttons.LastOrDefault( button => button
             .GetGlobalBounds()
-            .Contains( args.X, args.Y ) );
+            .Contains( x, y ) );
+    }
 }
