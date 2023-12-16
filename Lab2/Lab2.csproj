@@ -18,6 +18,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Libs.SFML.UI\Libs.SFML.UI.csproj" />
       <ProjectReference Include="..\Libs.SFML\Libs.SFML.csproj" />
       <ProjectReference Include="..\Libs\Libs.csproj" />
     </ItemGroup>

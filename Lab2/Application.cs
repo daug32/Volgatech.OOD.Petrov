@@ -1,10 +1,13 @@
-﻿using Lab2.Handlers;
+﻿using Lab2.Data;
+using Lab2.Handlers;
 using Lab2.Handlers.Grouping;
 using Lab2.Handlers.Selection;
+using Lab2.Public;
 using Libs.SFML.Applications;
 using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
-using Libs.SFML.Vertices;
+using Libs.SFML.UI;
+using Libs.SFML.UI.Components.Buttons;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -13,44 +16,38 @@ namespace Lab2;
 
 public class Application : BaseApplication
 {
-    private readonly HashSet<CashedShape> _shapes = new();
+    private readonly HashSet<CashedShape> _shapes = new( DataLoader.LoadData() );
+
+    private readonly Menu _toolbar;
 
     private readonly DragAndDropHandler _dragAndDropHandler = new();
     private readonly GroupingHandler _groupingHandler = new();
     private readonly SelectionHandler _selectionHandler = new();
 
-    public Application()
-        : base( new VideoMode( 800, 600 ) )
+    public Application() : base( new VideoMode( 800, 600 ) )
     {
-        _shapes.Add(
-            CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
+        _toolbar = new Menu( new Vector2f( WindowSize.X, 50 ) )
+        {
+            BackgroundColor = Color.Red
+        };
 
-        _shapes.Add(
-            CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
-
-        _shapes.Add(
-            CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
-
-        _shapes.Add(
-            CashedShape.Create( new CircleShape( 35 ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( WindowSize ) ) );
-
+        _toolbar.AddButton( new TextButton(
+            position: new Vector2f( 20, _toolbar.Size.Y / 3  ),
+            text: new Text( "Button 1", Resources.Fonts.Roboto, 20 ),
+            onClick: () => Console.WriteLine( "Button 1" ) ) );
+        
         KeyPressed += OnKeyPressed;
         MouseButtonPressed += OnMouseButtonPressed;
         MouseButtonDoublePressed += OnDoubleClick;
         MouseButtonReleased += OnMouseButtonReleased;
+        MouseButtonReleased += _toolbar.OnMouseReleased;
     }
 
     protected override void Draw()
     {
         ClearWindow( CustomColors.Gray );
+        
+        RenderObject( _toolbar );
 
         _dragAndDropHandler.Update( _selectionHandler.GetAllSelectedShapes() );
 

@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs", "Libs\Libs.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs.SFML", "Libs.SFML\Libs.SFML.csproj", "{9F34601B-FE97-4122-B758-0C11459B2A95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs.SFML.UI", "Libs.SFML.UI\Libs.SFML.UI.csproj", "{2C1FB014-4D37-4B17-8832-FA4355E969AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -56,6 +58,14 @@ Global
 		{9F34601B-FE97-4122-B758-0C11459B2A95}.Release|x64.Build.0 = Release|Any CPU
 		{9F34601B-FE97-4122-B758-0C11459B2A95}.Release|x86.ActiveCfg = Release|Any CPU
 		{9F34601B-FE97-4122-B758-0C11459B2A95}.Release|x86.Build.0 = Release|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Release|x64.Build.0 = Release|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C1FB014-4D37-4B17-8832-FA4355E969AE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
