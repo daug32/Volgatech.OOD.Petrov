@@ -14,7 +14,7 @@ namespace Lab2;
 
 public class Application : BaseApplication
 {
-    private readonly HashSet<CashedShape> _shapes = new( DataLoader.LoadData() );
+    private readonly ShapesRepository _shapesRepository = new();
 
     private readonly Menu _toolbar;
 
@@ -41,7 +41,7 @@ public class Application : BaseApplication
 
         _dragAndDropHandler.Update( _selectionHandler.GetAllSelectedShapes() );
 
-        foreach ( CashedShape shape in _shapes.ToList() )
+        foreach ( CashedShape shape in _shapesRepository.GetAll() )
         {
             RenderObject( shape );
 
@@ -85,7 +85,7 @@ public class Application : BaseApplication
     {
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
-            CashedShape? clickedShape = GetClickedShape( mouseEventArgs );
+            CashedShape? clickedShape = GetShapeByCoordinates( mouseEventArgs.X, mouseEventArgs.Y );
             var relatedShapes = GetRelatedShapes( clickedShape );
 
             _dragAndDropHandler.OnMousePressed( clickedShape );
@@ -105,19 +105,18 @@ public class Application : BaseApplication
     {
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
-            CashedShape? clickedShape = GetClickedShape( mouseEventArgs );
+            CashedShape? clickedShape = GetShapeByCoordinates( mouseEventArgs.X, mouseEventArgs.Y );
             var relatedShapes = GetRelatedShapes( clickedShape );
 
             _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );
         }
     }
 
-    private CashedShape? GetClickedShape( MouseButtonEventArgs args )
+    private CashedShape? GetShapeByCoordinates( float x, float y )
     {
-        return _shapes
-            .LastOrDefault( shape => shape
-                .GetGlobalBounds()
-                .Contains( args.X, args.Y ) );
+        return _shapesRepository.LastOrDefault( shape => shape
+            .GetGlobalBounds()
+            .Contains( x, y ) );
     }
 
     private List<CashedShape> GetRelatedShapes( CashedShape? clickedShape )
