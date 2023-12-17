@@ -13,7 +13,6 @@ public class Toolbar : Menu
     {
         BackgroundColor = CustomColors.Purple;
         var buttons = BuildButtons();
-        AlignButtonsInRow( buttons );
         AddButtons( buttons );
     }
 
@@ -27,42 +26,39 @@ public class Toolbar : Menu
             MinHeight = 25
         };
 
-        var buttons = new List<IButton>();
-
-        buttons.Add( new TextButton(
-            onClick: button => Console.WriteLine( $"Add shape, {button.GetGlobalBounds()}" ),
-            text: new Text( "Add shape", Resources.Fonts.Roboto, 14 ),
-            viewParams: buttonViewParams ) );
-
-        buttons.Add( new TextButton(
-            onClick: button => Console.WriteLine( $"Change fill color, {button.GetGlobalBounds()}" ),
-            text: new Text( "Fill color", Resources.Fonts.Roboto, 14 ),
-            viewParams: buttonViewParams ) );
-
-        buttons.Add( new TextButton(
-            onClick: button => Console.WriteLine( $"Change border color, {button.GetGlobalBounds()}" ),
-            text: new Text( "Border color", Resources.Fonts.Roboto, 14 ),
-            viewParams: buttonViewParams ) );
-
-        buttons.Add( new TextButton(
-            onClick: button => Console.WriteLine( $"Change border size, {button.GetGlobalBounds()}" ),
-            text: new Text( "Border size", Resources.Fonts.Roboto, 14 ),
-            viewParams: buttonViewParams ) );
-
-        buttons.Add( new TextButton(
-            onClick: button => Console.WriteLine( $"D&D, {button.GetGlobalBounds()}" ),
-            text: new Text( "D&D", Resources.Fonts.Roboto, 14 ),
-            viewParams: buttonViewParams ) );
-
-        buttons.Add( new TextButton(
-            onClick: button => Console.WriteLine( $"Undo, {button.GetGlobalBounds()}" ),
-            text: new Text( "Undo", Resources.Fonts.Roboto, 14 ),
-            viewParams: buttonViewParams ) );
-
-        buttons.Add( new TextButton(
-            onClick: button => Console.WriteLine( $"Redo, {button.GetGlobalBounds()}" ),
-            text: new Text( "Redo", Resources.Fonts.Roboto, 14 ),
-            viewParams: buttonViewParams ) );
+        var buttons = new List<IButton>
+        {
+            new TextButton(
+                onClick: button => Console.WriteLine( $"Add shape, {button.GetGlobalBounds()}" ),
+                text: new Text( "Add shape", Resources.Fonts.Roboto, 14 ),
+                viewParams: buttonViewParams ),
+            new TextButton(
+                onClick: button => Console.WriteLine( $"Change fill color, {button.GetGlobalBounds()}" ),
+                text: new Text( "Fill color", Resources.Fonts.Roboto, 14 ),
+                viewParams: buttonViewParams ),
+            new TextButton(
+                onClick: button => Console.WriteLine( $"Change border color, {button.GetGlobalBounds()}" ),
+                text: new Text( "Border color", Resources.Fonts.Roboto, 14 ),
+                viewParams: buttonViewParams ),
+            new TextButton(
+                onClick: button => Console.WriteLine( $"Change border size, {button.GetGlobalBounds()}" ),
+                text: new Text( "Border size", Resources.Fonts.Roboto, 14 ),
+                viewParams: buttonViewParams ),
+            new TextButton(
+                onClick: button => Console.WriteLine( $"D&D, {button.GetGlobalBounds()}" ),
+                text: new Text( "D&D", Resources.Fonts.Roboto, 14 ),
+                viewParams: buttonViewParams ),
+            new TextButton(
+                onClick: button => Console.WriteLine( $"Undo, {button.GetGlobalBounds()}" ),
+                text: new Text( "Undo", Resources.Fonts.Roboto, 14 ),
+                viewParams: buttonViewParams ),
+            new TextButton(
+                onClick: button => Console.WriteLine( $"Redo, {button.GetGlobalBounds()}" ),
+                text: new Text( "Redo", Resources.Fonts.Roboto, 14 ),
+                viewParams: buttonViewParams )
+        };
+        
+        AlignButtonsInRow( buttons );
 
         return buttons;
     }
