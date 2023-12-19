@@ -2,6 +2,7 @@
 using Libs.Models;
 using Libs.SFML.Shapes;
 using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 
 namespace Lab2.States.Handlers.Implementation;
@@ -10,36 +11,51 @@ public class AddShapeStateHandler : IStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
 
-    private static readonly ListIterator<CashedShape> _shapesIterator = new( new[]
+    private static readonly ListIterator<Func<CashedShape>> _shapesIterator = new( new Func<CashedShape>[]
     {
-        CashedShape.Create( new CircleShape() ),   
-        CashedShape.Create( new RectangleShape() ),    
-        CashedShape.Create( new TriangleShape() )  
+        () => CashedShape.Create( new CircleShape( 20 ) ),
+        () => CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) ),   
+        () => CashedShape.Create( new TriangleShape( new Vector2f( 0, 0 ), new Vector2f( 10, 0 ), new Vector2f( 0, 10 ) ) )
     } );
 
     public State State { get; } = State.AddShape;
 
-    public AddShapeStateHandler( ShapesContainer shapesContainer )
+    public AddShapeStateHandler( State previousState, ShapesContainer shapesContainer )
     {
         _shapesContainer = shapesContainer;
+
+        if ( previousState == State )
+        {
+            _shapesIterator.MoveToNext();
+        }
     }
 
     public void OnKeyPressed( object? sender, KeyEventArgs eventArgs )
     {
     }
 
-    public void OnMousePressed( object? sender, MouseButtonEventArgs buttonEventArgs )
+    public void OnMouseButtonPressed( object? sender, MouseButtonEventArgs buttonEventArgs )
     {
     }
 
-    public void OnMouseReleased( object? sender, MouseButtonEventArgs buttonEventArgs )
+    public void OnMouseButtonReleased( object? sender, MouseButtonEventArgs buttonEventArgs )
     {
+        Console.WriteLine( "Creating shape" );
         if ( buttonEventArgs.Button != Mouse.Button.Left )
         {
             return;
         }
 
-        _shapesContainer.Add( _shapesIterator.GetCurrentValue() );
+        CashedShape shape = _shapesIterator.GetCurrentValue()();
+        shape.FillColor = Color.Black;
+        shape.OutlineThickness = 0;
+        
+        FloatRect globalBounds = shape.GetGlobalBounds();
+        shape.Position = new Vector2f(
+            buttonEventArgs.X - globalBounds.Width / 2, 
+            buttonEventArgs.Y - globalBounds.Height / 2 );
+
+        _shapesContainer.Add( shape );
     }
 
     public void OnDoubleClick( object? sender, MouseButtonEventArgs buttonEventArgs )

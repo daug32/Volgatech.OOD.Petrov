@@ -46,20 +46,21 @@ public class Menu : IMenu
         _buttons.Add( button );
     }
 
-    public void OnMouseReleased( object? sender, MouseButtonEventArgs args )
+    public bool OnMouseReleased( object? sender, MouseButtonEventArgs args )
     {
         if ( args.Button != Mouse.Button.Left )
         {
-            return;
+            return false;
         } 
         
         IButton? button = GetClicked( args.X, args.Y );
         if ( button is null )
         {
-            return;
+            return false;
         }
         
         button.Execute();
+        return true;
     }
 
     public void Draw( RenderTarget target, RenderStates states )

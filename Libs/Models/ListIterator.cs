@@ -7,6 +7,11 @@ public class ListIterator<T>
 
     public ListIterator( T[] values )
     {
+        if ( values.Length < 1 )
+        {
+            throw new ArgumentException();
+        }
+
         _values = values.ToList();
     }
 

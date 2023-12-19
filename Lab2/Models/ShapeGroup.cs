@@ -85,7 +85,7 @@ public class ShapeGroup
 
     public List<CashedShape> GetAllRelatedShapes()
     {
-        var result = new HashSet<CashedShape>();
+        var result = new HashSet<CashedShape>( Count );
         var groupsToVisit = new List<ShapeGroup>
         {
             this

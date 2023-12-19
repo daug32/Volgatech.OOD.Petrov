@@ -15,22 +15,32 @@ namespace Lab2;
 
 public class Application : BaseApplication
 {
-    private readonly Toolbar _toolbar;
+    // Data holder
     private readonly ShapesContainer _shapesContainer;
+
+    // UI components
+    private readonly Toolbar _toolbar;
+    private readonly ShapeMarksBuilder _shapeMarksBuilder;
+
+    // States
     private IStateHandler _stateHandler;
     private readonly StateHandlerFactory _stateHandlerFactory;
 
+    // Handlers
     private readonly DragAndDropHandler _dragAndDropHandler = new();
     private readonly SelectionHandler _selectionHandler = new();
 
     public Application() : base( new VideoMode( 800, 600 ) )
     {
         _shapesContainer = new ShapesContainer();
+
         _stateHandlerFactory = new StateHandlerFactory( _shapesContainer );
+        _stateHandler = _stateHandlerFactory.Build();
         
         _toolbar = new Toolbar( ( Vector2f )WindowSize );
         _toolbar.StateSwitched += SwitchState;
-        MouseButtonReleased += _toolbar.OnMouseReleased;
+
+        _shapeMarksBuilder = new ShapeMarksBuilder();
         
         KeyPressed += OnKeyPressed;
         MouseButtonPressed += OnMouseButtonPressed;
@@ -50,7 +60,7 @@ public class Application : BaseApplication
         {
             RenderObject( shape );
 
-            ShapeMarksBuilder
+            _shapeMarksBuilder
                 .Build(
                     _selectionHandler.GetSelectionType( shape ),
                     _shapesContainer.HasGroup( shape ),
@@ -61,6 +71,12 @@ public class Application : BaseApplication
 
     private void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs )
     {
+        if ( _stateHandler.State != State.Default )
+        {
+            _stateHandler.OnKeyPressed( sender, keyEventArgs );
+            return;
+        }
+
         switch ( keyEventArgs.Code )
         {
             case Keyboard.Key.G when Keyboard.IsKeyPressed( Keyboard.Key.LControl ):
@@ -81,10 +97,16 @@ public class Application : BaseApplication
 
     private void OnMouseButtonPressed( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
+        if ( _stateHandler.State != State.Default )
+        {
+            _stateHandler.OnMouseButtonPressed( sender, mouseEventArgs );
+            return;
+        }
+        
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
             CashedShape? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
-            var relatedShapes = GetRelatedShapes( clickedShape );
+            var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
 
             _dragAndDropHandler.OnMousePressed( clickedShape );
             _selectionHandler.OnMousePressed( clickedShape, relatedShapes );
@@ -93,6 +115,17 @@ public class Application : BaseApplication
 
     private void OnMouseButtonReleased( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
+        if ( _toolbar.OnMouseReleased( sender, mouseEventArgs ) )
+        {
+            return;
+        }
+        
+        if ( _stateHandler.State != State.Default )
+        {
+            _stateHandler.OnMouseButtonReleased( sender, mouseEventArgs );
+            return;
+        }
+        
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
             _dragAndDropHandler.OnMouseReleased();
@@ -101,24 +134,25 @@ public class Application : BaseApplication
 
     private void OnDoubleClick( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
+        if ( _stateHandler.State != State.Default )
+        {
+            _stateHandler.OnDoubleClick( sender, mouseEventArgs );
+            return;
+        }
+
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
             CashedShape? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
-            var relatedShapes = GetRelatedShapes( clickedShape );
+            var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
 
             _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );
         }
     }
 
-    private List<CashedShape> GetRelatedShapes( CashedShape? clickedShape )
-    {
-        return clickedShape != null
-            ? _shapesContainer.GetRelatedShapes( clickedShape )
-            : new List<CashedShape>();
-    }
-
     private void SwitchState( object? sender, State state )
     {
-        _stateHandler = _stateHandlerFactory.Build( state );
+        _stateHandler = _stateHandlerFactory.Build(
+            currentState: _stateHandler.State,
+            newState: state );
     }
 }

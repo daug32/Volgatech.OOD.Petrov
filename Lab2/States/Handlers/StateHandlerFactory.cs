@@ -12,10 +12,15 @@ public class StateHandlerFactory
         _shapesContainer = shapesContainer;
     }
 
-    public IStateHandler Build( State state ) => state switch
+    public IStateHandler Build( 
+        State currentState = State.Default,
+        State newState = State.Default )
     {
-        State.Default => new DefaultStateHandler(),
-        State.AddShape => new AddShapeStateHandler( _shapesContainer ),
-        _ => throw new ArgumentOutOfRangeException( nameof( state ), state, null )
-    };
+        return newState switch
+        {
+            State.Default => new DefaultStateHandler(),
+            State.AddShape => new AddShapeStateHandler( currentState, _shapesContainer ),
+            _ => throw new ArgumentOutOfRangeException( nameof( newState ), newState, null )
+        };
+    }
 }

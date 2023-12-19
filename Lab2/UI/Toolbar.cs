@@ -32,7 +32,7 @@ public class Toolbar : Menu
         var buttons = new List<IButton>
         {
             new TextButton(
-                onClick: _ => StateSwitched?.Invoke( this, State.AddShape ),
+                onClick: _ => SwitchState( State.AddShape ),
                 text: new Text( "Add shape", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
@@ -48,7 +48,7 @@ public class Toolbar : Menu
                 text: new Text( "Border size", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
-                onClick: _ => StateSwitched?.Invoke( this, State.Default ),
+                onClick: _ => SwitchState( State.Default ),
                 text: new Text( "D&D", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
@@ -64,6 +64,11 @@ public class Toolbar : Menu
         AlignButtonsInRow( buttons );
 
         return buttons;
+    }
+
+    private void SwitchState( State state )
+    {
+        StateSwitched?.Invoke( this, state );
     }
 
     private static void AlignButtonsInRow( List<IButton> buttons )

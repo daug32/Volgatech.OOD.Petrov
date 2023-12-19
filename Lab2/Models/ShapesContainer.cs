@@ -91,8 +91,13 @@ public class ShapesContainer
         }
     }
     
-    public List<CashedShape> GetRelatedShapes( CashedShape shape )
+    public List<CashedShape> GetRelatedShapes( CashedShape? shape )
     {
+        if ( shape is null )
+        {
+            return new List<CashedShape>();
+        }
+        
         ShapeGroup? shapeGroup = _mainGroup.FindFirstGroupOrDefault( x => x.Contains( shape ) );
         if ( shapeGroup is null )
         {

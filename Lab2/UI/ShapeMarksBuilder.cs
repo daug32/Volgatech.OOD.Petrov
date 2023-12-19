@@ -8,11 +8,11 @@ using SFML.System;
 
 namespace Lab2.UI;
 
-public static class ShapeMarksBuilder
+public class ShapeMarksBuilder
 {
     private static readonly Color _selectionMark = CustomColors.Gray; 
     
-    public static List<Drawable> Build( 
+    public List<Drawable> Build( 
         SelectionType selectionType,
         bool isGrouped,
         FloatRect shapeBounds )

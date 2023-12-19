@@ -13,5 +13,7 @@ public interface IMenu : Drawable
 
     void AddButton( IButton button );
     void AddButtons( IEnumerable<IButton> buttons );
-    void OnMouseReleased( object? sender, MouseButtonEventArgs args );
+
+    /// <returns>True if anything was processed</returns>
+    bool OnMouseReleased( object? sender, MouseButtonEventArgs args );
 }

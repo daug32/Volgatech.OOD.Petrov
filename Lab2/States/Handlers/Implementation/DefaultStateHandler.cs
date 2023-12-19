@@ -10,11 +10,11 @@ public class DefaultStateHandler : IStateHandler
     {
     }
 
-    public void OnMousePressed( object? sender, MouseButtonEventArgs buttonEventArgs )
+    public void OnMouseButtonPressed( object? sender, MouseButtonEventArgs buttonEventArgs )
     {
     }
 
-    public void OnMouseReleased( object? sender, MouseButtonEventArgs buttonEventArgs )
+    public void OnMouseButtonReleased( object? sender, MouseButtonEventArgs buttonEventArgs )
     {
     }
 
