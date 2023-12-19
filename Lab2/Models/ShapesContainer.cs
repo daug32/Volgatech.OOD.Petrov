@@ -22,6 +22,11 @@ public class ShapesContainer
     {
         return _mainGroup.FindFirstGroupOrDefault( x => x.Contains( shape ) ) != null;
     }
+
+    public void Add( CashedShape shape )
+    {
+        _mainGroup.AddToGroup( shape );
+    }
     
     public void Group( IEnumerable<CashedShape> shapes )
     {

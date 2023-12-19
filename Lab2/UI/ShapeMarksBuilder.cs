@@ -2,6 +2,7 @@
 using Lab2.Public;
 using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
+using Libs.SFML.Shapes.Extensions;
 using SFML.Graphics;
 using SFML.System;
 

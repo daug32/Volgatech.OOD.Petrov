@@ -1,4 +1,5 @@
 ﻿using Libs.SFML.Shapes;
+using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.Vertices;
 using SFML.Graphics;
 using SFML.System;

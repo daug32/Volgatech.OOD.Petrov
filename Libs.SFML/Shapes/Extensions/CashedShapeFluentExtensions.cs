@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace Libs.SFML.Shapes;
+namespace Libs.SFML.Shapes.Extensions;
 
 public static class CashedShapeFluentExtensions
 {

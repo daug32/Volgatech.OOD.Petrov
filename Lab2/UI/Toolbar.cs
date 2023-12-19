@@ -1,6 +1,6 @@
 ﻿using Lab2.Public;
+using Lab2.States;
 using Libs.SFML.Colors;
-using Libs.SFML.UI;
 using Libs.SFML.UI.Components.Buttons;
 using Libs.SFML.UI.Components.Menus;
 using SFML.Graphics;
@@ -10,6 +10,8 @@ namespace Lab2.UI;
 
 public class Toolbar : Menu
 {
+    public event EventHandler<State>? StateSwitched;
+    
     public Toolbar( Vector2f windowSize ) : base( new Vector2f( windowSize.X, 50 ) )
     {
         BackgroundColor = CustomColors.Purple;
@@ -17,7 +19,7 @@ public class Toolbar : Menu
         AddButtons( buttons );
     }
 
-    private static List<IButton> BuildButtons()
+    private List<IButton> BuildButtons()
     {
         var buttonViewParams = new TextButtonViewParams
         {
@@ -30,7 +32,7 @@ public class Toolbar : Menu
         var buttons = new List<IButton>
         {
             new TextButton(
-                onClick: button => Console.WriteLine( $"Add shape, {button.GetGlobalBounds()}" ),
+                onClick: _ => StateSwitched?.Invoke( this, State.AddShape ),
                 text: new Text( "Add shape", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
@@ -46,7 +48,7 @@ public class Toolbar : Menu
                 text: new Text( "Border size", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
-                onClick: button => Console.WriteLine( $"D&D, {button.GetGlobalBounds()}" ),
+                onClick: _ => StateSwitched?.Invoke( this, State.Default ),
                 text: new Text( "D&D", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
