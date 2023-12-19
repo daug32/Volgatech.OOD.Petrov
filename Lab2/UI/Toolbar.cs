@@ -2,6 +2,7 @@
 using Libs.SFML.Colors;
 using Libs.SFML.UI;
 using Libs.SFML.UI.Components.Buttons;
+using Libs.SFML.UI.Components.Menus;
 using SFML.Graphics;
 using SFML.System;
 

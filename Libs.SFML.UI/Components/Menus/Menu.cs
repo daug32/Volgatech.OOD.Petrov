@@ -3,7 +3,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace Libs.SFML.UI;
+namespace Libs.SFML.UI.Components.Menus;
 
 public class Menu : IMenu
 {

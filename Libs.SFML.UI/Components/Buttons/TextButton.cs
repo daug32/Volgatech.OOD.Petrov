@@ -97,7 +97,7 @@ public class TextButton : IButton
         }
 
         float width = value.X + Padding.X * 2;
-            
+
         _button.Size = new Vector2f( width, height );
     }
 

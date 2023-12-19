@@ -1,31 +1,31 @@
-﻿using Libs.SFML.Colors;
-using Libs.SFML.Shapes;
-using SFML.Graphics;
-using SFML.System;
+﻿using Libs.SFML.Shapes;
 using SFML.Window;
 
 namespace Lab2.Handlers.Selection;
 
 public class SelectionHandler
 {
-    public static readonly Color MarkColor = CustomColors.Gray;
-
-    private readonly SelectedShapesContainer _selectionHandler = new();
+    private readonly SelectedShapesContainer _selectionContainer = new();
 
     public IEnumerable<CashedShape> GetAllSelectedShapes()
     {
-        return _selectionHandler.GetAllSelectedShapes();
+        return _selectionContainer.GetAllSelectedShapes();
     }
 
     public IEnumerable<CashedShape> GetSelectedShapes( SelectionType selectionType )
     {
-        return _selectionHandler.GetSelectedShapes( selectionType );
+        return _selectionContainer.GetSelectedShapes( selectionType );
+    }
+
+    public SelectionType GetSelectionType( CashedShape shape )
+    {
+        return _selectionContainer.GetSelectionType( shape );
     }
 
     public void OnUngroup( IEnumerable<CashedShape> shapes )
     {
-        _selectionHandler.UnselectAll();
-        _selectionHandler.Select( shapes, SelectionType.TrueSelection );
+        _selectionContainer.UnselectAll();
+        _selectionContainer.Select( shapes, SelectionType.TrueSelection );
     }
 
     public void OnDoubleClick( CashedShape? clickedShape, IEnumerable<CashedShape> relatedShapes )
@@ -36,16 +36,17 @@ public class SelectionHandler
         }
 
         bool isAnyRelatedShapeNotSelected = relatedShapes
-            .Any( x => _selectionHandler.GetSelectionType( x ) == SelectionType.NotSelected );
+            .Any( x => _selectionContainer.GetSelectionType( x ) == SelectionType.NotSelected );
+
         if ( isAnyRelatedShapeNotSelected )
         {
-            _selectionHandler.Select( relatedShapes, SelectionType.GroupSelection );
-            _selectionHandler.Select( clickedShape, SelectionType.TrueSelection );
+            _selectionContainer.Select( relatedShapes, SelectionType.GroupSelection );
+            _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
             return;
         }
 
-        _selectionHandler.UnselectAll();
-        _selectionHandler.Select( clickedShape, SelectionType.TrueSelection );
+        _selectionContainer.UnselectAll();
+        _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
     }
 
     public void OnMousePressed(
@@ -56,13 +57,13 @@ public class SelectionHandler
         {
             if ( !CanSetMultipleSelections() )
             {
-                _selectionHandler.UnselectAll();
+                _selectionContainer.UnselectAll();
             }
 
             return;
         }
 
-        SelectionType selectionType = _selectionHandler.GetSelectionType( clickedShape );
+        SelectionType selectionType = _selectionContainer.GetSelectionType( clickedShape );
         if ( selectionType == SelectionType.NotSelected )
         {
             SelectNewShape( clickedShape, relatedShapes );
@@ -72,41 +73,19 @@ public class SelectionHandler
         ReselectShape( clickedShape, relatedShapes, selectionType );
     }
 
-    public Drawable? BuildSelectionMarkIfSelected( CashedShape cashedShape )
-    {
-        SelectionType selectionType = _selectionHandler.GetSelectionType( cashedShape );
-        if ( selectionType == SelectionType.NotSelected )
-        {
-            return null;
-        }
-
-        FloatRect shapeBounds = cashedShape.GetGlobalBounds();
-
-        var markSize = new Vector2f( shapeBounds.Width, shapeBounds.Height );
-        Color markOutlineColor = selectionType == SelectionType.TrueSelection
-            ? MarkColor
-            : MarkColor.SetAlpha( 80 );
-
-        return CashedShape.Create( new RectangleShape( markSize ) )
-            .FluentSetPosition( shapeBounds.Left, shapeBounds.Top )
-            .FluentSetOutlineColor( markOutlineColor )
-            .FluentSetFillColor( Color.Transparent )
-            .FluentSetOutlineThickness( 1 );
-    }
-
     private void ReselectShape( CashedShape clickedShape, IEnumerable<CashedShape> relatedShapes, SelectionType selectionType )
     {
         if ( selectionType == SelectionType.GroupSelection )
         {
             if ( CanSetMultipleSelections() )
             {
-                _selectionHandler.Select( clickedShape, SelectionType.TrueSelection );
+                _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
                 return;
             }
 
-            _selectionHandler.UnselectAll();
-            _selectionHandler.Select( clickedShape, SelectionType.TrueSelection );
-            _selectionHandler.Select( relatedShapes, SelectionType.GroupSelection );
+            _selectionContainer.UnselectAll();
+            _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
+            _selectionContainer.Select( relatedShapes, SelectionType.GroupSelection );
             return;
         }
 
@@ -117,10 +96,10 @@ public class SelectionHandler
                 return;
             }
 
-            _selectionHandler.Unselect( clickedShape );
-            if ( !_selectionHandler.AnyWithSelectionType( SelectionType.TrueSelection ) )
+            _selectionContainer.Unselect( clickedShape );
+            if ( !_selectionContainer.AnyWithSelectionType( SelectionType.TrueSelection ) )
             {
-                _selectionHandler.UnselectAll();
+                _selectionContainer.UnselectAll();
             }
 
             return;
@@ -133,11 +112,11 @@ public class SelectionHandler
     {
         if ( !CanSetMultipleSelections() )
         {
-            _selectionHandler.UnselectAll();
+            _selectionContainer.UnselectAll();
         }
 
-        _selectionHandler.Select( clickedShape, SelectionType.TrueSelection );
-        _selectionHandler.Select( relatedShapes, SelectionType.GroupSelection );
+        _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
+        _selectionContainer.Select( relatedShapes, SelectionType.GroupSelection );
     }
 
     private static bool CanSetMultipleSelections()
