@@ -7,6 +7,7 @@ namespace Libs.SFML.UI.Components.Menus;
 
 public class Menu : IMenu
 {
+    private readonly Dictionary<string, Drawable> _replacableItems = new();
     private readonly HashSet<IButton> _buttons = new();
     private readonly RectangleShape _background;
 
@@ -46,6 +47,16 @@ public class Menu : IMenu
         _buttons.Add( button );
     }
 
+    public void AddItem( string key, Drawable drawable )
+    {
+        _replacableItems.Add( key, drawable );
+    }
+
+    public void ReplaceItem( string key, Drawable drawable )
+    {
+        _replacableItems[key] = drawable;
+    }
+
     public bool OnMouseReleased( object? sender, MouseButtonEventArgs args )
     {
         if ( args.Button != Mouse.Button.Left )
@@ -68,6 +79,12 @@ public class Menu : IMenu
         foreach ( IButton button in _buttons )
         {
             button.Draw( target, states );
+        }
+
+        foreach ( KeyValuePair<string, Drawable> itemWithKey in _replacableItems )
+        {
+            Drawable item = itemWithKey.Value;
+            item.Draw( target, states );
         }
     }
 

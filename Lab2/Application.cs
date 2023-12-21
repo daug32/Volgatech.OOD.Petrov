@@ -21,10 +21,10 @@ public class Application : BaseApplication
     // UI components
     private readonly Toolbar _toolbar;
     private readonly ShapeMarksBuilder _shapeMarksBuilder;
-
+    
     // States
+    private readonly StateHandlerFactory _stateStateHandlerFactory;
     private IStateHandler _stateHandler;
-    private readonly StateHandlerFactory _stateHandlerFactory;
 
     // Handlers
     private readonly DragAndDropHandler _dragAndDropHandler = new();
@@ -33,13 +33,16 @@ public class Application : BaseApplication
     public Application() : base( new VideoMode( 800, 600 ) )
     {
         _shapesContainer = new ShapesContainer();
-
-        _stateHandlerFactory = new StateHandlerFactory( _shapesContainer );
-        _stateHandler = _stateHandlerFactory.Build();
         
+        // States
+        _stateStateHandlerFactory = new StateHandlerFactory( _shapesContainer );
+        _stateHandler = _stateStateHandlerFactory.Build(
+            currentState: State.Default,
+            newState: State.Default );
+        
+        // UI
         _toolbar = new Toolbar( ( Vector2f )WindowSize );
         _toolbar.StateSwitched += SwitchState;
-
         _shapeMarksBuilder = new ShapeMarksBuilder();
         
         KeyPressed += OnKeyPressed;
@@ -112,6 +115,13 @@ public class Application : BaseApplication
             _selectionHandler.OnMousePressed( clickedShape, relatedShapes );
         }
     }
+    
+    private void SwitchState( object? sender, State state )
+    {
+        _stateHandler = _stateStateHandlerFactory.Build(
+            currentState: _stateHandler.State,
+            newState: state );
+    }
 
     private void OnMouseButtonReleased( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
@@ -147,12 +157,5 @@ public class Application : BaseApplication
 
             _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );
         }
-    }
-
-    private void SwitchState( object? sender, State state )
-    {
-        _stateHandler = _stateHandlerFactory.Build(
-            currentState: _stateHandler.State,
-            newState: state );
     }
 }

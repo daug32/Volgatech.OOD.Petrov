@@ -32,7 +32,7 @@ public class AddShapeStateHandler : IIterableStateHandler
 
     public void MoveToNextValue() => _shapesIterator.MoveToNextValue();
 
-    public Drawable GetStateDescription()  => _shapesIterator.GetCurrentValue()();
+    public Drawable GetStateDescription() => _shapesIterator.GetCurrentValue()();
 
     public void OnKeyPressed( object? sender, KeyEventArgs eventArgs )
     {
@@ -44,7 +44,6 @@ public class AddShapeStateHandler : IIterableStateHandler
 
     public void OnMouseButtonReleased( object? sender, MouseButtonEventArgs buttonEventArgs )
     {
-        Console.WriteLine( "Creating shape" );
         if ( buttonEventArgs.Button != Mouse.Button.Left )
         {
             return;

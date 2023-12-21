@@ -10,13 +10,20 @@ namespace Lab2.UI;
 
 public class Toolbar : Menu
 {
+    // UI elements
+    private readonly string _handlerDescriptionKey = "HandlerDescription";
     public event EventHandler<State>? StateSwitched;
-    
+
     public Toolbar( Vector2f windowSize ) : base( new Vector2f( windowSize.X, 50 ) )
     {
         BackgroundColor = CustomColors.Purple;
-        var buttons = BuildButtons();
-        AddButtons( buttons );
+        AddButtons( BuildButtons() );
+        AddStateDescription();
+    }
+
+    private void AddStateDescription()
+    {
+        AddItem( _handlerDescriptionKey, new RectangleShape() );
     }
 
     private List<IButton> BuildButtons()
