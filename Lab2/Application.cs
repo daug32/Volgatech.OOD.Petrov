@@ -51,8 +51,6 @@ public class Application : BaseApplication
     protected override void Draw()
     {
         ClearWindow( Color.White );
-        
-        RenderObject( _toolbar );
 
         _dragAndDropHandler.Update( _selectionHandler.GetAllSelectedShapes() );
 
@@ -67,6 +65,8 @@ public class Application : BaseApplication
                     shape.GetGlobalBounds() )
                 .ForEach( RenderObject );
         }
+        
+        RenderObject( _toolbar );
     }
 
     private void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs )

@@ -51,15 +51,14 @@ public class Menu : IMenu
         if ( args.Button != Mouse.Button.Left )
         {
             return false;
-        } 
-        
-        IButton? button = GetClicked( args.X, args.Y );
-        if ( button is null )
+        }
+
+        if ( !_background.GetGlobalBounds().Contains( args.X, args.Y ) )
         {
             return false;
         }
-        
-        button.Execute();
+
+        GetClicked( args.X, args.Y )?.Execute();
         return true;
     }
 

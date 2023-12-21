@@ -2,7 +2,7 @@
 
 namespace Lab2.States.Handlers;
 
-public interface IIterableStateHandler
+public interface IIterableStateHandler : IStateHandler
 {
     void MoveToNextValue();
     Drawable GetStateDescription();

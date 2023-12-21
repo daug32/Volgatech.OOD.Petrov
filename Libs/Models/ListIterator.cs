@@ -16,5 +16,5 @@ public class ListIterator<T>
     }
 
     public T GetCurrentValue() => _values[_currentValueIndex];
-    public void MoveToNext() => _currentValueIndex = ( _currentValueIndex + 1 ) % _values.Count;
+    public void MoveToNextValue() => _currentValueIndex = ( _currentValueIndex + 1 ) % _values.Count;
 }

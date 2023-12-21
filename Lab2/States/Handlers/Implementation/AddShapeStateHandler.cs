@@ -7,7 +7,7 @@ using SFML.Window;
 
 namespace Lab2.States.Handlers.Implementation;
 
-public class AddShapeStateHandler : IStateHandler
+public class AddShapeStateHandler : IIterableStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
 
@@ -26,9 +26,13 @@ public class AddShapeStateHandler : IStateHandler
 
         if ( previousState == State )
         {
-            _shapesIterator.MoveToNext();
+            _shapesIterator.MoveToNextValue();
         }
     }
+
+    public void MoveToNextValue() => _shapesIterator.MoveToNextValue();
+
+    public Drawable GetStateDescription()  => _shapesIterator.GetCurrentValue()();
 
     public void OnKeyPressed( object? sender, KeyEventArgs eventArgs )
     {
