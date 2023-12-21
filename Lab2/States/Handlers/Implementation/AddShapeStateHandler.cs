@@ -20,11 +20,11 @@ public class AddShapeStateHandler : IIterableStateHandler
 
     public State State { get; } = State.AddShape;
 
-    public AddShapeStateHandler( State previousState, ShapesContainer shapesContainer )
+    public AddShapeStateHandler( IStateContext context, ShapesContainer shapesContainer )
     {
         _shapesContainer = shapesContainer;
 
-        if ( previousState == State )
+        if ( context.CurrentState == State )
         {
             _shapesIterator.MoveToNextValue();
         }

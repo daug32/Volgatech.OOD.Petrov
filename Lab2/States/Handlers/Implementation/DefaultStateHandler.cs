@@ -4,6 +4,13 @@ namespace Lab2.States.Handlers.Implementation;
 
 public class DefaultStateHandler : IStateHandler
 {
+    private readonly IStateContext _context;
+
+    public DefaultStateHandler( IStateContext context )
+    {
+        _context = context;
+    }
+
     public State State { get; } = State.Default;
 
     public void OnKeyPressed( object? sender, KeyEventArgs eventArgs )

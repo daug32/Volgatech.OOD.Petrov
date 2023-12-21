@@ -13,7 +13,7 @@ using SFML.Window;
 
 namespace Lab2;
 
-public class Application : BaseApplication
+public class Application : BaseApplication, IStateContext
 {
     // Data holder
     private readonly ShapesContainer _shapesContainer;
@@ -23,6 +23,7 @@ public class Application : BaseApplication
     private readonly ShapeMarksBuilder _shapeMarksBuilder;
     
     // States
+    public State CurrentState { get; private set; } = State.Default;
     private readonly StateHandlerFactory _stateStateHandlerFactory;
     private IStateHandler _stateHandler;
 
@@ -36,13 +37,11 @@ public class Application : BaseApplication
         
         // States
         _stateStateHandlerFactory = new StateHandlerFactory( _shapesContainer );
-        _stateHandler = _stateStateHandlerFactory.Build(
-            currentState: State.Default,
-            newState: State.Default );
+        _stateHandler = _stateStateHandlerFactory.Build( this, State.Default );
         
         // UI
         _toolbar = new Toolbar( ( Vector2f )WindowSize );
-        _toolbar.StateSwitched += SwitchState;
+        _toolbar.StateSwitched += ( _, state ) =>  SwitchState( state );
         _shapeMarksBuilder = new ShapeMarksBuilder();
         
         KeyPressed += OnKeyPressed;
@@ -74,7 +73,7 @@ public class Application : BaseApplication
 
     private void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs )
     {
-        if ( _stateHandler.State != State.Default )
+        if ( CurrentState != State.Default )
         {
             _stateHandler.OnKeyPressed( sender, keyEventArgs );
             return;
@@ -100,7 +99,7 @@ public class Application : BaseApplication
 
     private void OnMouseButtonPressed( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        if ( _stateHandler.State != State.Default )
+        if ( CurrentState != State.Default )
         {
             _stateHandler.OnMouseButtonPressed( sender, mouseEventArgs );
             return;
@@ -115,13 +114,6 @@ public class Application : BaseApplication
             _selectionHandler.OnMousePressed( clickedShape, relatedShapes );
         }
     }
-    
-    private void SwitchState( object? sender, State state )
-    {
-        _stateHandler = _stateStateHandlerFactory.Build(
-            currentState: _stateHandler.State,
-            newState: state );
-    }
 
     private void OnMouseButtonReleased( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
@@ -130,7 +122,7 @@ public class Application : BaseApplication
             return;
         }
         
-        if ( _stateHandler.State != State.Default )
+        if ( CurrentState != State.Default )
         {
             _stateHandler.OnMouseButtonReleased( sender, mouseEventArgs );
             return;
@@ -144,7 +136,7 @@ public class Application : BaseApplication
 
     private void OnDoubleClick( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        if ( _stateHandler.State != State.Default )
+        if ( CurrentState != State.Default )
         {
             _stateHandler.OnDoubleClick( sender, mouseEventArgs );
             return;
@@ -157,5 +149,11 @@ public class Application : BaseApplication
 
             _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );
         }
+    }
+    
+    private void SwitchState( State state )
+    {
+        _stateHandler = _stateStateHandlerFactory.Build( this, state );
+        CurrentState = state;
     }
 }
