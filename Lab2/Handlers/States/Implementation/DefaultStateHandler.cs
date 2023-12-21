@@ -1,17 +1,20 @@
-﻿using SFML.Window;
+﻿using SFML.Graphics;
+using SFML.Window;
 
-namespace Lab2.States.Handlers.Implementation;
+namespace Lab2.Handlers.States.Implementation;
 
 public class DefaultStateHandler : IStateHandler
 {
-    private readonly IStateContext _context;
+    public State State { get; } = State.Default;
 
-    public DefaultStateHandler( IStateContext context )
+    public void MoveToNextValue()
     {
-        _context = context;
     }
 
-    public State State { get; } = State.Default;
+    public Drawable? GetStateDescription()
+    {
+        return null;
+    }
 
     public void OnKeyPressed( object? sender, KeyEventArgs eventArgs )
     {

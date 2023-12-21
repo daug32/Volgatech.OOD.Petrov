@@ -1,5 +1,5 @@
-﻿using Lab2.Public;
-using Lab2.States;
+﻿using Lab2.Handlers.States;
+using Lab2.Public;
 using Libs.SFML.Colors;
 using Libs.SFML.UI.Components.Buttons;
 using Libs.SFML.UI.Components.Menus;

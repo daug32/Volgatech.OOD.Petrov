@@ -1,9 +1,8 @@
 ﻿using Lab2.Handlers;
 using Lab2.Handlers.Selection;
+using Lab2.Handlers.States;
 using Lab2.Models;
 using Lab2.Models.Extensions;
-using Lab2.States;
-using Lab2.States.Handlers;
 using Lab2.UI;
 using Libs.SFML.Applications;
 using Libs.SFML.Shapes;

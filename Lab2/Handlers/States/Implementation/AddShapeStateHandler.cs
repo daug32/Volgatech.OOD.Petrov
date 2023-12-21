@@ -5,9 +5,9 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace Lab2.States.Handlers.Implementation;
+namespace Lab2.Handlers.States.Implementation;
 
-public class AddShapeStateHandler : IIterableStateHandler
+public class AddShapeStateHandler : IStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
 

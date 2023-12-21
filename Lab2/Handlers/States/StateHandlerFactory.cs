@@ -1,7 +1,7 @@
-﻿using Lab2.Models;
-using Lab2.States.Handlers.Implementation;
+﻿using Lab2.Handlers.States.Implementation;
+using Lab2.Models;
 
-namespace Lab2.States.Handlers;
+namespace Lab2.Handlers.States;
 
 public class StateHandlerFactory
 {
@@ -16,7 +16,7 @@ public class StateHandlerFactory
     {
         return newState switch
         {
-            State.Default => new DefaultStateHandler( context ),
+            State.Default => new DefaultStateHandler(),
             State.AddShape => new AddShapeStateHandler( context, _shapesContainer ),
             _ => throw new ArgumentOutOfRangeException( nameof( newState ), newState, null )
         };
