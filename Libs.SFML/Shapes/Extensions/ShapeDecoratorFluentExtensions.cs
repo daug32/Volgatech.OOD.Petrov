@@ -47,5 +47,23 @@ public static class ShapeDecoratorFluentExtensions
             position.Y - bounds.Height / 2 );
 
         return shape;
+    }   
+    
+    public static T SetMaxSize<T>( this T shape, Vector2f maxSize ) where T : ShapeDecorator
+    {
+        FloatRect bounds = shape.GetGlobalBounds();
+
+        float widthMultiplier = bounds.Width > maxSize.X
+            ? maxSize.X / bounds.Width
+            : shape.Scale.X;
+
+        float heightMultiplier = bounds.Height > maxSize.Y
+            ? maxSize.Y / bounds.Height
+            : shape.Scale.Y;
+
+        float resultMultiplier = MathF.Min( widthMultiplier, heightMultiplier );
+        shape.Scale = new Vector2f( resultMultiplier, resultMultiplier );
+
+        return shape;
     }
 }
