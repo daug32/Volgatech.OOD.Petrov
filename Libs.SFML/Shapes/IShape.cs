@@ -17,4 +17,6 @@ public interface IShape : Drawable
     
     FloatRect GetLocalBounds();
     FloatRect GetGlobalBounds();
+
+    void AcceptVisitor( IShapeVisitor visitor );
 }

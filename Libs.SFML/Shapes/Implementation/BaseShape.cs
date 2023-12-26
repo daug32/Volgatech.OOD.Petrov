@@ -100,12 +100,12 @@ public abstract class BaseShape : IShape
         return _oldGlobalBounds;
     }
 
+    public abstract void AcceptVisitor( IShapeVisitor visitor );
+
     public virtual void Draw( RenderTarget target, RenderStates states )
     {
         Shape.Draw( target, states );
     }
-
-    public abstract T AcceptVisitor<T>( IShapeVisitor<T> visitor );
 
     protected virtual void RecalculateIfNeed()
     {

@@ -1,12 +1,11 @@
 ﻿using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.Shapes.Implementation;
-using SFML.Graphics;
 using SFML.System;
 
-namespace Lab2.Handlers.States.Commands.Implementation;
+namespace Lab2.Handlers.States.Implementation.Additions.Commands.Implementation;
 
-public class CreateRectangleShapeCommand : ICreateShapeCommand
+internal class CreateRectangleShapeCommand : ICreateShapeCommand
 {
     public Vector2f Size;
     public Vector2f Position;

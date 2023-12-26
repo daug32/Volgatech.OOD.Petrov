@@ -3,9 +3,9 @@ using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.Shapes.Implementation;
 using SFML.System;
 
-namespace Lab2.Handlers.States.Commands.Implementation;
+namespace Lab2.Handlers.States.Implementation.Additions.Commands.Implementation;
 
-public class CreateTriangleShapeCommand : ICreateShapeCommand
+internal class CreateTriangleShapeCommand : ICreateShapeCommand
 { 
     public Vector2f P0;
     public Vector2f P1;

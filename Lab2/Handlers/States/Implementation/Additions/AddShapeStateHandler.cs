@@ -1,5 +1,5 @@
-﻿using Lab2.Handlers.States.Commands;
-using Lab2.Handlers.States.Commands.Implementation;
+﻿using Lab2.Handlers.States.Implementation.Additions.Commands;
+using Lab2.Handlers.States.Implementation.Additions.Commands.Implementation;
 using Lab2.Models;
 using Libs.Models;
 using Libs.SFML.Shapes;
@@ -8,9 +8,9 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace Lab2.Handlers.States.Implementation;
+namespace Lab2.Handlers.States.Implementation.Additions;
 
-public class AddShapeStateHandler : IStateHandler
+internal class AddShapeStateHandler : IStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
 

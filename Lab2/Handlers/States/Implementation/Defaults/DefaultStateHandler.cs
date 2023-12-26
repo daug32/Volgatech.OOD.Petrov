@@ -4,9 +4,9 @@ using Lab2.Models.Extensions;
 using Libs.SFML.Shapes;
 using SFML.Window;
 
-namespace Lab2.Handlers.States.Implementation;
+namespace Lab2.Handlers.States.Implementation.Defaults;
 
-public class DefaultStateHandler : IStateHandler
+internal class DefaultStateHandler : IStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
     private readonly SelectionHandler _selectionHandler;

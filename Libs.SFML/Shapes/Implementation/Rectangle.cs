@@ -21,5 +21,8 @@ public class Rectangle : BaseShape
         }
     }
 
-    public override T AcceptVisitor<T>( IShapeVisitor<T> visitor ) => visitor.Visit( this );
+    public override void AcceptVisitor( IShapeVisitor visitor )
+    {
+        visitor.Visit( this );
+    }
 }

@@ -2,9 +2,9 @@
 
 namespace Libs.SFML.Shapes;
 
-public interface IShapeVisitor<out TResult>
+public interface IShapeVisitor
 {
-    TResult Visit( Rectangle shape );
-    TResult Visit( Triangle shape );
-    TResult Visit( Circle shape );
+    void Visit( Rectangle shape );
+    void Visit( Triangle shape );
+    void Visit( Circle shape );
 }

@@ -1,45 +1,44 @@
-﻿using Lab2.Models;
+﻿using Lab2.Handlers.States.Implementation.Updates.Visitors.Implementation;
+using Lab2.Models;
 using Lab2.Models.Extensions;
 using Libs.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
-using SFML.System;
 using SFML.Window;
 
-namespace Lab2.Handlers.States.Implementation;
+namespace Lab2.Handlers.States.Implementation.Updates;
 
-public class ChangeBorderSizeStateHandler : IStateHandler
+internal class ChangeFillColorStateHandler : IStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
     
-    private static readonly ListIterator<float> _allowedBorderSizes = new( new float[]
+    private static readonly ListIterator<SetFillColorVisitor> _allowedColors = new( new[]
     {
-        1,
-        2,
-        3,
-        0
+        new SetFillColorVisitor( Color.Blue ),
+        new SetFillColorVisitor( Color.Red ),
+        new SetFillColorVisitor( Color.Yellow ),
+        new SetFillColorVisitor( Color.Black ),
     } );
 
-    public State State => State.ChangeBorderSize;
+    public State State => State.ChangeFillColor;
 
-    public ChangeBorderSizeStateHandler( IStateContext context, ShapesContainer shapesContainer )
+    public ChangeFillColorStateHandler( IStateContext context, ShapesContainer shapesContainer )
     {
         _shapesContainer = shapesContainer;
 
         if ( context.CurrentState == State )
         {
-            _allowedBorderSizes.MoveToNextValue();
+            _allowedColors.MoveToNextValue();
         }
     }
 
     public IShape GetStateDescription()
     {
-        var size = new Vector2f( 20, _allowedBorderSizes.GetCurrentValue() * 2 );
-        return new Rectangle( size )
-            .SetFillColor( Color.Black );
-    }
+        return new Circle( 20 )
+            .SetFillColor( _allowedColors.GetCurrentValue().FillColor );
+    } 
 
     public void BeforeDraw()
     {
@@ -63,17 +62,7 @@ public class ChangeBorderSizeStateHandler : IStateHandler
         IShape? clickedShape = _shapesContainer.FindByPosition(
             buttonEventArgs.X,
             buttonEventArgs.Y );
-
-        if ( clickedShape is null )
-        {
-            return;
-        }
-        
-        clickedShape.SetOutlineThickness( _allowedBorderSizes.GetCurrentValue() );
-        if ( clickedShape.OutlineColor == Color.Transparent )
-        {
-            clickedShape.OutlineColor = Color.Black;
-        }
+        clickedShape?.AcceptVisitor( _allowedColors.GetCurrentValue() );
     }
 
     public void OnDoubleClick( object? sender, MouseButtonEventArgs buttonEventArgs )
