@@ -8,10 +8,6 @@ public class DefaultStateHandler : IStateHandler
 {
     public State State { get; } = State.Default;
 
-    public void MoveToNextValue()
-    {
-    }
-
     public ShapeDecorator? GetStateDescription()
     {
         return null;

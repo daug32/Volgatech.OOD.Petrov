@@ -33,11 +33,6 @@ public class AddShapeStateHandler : IStateHandler
         }
     }
 
-    public void MoveToNextValue()
-    {
-        _shapesIterator.MoveToNextValue();
-    }
-
     public ShapeDecorator? GetStateDescription()
     {
         return GetCurrentShape();
