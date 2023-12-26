@@ -7,7 +7,7 @@ namespace Libs.SFML.UI.Components.Menus;
 
 public class Menu : IMenu
 {
-    private readonly Dictionary<string, Drawable> _replacableItems = new();
+    private readonly Dictionary<string, Drawable> _items = new();
     private readonly HashSet<IButton> _buttons = new();
     private readonly RectangleShape _background;
 
@@ -42,20 +42,20 @@ public class Menu : IMenu
         }
     }
 
-    public void AddButton( IButton button )
+    public void AddButton( IButton button ) => _buttons.Add( button );
+    
+    public void AddOrReplaceItem( string key, Drawable item )
     {
-        _buttons.Add( button );
+        if ( _items.ContainsKey( key ) )
+        {
+            _items[key] = item;
+            return;
+        }
+
+        _items.Add( key, item );
     }
 
-    public void AddItem( string key, Drawable drawable )
-    {
-        _replacableItems.Add( key, drawable );
-    }
-
-    public void ReplaceItem( string key, Drawable drawable )
-    {
-        _replacableItems[key] = drawable;
-    }
+    public void RemoveItem( string key ) => _items.Remove( key );
 
     public bool OnMouseReleased( object? sender, MouseButtonEventArgs args )
     {
@@ -76,22 +76,26 @@ public class Menu : IMenu
     public void Draw( RenderTarget target, RenderStates states )
     {
         _background.Draw( target, states );
+
         foreach ( IButton button in _buttons )
         {
             button.Draw( target, states );
         }
 
-        foreach ( KeyValuePair<string, Drawable> itemWithKey in _replacableItems )
+        foreach ( var keyValuePair in _items )
         {
-            Drawable item = itemWithKey.Value;
-            item.Draw( target, states );
+            Drawable drawable = keyValuePair.Value;
+            drawable.Draw( target, states );
         }
     }
 
-    private IButton? GetClicked( float x, float y )
+    public FloatRect GetGlobalBounds()
     {
-        return _buttons.LastOrDefault( button => button
+        return _background.GetGlobalBounds();
+    }
+
+    private IButton? GetClicked( float x, float y ) => _buttons
+        .LastOrDefault( button => button
             .GetGlobalBounds()
             .Contains( x, y ) );
-    }
 }

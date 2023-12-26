@@ -40,7 +40,7 @@ public class Application : BaseApplication, IStateContext
         
         // UI
         _toolbar = new Toolbar( ( Vector2f )WindowSize );
-        _toolbar.StateSwitched += ( _, state ) =>  SwitchState( state );
+        _toolbar.StateSwitched += ( _, state ) => SwitchState( state );
         _shapeMarksBuilder = new ShapeMarksBuilder();
         
         KeyPressed += OnKeyPressed;
@@ -154,5 +154,6 @@ public class Application : BaseApplication, IStateContext
     {
         _stateHandler = _stateStateHandlerFactory.Build( this, state );
         CurrentState = state;
+        _toolbar.SetStateDescription( _stateHandler.GetStateDescription() );
     }
 }

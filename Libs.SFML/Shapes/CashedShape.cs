@@ -11,14 +11,9 @@ public class CashedShape : Drawable
     protected FloatRect OldGlobalBounds;
     protected FloatRect OldLocalBounds;
 
-    public static CashedShape Create( Shape shape )
+    public CashedShape( Shape originalShape )
     {
-        return new( shape );
-    }
-
-    private CashedShape( Shape shape )
-    {
-        Shape = shape;
+        Shape = originalShape;
     }
 
     public virtual Color FillColor

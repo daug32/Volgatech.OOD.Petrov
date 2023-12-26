@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using Libs.SFML.Shapes;
+using SFML.Graphics;
 using SFML.Window;
 
 namespace Lab2.Handlers.States.Implementation;
@@ -11,7 +12,7 @@ public class DefaultStateHandler : IStateHandler
     {
     }
 
-    public Drawable? GetStateDescription()
+    public CashedShape? GetStateDescription()
     {
         return null;
     }

@@ -12,22 +12,22 @@ public static class DataLoader
     {
         var windowSize = new Vector2u( 800, 600 );
         
-        yield return CashedShape.Create(
+        yield return new CashedShape(
             new RectangleShape( new Vector2f( 20, 20 ) ) )
                 .FluentSetFillColor( Color.Black )
                 .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
 
-        yield return CashedShape.Create(
+        yield return new CashedShape(
             new RectangleShape( new Vector2f( 20, 20 ) ) )
                 .FluentSetFillColor( Color.Black )
                 .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
 
-        yield return CashedShape.Create(
+        yield return new CashedShape(
             new RectangleShape( new Vector2f( 20, 20 ) ) )
                 .FluentSetFillColor( Color.Black )
                 .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
 
-        yield return CashedShape.Create(
+        yield return new CashedShape(
             new CircleShape( 35 ) )
                 .FluentSetFillColor( Color.Black )
                 .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );

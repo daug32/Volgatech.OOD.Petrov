@@ -1,6 +1,9 @@
 ﻿using Lab2.Models;
+using Lab2.Models.Commands;
+using Lab2.Models.Commands.Implementation;
 using Libs.Models;
 using Libs.SFML.Shapes;
+using Libs.SFML.Shapes.Extensions;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -11,11 +14,11 @@ public class AddShapeStateHandler : IStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
 
-    private static readonly ListIterator<Func<CashedShape>> _shapesIterator = new( new Func<CashedShape>[]
+    private static readonly ListIterator<ICreateShapeCommand> _shapesIterator = new( new ICreateShapeCommand[]
     {
-        () => CashedShape.Create( new CircleShape( 20 ) ),
-        () => CashedShape.Create( new RectangleShape( new Vector2f( 20, 20 ) ) ),   
-        () => CashedShape.Create( new TriangleShape( new Vector2f( 0, 0 ), new Vector2f( 10, 0 ), new Vector2f( 0, 10 ) ) )
+        new CreateCircleShapeCommand( 20 ),
+        new CreateRectangleShapeCommand( new Vector2f( 20, 20 ) ),
+        new CreateTriangleShapeCommand( new Vector2f( 0, 0 ), new Vector2f( 20, 0 ), new Vector2f( 0, 20 ) ),
     } );
 
     public State State { get; } = State.AddShape;
@@ -30,9 +33,15 @@ public class AddShapeStateHandler : IStateHandler
         }
     }
 
-    public void MoveToNextValue() => _shapesIterator.MoveToNextValue();
+    public void MoveToNextValue()
+    {
+        _shapesIterator.MoveToNextValue();
+    }
 
-    public Drawable GetStateDescription() => _shapesIterator.GetCurrentValue()();
+    public CashedShape? GetStateDescription()
+    {
+        return GetCurrentShape();
+    }
 
     public void OnKeyPressed( object? sender, KeyEventArgs eventArgs )
     {
@@ -49,19 +58,19 @@ public class AddShapeStateHandler : IStateHandler
             return;
         }
 
-        CashedShape shape = _shapesIterator.GetCurrentValue()();
-        shape.FillColor = Color.Black;
-        shape.OutlineThickness = 0;
-        
-        FloatRect globalBounds = shape.GetGlobalBounds();
-        shape.Position = new Vector2f(
-            buttonEventArgs.X - globalBounds.Width / 2, 
-            buttonEventArgs.Y - globalBounds.Height / 2 );
-
-        _shapesContainer.Add( shape );
+        _shapesContainer.Add( GetCurrentShape()
+            .FluentSetCenterPosition( buttonEventArgs.X, buttonEventArgs.Y ) );
     }
 
     public void OnDoubleClick( object? sender, MouseButtonEventArgs buttonEventArgs )
     {
+    }
+
+    private static CashedShape GetCurrentShape()
+    {
+        CashedShape shape = _shapesIterator.GetCurrentValue().Execute();
+        return shape
+            .FluentSetFillColor( Color.Black )
+            .FluentSetOutlineThickness( 0 );
     }
 }

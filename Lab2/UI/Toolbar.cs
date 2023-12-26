@@ -1,6 +1,8 @@
 ﻿using Lab2.Handlers.States;
 using Lab2.Public;
 using Libs.SFML.Colors;
+using Libs.SFML.Shapes;
+using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.UI.Components.Buttons;
 using Libs.SFML.UI.Components.Menus;
 using SFML.Graphics;
@@ -10,20 +12,35 @@ namespace Lab2.UI;
 
 public class Toolbar : Menu
 {
-    // UI elements
-    private readonly string _handlerDescriptionKey = "HandlerDescription";
+    private readonly Vector2f _maxUiItemSize = new( 20, 20 );
+    private const int SpaceBetweenUiItems = 20;
+    private const float UiItemsPositionY = 10;
+
+    private const string StateDescriptionKey = "StateDescription";
+    
     public event EventHandler<State>? StateSwitched;
 
     public Toolbar( Vector2f windowSize ) : base( new Vector2f( windowSize.X, 50 ) )
     {
         BackgroundColor = CustomColors.Purple;
         AddButtons( BuildButtons() );
-        AddStateDescription();
     }
 
-    private void AddStateDescription()
+    public void SetStateDescription( CashedShape? description )
     {
-        AddItem( _handlerDescriptionKey, new RectangleShape() );
+        if ( description is null )
+        {
+            RemoveItem( StateDescriptionKey );
+            return;
+        }
+
+        AddOrReplaceItem(
+            StateDescriptionKey,
+            description
+                .FluentSetPosition(
+                    Size.X - _maxUiItemSize.X - SpaceBetweenUiItems,
+                    UiItemsPositionY )
+                .FluentSetMaxSize( _maxUiItemSize ) );
     }
 
     private List<IButton> BuildButtons()
@@ -80,14 +97,12 @@ public class Toolbar : Menu
 
     private static void AlignButtonsInRow( List<IButton> buttons )
     {
-        int spaceBetweenButtons = 20;
-        float positionY = 10;
-        float positionXOffset = spaceBetweenButtons;
+        float positionXOffset = SpaceBetweenUiItems;
 
         foreach ( IButton button in buttons )
         {
-            button.Position = new Vector2f( button.Position.X + positionXOffset, positionY );
-            positionXOffset += button.Size.X + spaceBetweenButtons;
+            button.Position = new Vector2f( button.Position.X + positionXOffset, UiItemsPositionY );
+            positionXOffset += button.Size.X + SpaceBetweenUiItems;
         }
     }
 }

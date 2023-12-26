@@ -39,7 +39,7 @@ public class ShapeMarksBuilder
             ? _selectionMark
             : _selectionMark.SetAlpha( 80 );
 
-        return CashedShape.Create( new RectangleShape( markSize ) )
+        return new CashedShape( new RectangleShape( markSize ) )
             .FluentSetPosition( shapeBounds.Left, shapeBounds.Top )
             .FluentSetOutlineColor( markOutlineColor )
             .FluentSetFillColor( Color.Transparent )
