@@ -16,8 +16,6 @@ public class ShapeDecorator : Drawable
         OriginalShape = originalOriginalShape;
     }
 
-    public bool IsVisible { get; set; } = true;
-
     public virtual Color FillColor
     {
         get => OriginalShape.FillColor;
@@ -102,10 +100,7 @@ public class ShapeDecorator : Drawable
 
     public virtual void Draw( RenderTarget target, RenderStates states )
     {
-        if ( IsVisible )
-        {
-            OriginalShape.Draw( target, states );
-        }
+        OriginalShape.Draw( target, states );
     }
 
     protected virtual void RecalculateIfNeed()
