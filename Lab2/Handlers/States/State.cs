@@ -3,5 +3,6 @@
 public enum State
 {
     Default,
-    AddShape
+    AddShape,
+    ChangeFillColor
 }

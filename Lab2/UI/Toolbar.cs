@@ -51,8 +51,7 @@ public class Toolbar : Menu
         // State description content
         descriptionContent
             .SetMaxSize( _maxUiItemSize )
-            .SetPosition( stateDescriptionPosition )
-            .SetFillColor( CustomColors.Purple );
+            .SetPosition( stateDescriptionPosition );
 
         AddOrReplaceItem( StateDescriptionMenuKey, descriptionContent );
     }
@@ -74,7 +73,7 @@ public class Toolbar : Menu
                 text: new Text( "Add shape", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
-                onClick: button => Console.WriteLine( $"Change fill color, {button.GetGlobalBounds()}" ),
+                onClick: _ => SwitchState( State.ChangeFillColor ),
                 text: new Text( "Fill color", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
