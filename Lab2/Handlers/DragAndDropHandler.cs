@@ -12,7 +12,7 @@ public class DragAndDropHandler
 
     public bool IsDragAndDropping { get; private set; }
 
-    public void OnMousePressed( CashedShape? clickedShape )
+    public void OnMousePressed( ShapeDecorator? clickedShape )
     {
         _isAnyShapePressed = clickedShape != null;
     }
@@ -22,7 +22,7 @@ public class DragAndDropHandler
         _isAnyShapePressed = false;
     }
 
-    public void Update( IEnumerable<CashedShape> shapesToMove )
+    public void Update( IEnumerable<ShapeDecorator> shapesToMove )
     {
         Vector2i currentMousePosition = Mouse.GetPosition();
 
@@ -35,7 +35,7 @@ public class DragAndDropHandler
 
         if ( IsDragAndDropping )
         {
-            foreach ( CashedShape shape in shapesToMove )
+            foreach ( ShapeDecorator shape in shapesToMove )
             {
                 shape.Position += mouseDeltaPosition;
             }

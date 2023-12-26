@@ -38,7 +38,7 @@ public class AddShapeStateHandler : IStateHandler
         _shapesIterator.MoveToNextValue();
     }
 
-    public CashedShape? GetStateDescription()
+    public ShapeDecorator? GetStateDescription()
     {
         return GetCurrentShape();
     }
@@ -59,18 +59,18 @@ public class AddShapeStateHandler : IStateHandler
         }
 
         _shapesContainer.Add( GetCurrentShape()
-            .FluentSetCenterPosition( buttonEventArgs.X, buttonEventArgs.Y ) );
+            .SetCenterPosition( buttonEventArgs.X, buttonEventArgs.Y ) );
     }
 
     public void OnDoubleClick( object? sender, MouseButtonEventArgs buttonEventArgs )
     {
     }
 
-    private static CashedShape GetCurrentShape()
+    private static ShapeDecorator GetCurrentShape()
     {
-        CashedShape shape = _shapesIterator.GetCurrentValue().Execute();
-        return shape
-            .FluentSetFillColor( Color.Black )
-            .FluentSetOutlineThickness( 0 );
+        ShapeDecorator shapeDecorator = _shapesIterator.GetCurrentValue().Execute();
+        return shapeDecorator
+            .SetFillColor( Color.Black )
+            .SetOutlineThickness( 0 );
     }
 }

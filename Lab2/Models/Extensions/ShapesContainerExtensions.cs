@@ -5,7 +5,7 @@ namespace Lab2.Models.Extensions;
 
 public static class ShapesContainerExtensions
 {
-    public static CashedShape? FindByPosition( this ShapesContainer container, float x, float y )
+    public static ShapeDecorator? FindByPosition( this ShapesContainer container, float x, float y )
     {
         return container.FirstOrDefault( shape => shape
             .GetGlobalBounds()

@@ -18,9 +18,9 @@ public class CreateRectangleShapeCommand : ICreateShapeCommand
         Position = position ?? new Vector2f();
     }
 
-    public CashedShape Execute()
+    public ShapeDecorator Execute()
     {
-        return new CashedShape( new RectangleShape( Size ) )
-            .FluentSetPosition( Position );
+        return new ShapeDecorator( new RectangleShape( Size ) )
+            .SetPosition( Position );
     }
 }

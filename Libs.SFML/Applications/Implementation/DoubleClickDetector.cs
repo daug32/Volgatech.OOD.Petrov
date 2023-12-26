@@ -28,28 +28,34 @@ internal class DoubleClickDetector
         { Mouse.Button.Right, new ClickData() }
     };
 
-    public bool IsDoubleClick( MouseButtonEventArgs e )
+    public bool IsDoubleClick( MouseButtonEventArgs buttonData )
     {
-        if ( !_lastClickDates.ContainsKey( e.Button ) )
+        // Check if button is supported
+        if ( !_lastClickDates.ContainsKey( buttonData.Button ) )
         {
             return false;
         }
 
         DateTime clickTime = DateTime.Now;
-        ClickData lastClickData = _lastClickDates[e.Button];
-        
-        double millisecondsPassed = clickTime.Subtract( lastClickData.Time ).TotalMilliseconds;
+        ClickData lastClickData = _lastClickDates[buttonData.Button];
+
+        // Check if click was performed within the time range of a double click 
+        double millisecondsPassed = clickTime
+            .Subtract( lastClickData.Time )
+            .TotalMilliseconds;
         bool isInTimeRange = millisecondsPassed <= DoubleClickMaxMillisecondsInterval;
-        
+
         if ( !isInTimeRange )
         {
-            _lastClickDates[e.Button] = new ClickData( clickTime, false );
+            _lastClickDates[buttonData.Button] = new ClickData( clickTime, false );
             return false;
         }
 
-        var clickData = new ClickData( clickTime, isInTimeRange && !lastClickData.IsDoubleClick );
-        _lastClickDates[e.Button] = clickData;
+        // Check if previous click was a double click
+        // Double click is a click that performed after a default click
+        bool isDoubleClick = !lastClickData.IsDoubleClick;
+        _lastClickDates[buttonData.Button] = new ClickData( clickTime, isDoubleClick );
 
-        return clickData.IsDoubleClick;
+        return isDoubleClick;
     }
 }

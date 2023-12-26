@@ -8,33 +8,33 @@ public class ShapesContainer
 {
     private readonly ShapeGroup _mainGroup = new( DataLoader.LoadData() );
 
-    public IEnumerable<CashedShape> GetAll()
+    public IEnumerable<ShapeDecorator> GetAll()
     {
         return _mainGroup.GetAllRelatedShapes();
     }
 
-    public CashedShape? FirstOrDefault( Func<CashedShape, bool> predicate )
+    public ShapeDecorator? FirstOrDefault( Func<ShapeDecorator, bool> predicate )
     {
         return _mainGroup.FindFirstShapeOrDefault( predicate );
     } 
     
-    public bool HasGroup( CashedShape shape )
+    public bool HasGroup( ShapeDecorator shapeDecorator )
     {
-        return _mainGroup.FindFirstGroupOrDefault( x => x.Contains( shape ) ) != null;
+        return _mainGroup.FindFirstGroupOrDefault( x => x.Contains( shapeDecorator ) ) != null;
     }
 
-    public void Add( CashedShape shape )
+    public void Add( ShapeDecorator shapeDecorator )
     {
-        _mainGroup.AddToGroup( shape );
+        _mainGroup.AddToGroup( shapeDecorator );
     }
     
-    public void Group( IEnumerable<CashedShape> shapes )
+    public void Group( IEnumerable<ShapeDecorator> shapes )
     {
         var newGroup = new ShapeGroup();
 
         var groupsToVisit = new List<ShapeGroup>( _mainGroup.GetChildGroups() );
 
-        foreach ( CashedShape shape in shapes )
+        foreach ( ShapeDecorator shape in shapes )
         {
             var groupAdded = false;
 
@@ -63,9 +63,9 @@ public class ShapesContainer
         }
     }
     
-    public void Ungroup( IEnumerable<CashedShape> shapes )
+    public void Ungroup( IEnumerable<ShapeDecorator> shapes )
     {
-        foreach ( CashedShape shape in shapes )
+        foreach ( ShapeDecorator shape in shapes )
         {
             var queue = new LinkedList<ShapeGroup>( _mainGroup.GetChildGroups() );
             var toSave = new LinkedList<ShapeGroup>();
@@ -91,17 +91,17 @@ public class ShapesContainer
         }
     }
     
-    public List<CashedShape> GetRelatedShapes( CashedShape? shape )
+    public List<ShapeDecorator> GetRelatedShapes( ShapeDecorator? shape )
     {
         if ( shape is null )
         {
-            return new List<CashedShape>();
+            return new List<ShapeDecorator>();
         }
         
         ShapeGroup? shapeGroup = _mainGroup.FindFirstGroupOrDefault( x => x.Contains( shape ) );
         if ( shapeGroup is null )
         {
-            return new List<CashedShape>();
+            return new List<ShapeDecorator>();
         }
 
         var shapes = shapeGroup.GetAllRelatedShapes();

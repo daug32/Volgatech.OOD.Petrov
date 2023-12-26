@@ -5,31 +5,31 @@ namespace Lab2.Models;
 
 public class ShapeGroup
 {
-    private readonly HashSet<CashedShape> _shapes;
+    private readonly HashSet<ShapeDecorator> _shapes;
     private readonly HashSet<ShapeGroup> _childGroups;
 
     public int Count { get; private set; }
 
     public ShapeGroup()
     {
-        _shapes = new HashSet<CashedShape>();
+        _shapes = new HashSet<ShapeDecorator>();
         _childGroups = new HashSet<ShapeGroup>();
     }
 
-    public ShapeGroup( IEnumerable<CashedShape> cashedShapes )
+    public ShapeGroup( IEnumerable<ShapeDecorator> shapes )
     {
-        _shapes = new HashSet<CashedShape>( cashedShapes );
+        _shapes = new HashSet<ShapeDecorator>( shapes );
         _childGroups = new HashSet<ShapeGroup>();
     }
 
-    public void AddToGroup( CashedShape shape )
+    public void AddToGroup( ShapeDecorator shapeDecorator )
     {
-        if ( _shapes.Contains( shape ) )
+        if ( _shapes.Contains( shapeDecorator ) )
         {
             return;
         }
 
-        _shapes.Add( shape );
+        _shapes.Add( shapeDecorator );
         Count++;
     }
 
@@ -78,14 +78,14 @@ public class ShapeGroup
         return Count > 1;
     }
 
-    public bool Contains( CashedShape shape )
+    public bool Contains( ShapeDecorator shapeDecorator )
     {
-        return _shapes.Contains( shape ) || _childGroups.Any( x => x.Contains( shape ) );
+        return _shapes.Contains( shapeDecorator ) || _childGroups.Any( x => x.Contains( shapeDecorator ) );
     }
 
-    public List<CashedShape> GetAllRelatedShapes()
+    public List<ShapeDecorator> GetAllRelatedShapes()
     {
-        var result = new HashSet<CashedShape>( Count );
+        var result = new HashSet<ShapeDecorator>( Count );
         var groupsToVisit = new List<ShapeGroup>
         {
             this
@@ -109,7 +109,7 @@ public class ShapeGroup
         return _childGroups.FirstOrDefault( predicate );
     }
 
-    public CashedShape? FindFirstShapeOrDefault( Func<CashedShape, bool> predicate )
+    public ShapeDecorator? FindFirstShapeOrDefault( Func<ShapeDecorator, bool> predicate )
     {
         var groupsToVisit = new List<ShapeGroup>
         {
@@ -120,7 +120,7 @@ public class ShapeGroup
         {
             ShapeGroup group = groupsToVisit.Last();
 
-            CashedShape? shape = group._shapes.FirstOrDefault( predicate );
+            ShapeDecorator? shape = group._shapes.FirstOrDefault( predicate );
             if ( shape != null )
             {
                 return shape;

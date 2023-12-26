@@ -39,11 +39,11 @@ public class ShapeMarksBuilder
             ? _selectionMark
             : _selectionMark.SetAlpha( 80 );
 
-        return new CashedShape( new RectangleShape( markSize ) )
-            .FluentSetPosition( shapeBounds.Left, shapeBounds.Top )
-            .FluentSetOutlineColor( markOutlineColor )
-            .FluentSetFillColor( Color.Transparent )
-            .FluentSetOutlineThickness( 1 );
+        return new ShapeDecorator( new RectangleShape( markSize ) )
+            .SetPosition( shapeBounds.Left, shapeBounds.Top )
+            .SetOutlineColor( markOutlineColor )
+            .SetFillColor( Color.Transparent )
+            .SetOutlineThickness( 1 );
     }
     
     private static Drawable BuildGroupMark( FloatRect shapeBounds )

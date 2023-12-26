@@ -3,86 +3,88 @@ using SFML.System;
 
 namespace Libs.SFML.Shapes;
 
-public class CashedShape : Drawable
+public class ShapeDecorator : Drawable
 {
     protected bool HasChanges = true;
 
-    protected readonly Shape Shape;
+    protected readonly Shape OriginalShape;
     protected FloatRect OldGlobalBounds;
     protected FloatRect OldLocalBounds;
 
-    public CashedShape( Shape originalShape )
+    public ShapeDecorator( Shape originalOriginalShape )
     {
-        Shape = originalShape;
+        OriginalShape = originalOriginalShape;
     }
+
+    public bool IsVisible { get; set; } = true;
 
     public virtual Color FillColor
     {
-        get => Shape.FillColor;
+        get => OriginalShape.FillColor;
         set
         {
             HasChanges = true;
-            Shape.FillColor = value;
+            OriginalShape.FillColor = value;
         }
     }
 
     public virtual Color OutlineColor
     {
-        get => Shape.OutlineColor;
+        get => OriginalShape.OutlineColor;
         set
         {
             HasChanges = true;
-            Shape.OutlineColor = value;
+            OriginalShape.OutlineColor = value;
         }
     }
 
     public virtual float OutlineThickness
     {
-        get => Shape.OutlineThickness;
+        get => OriginalShape.OutlineThickness;
         set
         {
             HasChanges = true;
-            Shape.OutlineThickness = value;
+            OriginalShape.OutlineThickness = value;
         }
     }
 
     public virtual Vector2f Position
     {
-        get => Shape.Position;
+        get => OriginalShape.Position;
         set
         {
             HasChanges = true;
-            Shape.Position = value;
+            OriginalShape.Position = value;
         }
     }
 
     public virtual float Rotation
     {
-        get => Shape.Rotation;
+        get => OriginalShape.Rotation;
         set
         {
             HasChanges = true;
-            Shape.Rotation = value;
+            OriginalShape.Rotation = value;
         }
     }
 
     public virtual Vector2f Scale
     {
-        get => Shape.Scale;
+        get => OriginalShape.Scale;
         set
         {
             HasChanges = true;
-            Shape.Scale = value;
+            OriginalShape.Scale = value;
         }
     }
 
     public virtual Vector2f Origin
     {
-        get => Shape.Origin;
+        get => OriginalShape.Origin;
         set
         {
             HasChanges = true;
-            Shape.Origin = value;
+            OriginalShape.Origin = value;
         }
     }
 
@@ -100,12 +102,10 @@ public class CashedShape : Drawable
 
     public virtual void Draw( RenderTarget target, RenderStates states )
     {
-        Shape.Draw( target, states );
-    }
-
-    public virtual Shape ToShape()
-    {
-        return Shape;
+        if ( IsVisible )
+        {
+            OriginalShape.Draw( target, states );
+        }
     }
 
     protected virtual void RecalculateIfNeed()
@@ -115,8 +115,8 @@ public class CashedShape : Drawable
             return;
         }
 
-        OldGlobalBounds = Shape.GetGlobalBounds();
-        OldLocalBounds = Shape.GetLocalBounds();
+        OldGlobalBounds = OriginalShape.GetGlobalBounds();
+        OldLocalBounds = OriginalShape.GetLocalBounds();
 
         HasChanges = false;
     }

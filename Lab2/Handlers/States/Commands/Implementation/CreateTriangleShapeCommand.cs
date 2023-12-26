@@ -25,9 +25,9 @@ public class CreateTriangleShapeCommand : ICreateShapeCommand
         Position = position ?? new Vector2f();
     }
 
-    public CashedShape Execute()
+    public ShapeDecorator Execute()
     {
-        return new CashedShape( new TriangleShape( P0, P1, P2 ) )
-            .FluentSetPosition( Position );
+        return new ShapeDecorator( new TriangleShape( P0, P1, P2 ) )
+            .SetPosition( Position );
     }
 }

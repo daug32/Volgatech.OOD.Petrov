@@ -12,7 +12,7 @@ public class DefaultStateHandler : IStateHandler
     {
     }
 
-    public CashedShape? GetStateDescription()
+    public ShapeDecorator? GetStateDescription()
     {
         return null;
     }

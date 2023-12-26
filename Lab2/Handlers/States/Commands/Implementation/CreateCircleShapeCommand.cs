@@ -17,9 +17,9 @@ public class CreateCircleShapeCommand : ICreateShapeCommand
         Position = position ?? new Vector2f();
     }
     
-    public CashedShape Execute()
+    public ShapeDecorator Execute()
     {
-        return new CashedShape( new CircleShape( Radius ) )
-            .FluentSetPosition( Position );
+        return new ShapeDecorator( new CircleShape( Radius ) )
+            .SetPosition( Position );
     }
 }

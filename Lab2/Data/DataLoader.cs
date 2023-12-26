@@ -8,28 +8,28 @@ namespace Lab2.Data;
 
 public static class DataLoader
 {
-    public static IEnumerable<CashedShape> LoadData()
+    public static IEnumerable<ShapeDecorator> LoadData()
     {
         var windowSize = new Vector2u( 800, 600 );
         
-        yield return new CashedShape(
+        yield return new ShapeDecorator(
             new RectangleShape( new Vector2f( 20, 20 ) ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
+                .SetFillColor( Color.Black )
+                .SetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
 
-        yield return new CashedShape(
+        yield return new ShapeDecorator(
             new RectangleShape( new Vector2f( 20, 20 ) ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
+                .SetFillColor( Color.Black )
+                .SetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
 
-        yield return new CashedShape(
+        yield return new ShapeDecorator(
             new RectangleShape( new Vector2f( 20, 20 ) ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
+                .SetFillColor( Color.Black )
+                .SetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
 
-        yield return new CashedShape(
+        yield return new ShapeDecorator(
             new CircleShape( 35 ) )
-                .FluentSetFillColor( Color.Black )
-                .FluentSetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
+                .SetFillColor( Color.Black )
+                .SetPosition( Vector2Utils.GetRandomInBounds( windowSize ) );
     }
 }

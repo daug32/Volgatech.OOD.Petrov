@@ -7,5 +7,5 @@ public interface ICreateShapeCommand
 {
     public Vector2f Position { get; set; }
     
-    public CashedShape Execute();
+    public ShapeDecorator Execute();
 }

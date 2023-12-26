@@ -7,28 +7,28 @@ public class SelectionHandler
 {
     private readonly SelectedShapesContainer _selectionContainer = new();
 
-    public IEnumerable<CashedShape> GetAllSelectedShapes()
+    public IEnumerable<ShapeDecorator> GetAllSelectedShapes()
     {
         return _selectionContainer.GetAllSelectedShapes();
     }
 
-    public IEnumerable<CashedShape> GetSelectedShapes( SelectionType selectionType )
+    public IEnumerable<ShapeDecorator> GetSelectedShapes( SelectionType selectionType )
     {
         return _selectionContainer.GetSelectedShapes( selectionType );
     }
 
-    public SelectionType GetSelectionType( CashedShape shape )
+    public SelectionType GetSelectionType( ShapeDecorator shapeDecorator )
     {
-        return _selectionContainer.GetSelectionType( shape );
+        return _selectionContainer.GetSelectionType( shapeDecorator );
     }
 
-    public void OnUngroup( IEnumerable<CashedShape> shapes )
+    public void OnUngroup( IEnumerable<ShapeDecorator> shapes )
     {
         _selectionContainer.UnselectAll();
         _selectionContainer.Select( shapes, SelectionType.TrueSelection );
     }
 
-    public void OnDoubleClick( CashedShape? clickedShape, IEnumerable<CashedShape> relatedShapes )
+    public void OnDoubleClick( ShapeDecorator? clickedShape, IEnumerable<ShapeDecorator> relatedShapes )
     {
         if ( clickedShape is null )
         {
@@ -50,8 +50,8 @@ public class SelectionHandler
     }
 
     public void OnMousePressed(
-        CashedShape? clickedShape,
-        IEnumerable<CashedShape> relatedShapes )
+        ShapeDecorator? clickedShape,
+        IEnumerable<ShapeDecorator> relatedShapes )
     {
         if ( clickedShape is null )
         {
@@ -73,18 +73,18 @@ public class SelectionHandler
         ReselectShape( clickedShape, relatedShapes, selectionType );
     }
 
-    private void ReselectShape( CashedShape clickedShape, IEnumerable<CashedShape> relatedShapes, SelectionType selectionType )
+    private void ReselectShape( ShapeDecorator clickedShapeDecorator, IEnumerable<ShapeDecorator> relatedShapes, SelectionType selectionType )
     {
         if ( selectionType == SelectionType.GroupSelection )
         {
             if ( CanSetMultipleSelections() )
             {
-                _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
+                _selectionContainer.Select( clickedShapeDecorator, SelectionType.TrueSelection );
                 return;
             }
 
             _selectionContainer.UnselectAll();
-            _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
+            _selectionContainer.Select( clickedShapeDecorator, SelectionType.TrueSelection );
             _selectionContainer.Select( relatedShapes, SelectionType.GroupSelection );
             return;
         }
@@ -96,7 +96,7 @@ public class SelectionHandler
                 return;
             }
 
-            _selectionContainer.Unselect( clickedShape );
+            _selectionContainer.Unselect( clickedShapeDecorator );
             if ( !_selectionContainer.AnyWithSelectionType( SelectionType.TrueSelection ) )
             {
                 _selectionContainer.UnselectAll();
@@ -108,14 +108,14 @@ public class SelectionHandler
         throw new ArgumentOutOfRangeException();
     }
 
-    private void SelectNewShape( CashedShape clickedShape, IEnumerable<CashedShape> relatedShapes )
+    private void SelectNewShape( ShapeDecorator clickedShapeDecorator, IEnumerable<ShapeDecorator> relatedShapes )
     {
         if ( !CanSetMultipleSelections() )
         {
             _selectionContainer.UnselectAll();
         }
 
-        _selectionContainer.Select( clickedShape, SelectionType.TrueSelection );
+        _selectionContainer.Select( clickedShapeDecorator, SelectionType.TrueSelection );
         _selectionContainer.Select( relatedShapes, SelectionType.GroupSelection );
     }
 

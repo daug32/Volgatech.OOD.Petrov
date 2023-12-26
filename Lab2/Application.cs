@@ -55,7 +55,7 @@ public class Application : BaseApplication, IStateContext
 
         _dragAndDropHandler.Update( _selectionHandler.GetAllSelectedShapes() );
 
-        foreach ( CashedShape shape in _shapesContainer.GetAll() )
+        foreach ( ShapeDecorator shape in _shapesContainer.GetAll() )
         {
             RenderObject( shape );
 
@@ -106,7 +106,7 @@ public class Application : BaseApplication, IStateContext
         
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
-            CashedShape? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
+            ShapeDecorator? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
             var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
 
             _dragAndDropHandler.OnMousePressed( clickedShape );
@@ -143,7 +143,7 @@ public class Application : BaseApplication, IStateContext
 
         if ( mouseEventArgs.Button == Mouse.Button.Left )
         {
-            CashedShape? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
+            ShapeDecorator? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
             var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
 
             _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );
