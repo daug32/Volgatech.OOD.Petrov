@@ -4,5 +4,5 @@ namespace Lab2.Handlers.States.Commands;
 
 public interface ICreateShapeCommand
 {
-    public ShapeDecorator Execute();
+    public IShape Execute();
 }

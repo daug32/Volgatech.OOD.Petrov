@@ -3,6 +3,7 @@ using Lab2.Models.Extensions;
 using Libs.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
+using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -33,10 +34,10 @@ public class ChangeBorderSizeStateHandler : IStateHandler
         }
     }
 
-    public ShapeDecorator GetStateDescription()
+    public IShape GetStateDescription()
     {
         var size = new Vector2f( 20, _allowedBorderSizes.GetCurrentValue() * 2 );
-        return new ShapeDecorator( new RectangleShape( size ) )
+        return new Rectangle( size )
             .SetFillColor( Color.Black );
     }
 
@@ -59,7 +60,7 @@ public class ChangeBorderSizeStateHandler : IStateHandler
             return;
         }
         
-        ShapeDecorator? clickedShape = _shapesContainer.FindByPosition(
+        IShape? clickedShape = _shapesContainer.FindByPosition(
             buttonEventArgs.X,
             buttonEventArgs.Y );
 
@@ -69,7 +70,7 @@ public class ChangeBorderSizeStateHandler : IStateHandler
         }
         
         clickedShape.SetOutlineThickness( _allowedBorderSizes.GetCurrentValue() );
-        if ( clickedShape.OutlineColor.A == 0 )
+        if ( clickedShape.OutlineColor == Color.Transparent )
         {
             clickedShape.OutlineColor = Color.Black;
         }

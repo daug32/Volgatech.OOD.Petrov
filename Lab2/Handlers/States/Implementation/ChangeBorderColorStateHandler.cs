@@ -3,6 +3,7 @@ using Lab2.Models.Extensions;
 using Libs.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
+using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -32,9 +33,9 @@ public class ChangeBorderColorStateHandler : IStateHandler
         }
     }
 
-    public ShapeDecorator GetStateDescription()
+    public IShape GetStateDescription()
     {
-        return new ShapeDecorator( new CircleShape( 20 ) )
+        return new Circle( 20 )
             .SetOutlineThickness( 10 )
             .SetOutlineColor( _allowedColors.GetCurrentValue() )
             .SetFillColor( Color.Black );
@@ -59,7 +60,7 @@ public class ChangeBorderColorStateHandler : IStateHandler
             return;
         }
         
-        ShapeDecorator? clickedShape = _shapesContainer.FindByPosition(
+        IShape? clickedShape = _shapesContainer.FindByPosition(
             buttonEventArgs.X,
             buttonEventArgs.Y );
 

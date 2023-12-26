@@ -1,5 +1,6 @@
 ﻿using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
+using Libs.SFML.Shapes.Implementation;
 using SFML.System;
 
 namespace Lab2.Handlers.States.Commands.Implementation;
@@ -24,9 +25,9 @@ public class CreateTriangleShapeCommand : ICreateShapeCommand
         Position = position ?? new Vector2f();
     }
 
-    public ShapeDecorator Execute()
+    public IShape Execute()
     {
-        return new ShapeDecorator( new TriangleShape( P0, P1, P2 ) )
+        return new Triangle( P0, P1, P2 )
             .SetPosition( Position );
     }
 }

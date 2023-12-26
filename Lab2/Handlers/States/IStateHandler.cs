@@ -7,7 +7,7 @@ public interface IStateHandler
 {
     State State { get; }
     
-    ShapeDecorator? GetStateDescription();
+    IShape? GetStateDescription();
 
     void BeforeDraw();
     void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs );

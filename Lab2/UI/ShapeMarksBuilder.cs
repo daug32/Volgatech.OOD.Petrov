@@ -4,6 +4,7 @@ using Lab2.Public;
 using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
+using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
 using SFML.System;
 
@@ -22,19 +23,19 @@ public class ShapeMarksBuilder
         _selectionHandler = selectionHandler;
     }
 
-    public List<Drawable> GetMarks( ShapeDecorator shape )
+    public List<Drawable> GetMarks( IShape baseShape )
     {
-        FloatRect shapeBounds = shape.GetGlobalBounds();
+        FloatRect shapeBounds = baseShape.GetGlobalBounds();
 
         var result = new List<Drawable>();
 
-        SelectionType selectionType = _selectionHandler.GetSelectionType( shape ); 
+        SelectionType selectionType = _selectionHandler.GetSelectionType( baseShape ); 
         if ( selectionType != SelectionType.NotSelected )
         {
             result.Add( BuildSelectionMark( selectionType, shapeBounds ) );
         }
 
-        if ( _shapesContainer.HasGroup( shape ) )
+        if ( _shapesContainer.HasGroup( baseShape ) )
         {
             result.Add( BuildGroupMark( shapeBounds ) );
         }
@@ -49,7 +50,7 @@ public class ShapeMarksBuilder
             ? _selectionMark
             : _selectionMark.SetAlpha( 80 );
 
-        return new ShapeDecorator( new RectangleShape( markSize ) )
+        return new Rectangle( markSize )
             .SetPosition( shapeBounds.Left, shapeBounds.Top )
             .SetOutlineColor( markOutlineColor )
             .SetFillColor( Color.Transparent )

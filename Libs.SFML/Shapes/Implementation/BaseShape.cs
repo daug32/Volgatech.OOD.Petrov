@@ -1,107 +1,111 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace Libs.SFML.Shapes;
+namespace Libs.SFML.Shapes.Implementation;
 
-public class ShapeDecorator : Drawable
+public abstract class BaseShape : IShape
 {
+    private FloatRect _oldGlobalBounds;
+    private FloatRect _oldLocalBounds;
+    
+    protected readonly Shape Shape;
     protected bool HasChanges = true;
 
-    protected readonly Shape OriginalShape;
-    protected FloatRect OldGlobalBounds;
-    protected FloatRect OldLocalBounds;
-
-    public ShapeDecorator( Shape originalOriginalShape )
+    protected BaseShape( Shape shape )
     {
-        OriginalShape = originalOriginalShape;
+        Shape = shape;
+        Shape.OutlineColor = Color.Black;
+        Shape.OutlineThickness = 0;
     }
 
     public virtual Color FillColor
     {
-        get => OriginalShape.FillColor;
+        get => Shape.FillColor;
         set
         {
             HasChanges = true;
-            OriginalShape.FillColor = value;
+            Shape.FillColor = value;
         }
     }
 
     public virtual Color OutlineColor
     {
-        get => OriginalShape.OutlineColor;
+        get => Shape.OutlineColor;
         set
         {
             HasChanges = true;
-            OriginalShape.OutlineColor = value;
+            Shape.OutlineColor = value;
         }
     }
 
     public virtual float OutlineThickness
     {
-        get => OriginalShape.OutlineThickness;
+        get => Shape.OutlineThickness;
         set
         {
             HasChanges = true;
-            OriginalShape.OutlineThickness = value;
+            Shape.OutlineThickness = value;
         }
     }
 
     public virtual Vector2f Position
     {
-        get => OriginalShape.Position;
+        get => Shape.Position;
         set
         {
             HasChanges = true;
-            OriginalShape.Position = value;
+            Shape.Position = value;
         }
     }
 
     public virtual float Rotation
     {
-        get => OriginalShape.Rotation;
+        get => Shape.Rotation;
         set
         {
             HasChanges = true;
-            OriginalShape.Rotation = value;
+            Shape.Rotation = value;
         }
     }
 
     public virtual Vector2f Scale
     {
-        get => OriginalShape.Scale;
+        get => Shape.Scale;
         set
         {
             HasChanges = true;
-            OriginalShape.Scale = value;
+            Shape.Scale = value;
         }
     }
 
     public virtual Vector2f Origin
     {
-        get => OriginalShape.Origin;
+        get => Shape.Origin;
         set
         {
             HasChanges = true;
-            OriginalShape.Origin = value;
+            Shape.Origin = value;
         }
     }
 
     public virtual FloatRect GetLocalBounds()
     {
         RecalculateIfNeed();
-        return OldLocalBounds;
+        return _oldLocalBounds;
     }
 
     public virtual FloatRect GetGlobalBounds()
     {
         RecalculateIfNeed();
-        return OldGlobalBounds;
+        return _oldGlobalBounds;
     }
 
     public virtual void Draw( RenderTarget target, RenderStates states )
     {
-        OriginalShape.Draw( target, states );
+        Shape.Draw( target, states );
     }
+
+    public abstract T AcceptVisitor<T>( IShapeVisitor<T> visitor );
 
     protected virtual void RecalculateIfNeed()
     {
@@ -110,8 +114,8 @@ public class ShapeDecorator : Drawable
             return;
         }
 
-        OldGlobalBounds = OriginalShape.GetGlobalBounds();
-        OldLocalBounds = OriginalShape.GetLocalBounds();
+        _oldGlobalBounds = Shape.GetGlobalBounds();
+        _oldLocalBounds = Shape.GetLocalBounds();
 
         HasChanges = false;
     }

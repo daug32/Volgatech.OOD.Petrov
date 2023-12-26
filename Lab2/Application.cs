@@ -55,7 +55,7 @@ public class Application : BaseApplication, IStateContext
 
         ClearWindow( Color.White );
 
-        foreach ( ShapeDecorator shape in _shapesContainer.GetAll() )
+        foreach ( IShape shape in _shapesContainer.GetAll() )
         {
             RenderObject( shape );
 

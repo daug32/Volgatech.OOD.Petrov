@@ -3,6 +3,7 @@ using Lab2.Public;
 using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
+using Libs.SFML.Shapes.Implementation;
 using Libs.SFML.UI.Components.Buttons;
 using Libs.SFML.UI.Components.Menus;
 using SFML.Graphics;
@@ -27,7 +28,7 @@ public class Toolbar : Menu
         AddButtons( BuildButtons() );
     }
 
-    public void SetStateDescription( ShapeDecorator? descriptionContent )
+    public void SetStateDescription( IShape? descriptionContent )
     {
         if ( descriptionContent is null )
         {
@@ -43,7 +44,7 @@ public class Toolbar : Menu
             toolbarSize.Height / 2 );
         
         // State description background
-        ShapeDecorator descriptionBackground = BuildStateDescriptionBackground()
+        IShape descriptionBackground = BuildStateDescriptionBackground()
             .SetCenterPosition( descriptionPosition );
 
         AddOrReplaceItem( StateDescriptionBackgroundMenuKey, descriptionBackground );
@@ -122,9 +123,9 @@ public class Toolbar : Menu
         StateSwitched?.Invoke( this, state );
     }
 
-    private ShapeDecorator BuildStateDescriptionBackground()
+    private IShape BuildStateDescriptionBackground()
     {
-        var background = new ShapeDecorator( new RectangleShape( _maxUiItemSize ) );
+        var background = new Rectangle( _maxUiItemSize );
 
         return background
             .SetFillColor( Color.White )

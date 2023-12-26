@@ -1,5 +1,6 @@
 ﻿using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
+using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
 using SFML.System;
 
@@ -16,9 +17,9 @@ public class CreateCircleShapeCommand : ICreateShapeCommand
         Position = position ?? new Vector2f();
     }
     
-    public ShapeDecorator Execute()
+    public IShape Execute()
     {
-        return new ShapeDecorator( new CircleShape( Radius ) )
+        return new Circle( Radius )
             .SetPosition( Position );
     }
 }

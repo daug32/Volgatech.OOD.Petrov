@@ -22,5 +22,9 @@
       <ProjectReference Include="..\Libs.SFML\Libs.SFML.csproj" />
       <ProjectReference Include="..\Libs\Libs.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Handlers\States\Visitors" />
+    </ItemGroup>
 
 </Project>

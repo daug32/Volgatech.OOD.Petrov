@@ -1,5 +1,6 @@
 ﻿using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
+using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
 using SFML.System;
 
@@ -18,9 +19,9 @@ public class CreateRectangleShapeCommand : ICreateShapeCommand
         Position = position ?? new Vector2f();
     }
 
-    public ShapeDecorator Execute()
+    public IShape Execute()
     {
-        return new ShapeDecorator( new RectangleShape( Size ) )
+        return new Rectangle( Size )
             .SetPosition( Position );
     }
 }

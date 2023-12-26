@@ -21,7 +21,7 @@ public class DefaultStateHandler : IStateHandler
         _dragAndDropHandler = new DragAndDropHandler();
     }
 
-    public ShapeDecorator? GetStateDescription()
+    public IShape? GetStateDescription()
     {
         return null;
     }
@@ -58,7 +58,7 @@ public class DefaultStateHandler : IStateHandler
             return;
         }
 
-        ShapeDecorator? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
+        IShape? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
         var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
 
         _dragAndDropHandler.OnMousePressed( clickedShape );
@@ -82,7 +82,7 @@ public class DefaultStateHandler : IStateHandler
             return;
         }
 
-        ShapeDecorator? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
+        IShape? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
         var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
 
         _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );

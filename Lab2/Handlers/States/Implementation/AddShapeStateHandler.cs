@@ -33,7 +33,7 @@ public class AddShapeStateHandler : IStateHandler
         }
     }
 
-    public ShapeDecorator GetStateDescription()
+    public IShape GetStateDescription()
     {
         return GetCurrentShape();
     }
@@ -65,10 +65,10 @@ public class AddShapeStateHandler : IStateHandler
     {
     }
 
-    private static ShapeDecorator GetCurrentShape()
+    private static IShape GetCurrentShape()
     {
-        ShapeDecorator shapeDecorator = _shapesIterator.GetCurrentValue().Execute();
-        return shapeDecorator
+        IShape shape = _shapesIterator.GetCurrentValue().Execute();
+        return shape
             .SetFillColor( Color.Black )
             .SetOutlineThickness( 0 );
     }

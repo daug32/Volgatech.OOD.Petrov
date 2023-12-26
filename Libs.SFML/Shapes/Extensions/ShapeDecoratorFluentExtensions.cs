@@ -5,41 +5,41 @@ namespace Libs.SFML.Shapes.Extensions;
 
 public static class ShapeDecoratorFluentExtensions
 {
-    public static T SetOutlineColor<T>( this T shape, Color outlineColor ) where T : ShapeDecorator
+    public static T SetOutlineColor<T>( this T shape, Color outlineColor ) where T : IShape
     {
         shape.OutlineColor = outlineColor;
         return shape;
     }
 
-    public static T SetOutlineThickness<T>( this T shape, float thickness ) where T : ShapeDecorator
+    public static T SetOutlineThickness<T>( this T shape, float thickness ) where T : IShape
     {
         shape.OutlineThickness = thickness;
         return shape;
     }
 
-    public static T SetFillColor<T>( this T shape, Color fillColor ) where T : ShapeDecorator
+    public static T SetFillColor<T>( this T shape, Color fillColor ) where T : IShape
     {
         shape.FillColor = fillColor;
         return shape;
     }
 
-    public static T SetPosition<T>( this T shape, float x, float y ) where T : ShapeDecorator
+    public static T SetPosition<T>( this T shape, float x, float y ) where T : IShape
     {
         return shape.SetPosition( new Vector2f( x, y ) );
     }
 
-    public static T SetPosition<T>( this T shape, Vector2f position ) where T : ShapeDecorator
+    public static T SetPosition<T>( this T shape, Vector2f position ) where T : IShape
     {
         shape.Position = position;
         return shape;
     }
 
-    public static T SetCenterPosition<T>( this T shape, float x, float y ) where T : ShapeDecorator
+    public static T SetCenterPosition<T>( this T shape, float x, float y ) where T : IShape
     {
         return shape.SetCenterPosition( new Vector2f( x, y ) );
     }
 
-    public static T SetCenterPosition<T>( this T shape, Vector2f position ) where T : ShapeDecorator
+    public static T SetCenterPosition<T>( this T shape, Vector2f position ) where T : IShape
     {
         float borderOffset = shape.OutlineColor != Color.Transparent 
             ? shape.OutlineThickness
@@ -53,7 +53,7 @@ public static class ShapeDecoratorFluentExtensions
         return shape;
     }   
     
-    public static T SetMaxSize<T>( this T shape, Vector2f maxSize ) where T : ShapeDecorator
+    public static T SetMaxSize<T>( this T shape, Vector2f maxSize ) where T : IShape
     {
         FloatRect bounds = shape.GetGlobalBounds();
 

@@ -4,8 +4,8 @@ namespace Lab2.Handlers.Selection;
 
 public class SelectedShapesContainer
 {
-    private readonly HashSet<ShapeDecorator> _selectedShapes = new();
-    private readonly HashSet<ShapeDecorator> _relatedSelectedShapes = new();
+    private readonly HashSet<IShape> _selectedShapes = new();
+    private readonly HashSet<IShape> _relatedSelectedShapes = new();
 
     public bool AnyWithSelectionType( SelectionType selectionType )
     {
@@ -17,14 +17,14 @@ public class SelectedShapesContainer
         }
     }
 
-    public SelectionType GetSelectionType( ShapeDecorator shapeDecorator )
+    public SelectionType GetSelectionType( IShape baseShape )
     {
-        if ( _selectedShapes.Contains( shapeDecorator ) )
+        if ( _selectedShapes.Contains( baseShape ) )
         {
             return SelectionType.TrueSelection;
         }
 
-        if ( _relatedSelectedShapes.Contains( shapeDecorator ) )
+        if ( _relatedSelectedShapes.Contains( baseShape ) )
         {
             return SelectionType.GroupSelection;
         }
@@ -32,14 +32,14 @@ public class SelectedShapesContainer
         return SelectionType.NotSelected;
     }
 
-    public List<ShapeDecorator> GetAllSelectedShapes()
+    public List<IShape> GetAllSelectedShapes()
     {
         return _selectedShapes
             .Union( _relatedSelectedShapes )
             .ToList();
     }
 
-    public List<ShapeDecorator> GetSelectedShapes( SelectionType selectionType )
+    public List<IShape> GetSelectedShapes( SelectionType selectionType )
     {
         if ( selectionType == SelectionType.TrueSelection )
         {
@@ -54,31 +54,31 @@ public class SelectedShapesContainer
         throw new ArgumentOutOfRangeException( nameof( selectionType ) );
     }
 
-    public void Select( IEnumerable<ShapeDecorator> shapes, SelectionType selectionType )
+    public void Select( IEnumerable<IShape> shapes, SelectionType selectionType )
     {
-        foreach ( ShapeDecorator shape in shapes )
+        foreach ( IShape shape in shapes )
         {
             Select( shape, selectionType );
         }
     }
 
-    public void Select( ShapeDecorator shapeDecorator, SelectionType selectionType )
+    public void Select( IShape baseShape, SelectionType selectionType )
     {
         if ( selectionType == SelectionType.TrueSelection )
         {
-            _selectedShapes.Add( shapeDecorator );
+            _selectedShapes.Add( baseShape );
             return;
         }
 
         if ( selectionType == SelectionType.GroupSelection )
         {
             // Shape can't be pseudo selected if it's already true selected
-            if ( _selectedShapes.Contains( shapeDecorator ) )
+            if ( _selectedShapes.Contains( baseShape ) )
             {
                 return;
             }
 
-            _relatedSelectedShapes.Add( shapeDecorator );
+            _relatedSelectedShapes.Add( baseShape );
             return;
         }
 
@@ -91,9 +91,9 @@ public class SelectedShapesContainer
         _relatedSelectedShapes.Clear();
     }
 
-    public void Unselect( ShapeDecorator shapeDecorator )
+    public void Unselect( IShape baseShape )
     {
-        _selectedShapes.Remove( shapeDecorator );
-        _relatedSelectedShapes.Remove( shapeDecorator );
+        _selectedShapes.Remove( baseShape );
+        _relatedSelectedShapes.Remove( baseShape );
     }
 }
