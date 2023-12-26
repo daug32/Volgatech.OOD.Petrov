@@ -9,7 +9,8 @@ public interface IStateHandler
     
     ShapeDecorator? GetStateDescription();
 
-    void OnKeyPressed( object? sender, KeyEventArgs eventArgs );
+    void BeforeDraw();
+    void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs );
     void OnMouseButtonPressed( object? sender, MouseButtonEventArgs buttonEventArgs );
     void OnMouseButtonReleased( object? sender, MouseButtonEventArgs buttonEventArgs );
     void OnDoubleClick( object? sender, MouseButtonEventArgs buttonEventArgs );

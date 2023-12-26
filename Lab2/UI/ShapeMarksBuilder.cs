@@ -1,4 +1,5 @@
 ﻿using Lab2.Handlers.Selection;
+using Lab2.Models;
 using Lab2.Public;
 using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
@@ -10,21 +11,30 @@ namespace Lab2.UI;
 
 public class ShapeMarksBuilder
 {
-    private static readonly Color _selectionMark = CustomColors.Gray; 
-    
-    public List<Drawable> Build( 
-        SelectionType selectionType,
-        bool isGrouped,
-        FloatRect shapeBounds )
+    private static readonly Color _selectionMark = CustomColors.Gray;
+
+    private readonly ShapesContainer _shapesContainer;
+    private readonly SelectionHandler _selectionHandler;
+
+    public ShapeMarksBuilder( ShapesContainer shapesContainer, SelectionHandler selectionHandler )
     {
+        _shapesContainer = shapesContainer;
+        _selectionHandler = selectionHandler;
+    }
+
+    public List<Drawable> GetMarks( ShapeDecorator shape )
+    {
+        FloatRect shapeBounds = shape.GetGlobalBounds();
+
         var result = new List<Drawable>();
-        
+
+        SelectionType selectionType = _selectionHandler.GetSelectionType( shape ); 
         if ( selectionType != SelectionType.NotSelected )
         {
             result.Add( BuildSelectionMark( selectionType, shapeBounds ) );
         }
 
-        if ( isGrouped )
+        if ( _shapesContainer.HasGroup( shape ) )
         {
             result.Add( BuildGroupMark( shapeBounds ) );
         }

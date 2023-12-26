@@ -1,8 +1,6 @@
-﻿using Lab2.Handlers;
-using Lab2.Handlers.Selection;
+﻿using Lab2.Handlers.Selection;
 using Lab2.Handlers.States;
 using Lab2.Models;
-using Lab2.Models.Extensions;
 using Lab2.UI;
 using Libs.SFML.Applications;
 using Libs.SFML.Shapes;
@@ -26,23 +24,25 @@ public class Application : BaseApplication, IStateContext
     private readonly StateHandlerFactory _stateStateHandlerFactory;
     private IStateHandler _stateHandler;
 
-    // Handlers
-    private readonly DragAndDropHandler _dragAndDropHandler = new();
-    private readonly SelectionHandler _selectionHandler = new();
-
     public Application() : base( new VideoMode( 800, 600 ) )
     {
-        _shapesContainer = new ShapesContainer();
+        var selectionHandler = new SelectionHandler();
         
-        // States
-        _stateStateHandlerFactory = new StateHandlerFactory( _shapesContainer );
-        _stateHandler = _stateStateHandlerFactory.Build( this, State.Default );
+        // Data holder
+        _shapesContainer = new ShapesContainer();
         
         // UI
         _toolbar = new Toolbar( ( Vector2f )WindowSize );
         _toolbar.StateSwitched += ( _, state ) => SwitchState( state );
-        _shapeMarksBuilder = new ShapeMarksBuilder();
+        _shapeMarksBuilder = new ShapeMarksBuilder( _shapesContainer, selectionHandler );
         
+        // States
+        _stateStateHandlerFactory = new StateHandlerFactory( 
+            _shapesContainer, 
+            selectionHandler );
+        _stateHandler = _stateStateHandlerFactory.Build( this, State.Default );
+        
+        // Events
         KeyPressed += OnKeyPressed;
         MouseButtonPressed += OnMouseButtonPressed;
         MouseButtonDoublePressed += OnDoubleClick;
@@ -51,20 +51,18 @@ public class Application : BaseApplication, IStateContext
 
     protected override void Draw()
     {
-        ClearWindow( Color.White );
+        _stateHandler.BeforeDraw();
 
-        _dragAndDropHandler.Update( _selectionHandler.GetAllSelectedShapes() );
+        ClearWindow( Color.White );
 
         foreach ( ShapeDecorator shape in _shapesContainer.GetAll() )
         {
             RenderObject( shape );
 
-            _shapeMarksBuilder
-                .Build(
-                    _selectionHandler.GetSelectionType( shape ),
-                    _shapesContainer.HasGroup( shape ),
-                    shape.GetGlobalBounds() )
-                .ForEach( RenderObject );
+            foreach ( Drawable mark in _shapeMarksBuilder.GetMarks( shape ) )
+            {
+                RenderObject( mark );
+            }
         }
         
         RenderObject( _toolbar );
@@ -72,46 +70,12 @@ public class Application : BaseApplication, IStateContext
 
     private void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs )
     {
-        if ( CurrentState != State.Default )
-        {
-            _stateHandler.OnKeyPressed( sender, keyEventArgs );
-            return;
-        }
-
-        switch ( keyEventArgs.Code )
-        {
-            case Keyboard.Key.G when Keyboard.IsKeyPressed( Keyboard.Key.LControl ):
-            {
-                var selectedItems = _selectionHandler.GetAllSelectedShapes();
-                _shapesContainer.Group( selectedItems );
-                break;
-            }
-            case Keyboard.Key.U when Keyboard.IsKeyPressed( Keyboard.Key.LControl ):
-            {
-                var selectedItems = _selectionHandler.GetSelectedShapes( SelectionType.TrueSelection );
-                _shapesContainer.Ungroup( selectedItems );
-                _selectionHandler.OnUngroup( selectedItems );
-                break;
-            }
-        }
+        _stateHandler.OnKeyPressed( sender, keyEventArgs );
     }
 
     private void OnMouseButtonPressed( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        if ( CurrentState != State.Default )
-        {
-            _stateHandler.OnMouseButtonPressed( sender, mouseEventArgs );
-            return;
-        }
-        
-        if ( mouseEventArgs.Button == Mouse.Button.Left )
-        {
-            ShapeDecorator? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
-            var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
-
-            _dragAndDropHandler.OnMousePressed( clickedShape );
-            _selectionHandler.OnMousePressed( clickedShape, relatedShapes );
-        }
+        _stateHandler.OnMouseButtonPressed( sender, mouseEventArgs );
     }
 
     private void OnMouseButtonReleased( object? sender, MouseButtonEventArgs mouseEventArgs )
@@ -121,33 +85,12 @@ public class Application : BaseApplication, IStateContext
             return;
         }
         
-        if ( CurrentState != State.Default )
-        {
-            _stateHandler.OnMouseButtonReleased( sender, mouseEventArgs );
-            return;
-        }
-        
-        if ( mouseEventArgs.Button == Mouse.Button.Left )
-        {
-            _dragAndDropHandler.OnMouseReleased();
-        }
+        _stateHandler.OnMouseButtonReleased( sender, mouseEventArgs );
     }
 
     private void OnDoubleClick( object? sender, MouseButtonEventArgs mouseEventArgs )
     {
-        if ( CurrentState != State.Default )
-        {
-            _stateHandler.OnDoubleClick( sender, mouseEventArgs );
-            return;
-        }
-
-        if ( mouseEventArgs.Button == Mouse.Button.Left )
-        {
-            ShapeDecorator? clickedShape = _shapesContainer.FindByPosition( mouseEventArgs.X, mouseEventArgs.Y );
-            var relatedShapes = _shapesContainer.GetRelatedShapes( clickedShape );
-
-            _selectionHandler.OnDoubleClick( clickedShape, relatedShapes );
-        }
+        _stateHandler.OnDoubleClick( sender, mouseEventArgs );
     }
     
     private void SwitchState( State state )

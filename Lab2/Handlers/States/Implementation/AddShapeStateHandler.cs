@@ -38,7 +38,11 @@ public class AddShapeStateHandler : IStateHandler
         return GetCurrentShape();
     }
 
-    public void OnKeyPressed( object? sender, KeyEventArgs eventArgs )
+    public void BeforeDraw()
+    {
+    }
+
+    public void OnKeyPressed( object? sender, KeyEventArgs keyEventArgs )
     {
     }
 
