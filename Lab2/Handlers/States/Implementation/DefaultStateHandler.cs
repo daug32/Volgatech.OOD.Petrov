@@ -12,7 +12,7 @@ public class DefaultStateHandler : IStateHandler
     private readonly SelectionHandler _selectionHandler;
     private readonly DragAndDropHandler _dragAndDropHandler;
 
-    public State State { get; } = State.Default;
+    public State State => State.Default;
 
     public DefaultStateHandler( ShapesContainer shapesContainer, SelectionHandler selectionHandler )
     {

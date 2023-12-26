@@ -8,7 +8,7 @@ namespace Lab2.Handlers.States.Commands.Implementation;
 public class CreateRectangleShapeCommand : ICreateShapeCommand
 {
     public Vector2f Size;
-    public Vector2f Position { get; set; }
+    public Vector2f Position;
 
     public CreateRectangleShapeCommand( 
         Vector2f size, 

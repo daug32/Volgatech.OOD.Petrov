@@ -21,7 +21,7 @@ public class AddShapeStateHandler : IStateHandler
         new CreateTriangleShapeCommand( new Vector2f( 0, 0 ), new Vector2f( 20, 0 ), new Vector2f( 0, 20 ) ),
     } );
 
-    public State State { get; } = State.AddShape;
+    public State State => State.AddShape;
 
     public AddShapeStateHandler( IStateContext context, ShapesContainer shapesContainer )
     {
@@ -33,7 +33,7 @@ public class AddShapeStateHandler : IStateHandler
         }
     }
 
-    public ShapeDecorator? GetStateDescription()
+    public ShapeDecorator GetStateDescription()
     {
         return GetCurrentShape();
     }

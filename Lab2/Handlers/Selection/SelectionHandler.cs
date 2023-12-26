@@ -12,7 +12,7 @@ public class SelectionHandler
         return _selectionContainer.GetAllSelectedShapes();
     }
 
-    public IEnumerable<ShapeDecorator> GetSelectedShapes( SelectionType selectionType )
+    public List<ShapeDecorator> GetSelectedShapes( SelectionType selectionType )
     {
         return _selectionContainer.GetSelectedShapes( selectionType );
     }
@@ -28,7 +28,7 @@ public class SelectionHandler
         _selectionContainer.Select( shapes, SelectionType.TrueSelection );
     }
 
-    public void OnDoubleClick( ShapeDecorator? clickedShape, IEnumerable<ShapeDecorator> relatedShapes )
+    public void OnDoubleClick( ShapeDecorator? clickedShape, List<ShapeDecorator> relatedShapes )
     {
         if ( clickedShape is null )
         {

@@ -9,8 +9,7 @@ public class CreateTriangleShapeCommand : ICreateShapeCommand
     public Vector2f P0;
     public Vector2f P1;
     public Vector2f P2;
-    
-    public Vector2f Position { get; set; }
+    public Vector2f Position;
 
     public CreateTriangleShapeCommand(
         Vector2f p0,

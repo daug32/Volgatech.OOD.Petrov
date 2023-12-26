@@ -8,7 +8,7 @@ namespace Lab2.Handlers;
 public class DragAndDropHandler
 {
     private Vector2i _prevMousePosition;
-    private bool _isAnyShapePressed = false;
+    private bool _isAnyShapePressed;
 
     public bool IsDragAndDropping { get; private set; }
 
