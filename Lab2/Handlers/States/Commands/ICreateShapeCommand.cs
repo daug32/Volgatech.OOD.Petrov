@@ -1,7 +1,7 @@
 ﻿using Libs.SFML.Shapes;
 using SFML.System;
 
-namespace Lab2.Models.Commands;
+namespace Lab2.Handlers.States.Commands;
 
 public interface ICreateShapeCommand
 {

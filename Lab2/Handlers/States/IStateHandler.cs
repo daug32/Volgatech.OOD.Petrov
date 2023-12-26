@@ -7,7 +7,6 @@ public interface IStateHandler
 {
     State State { get; }
     
-    void MoveToNextValue();
     ShapeDecorator? GetStateDescription();
 
     void OnKeyPressed( object? sender, KeyEventArgs eventArgs );

@@ -2,7 +2,7 @@
 using Libs.SFML.Shapes.Extensions;
 using SFML.System;
 
-namespace Lab2.Models.Commands.Implementation;
+namespace Lab2.Handlers.States.Commands.Implementation;
 
 public class CreateTriangleShapeCommand : ICreateShapeCommand
 { 

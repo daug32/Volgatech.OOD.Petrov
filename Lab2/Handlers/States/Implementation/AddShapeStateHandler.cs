@@ -1,6 +1,6 @@
-﻿using Lab2.Models;
-using Lab2.Models.Commands;
-using Lab2.Models.Commands.Implementation;
+﻿using Lab2.Handlers.States.Commands;
+using Lab2.Handlers.States.Commands.Implementation;
+using Lab2.Models;
 using Libs.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
