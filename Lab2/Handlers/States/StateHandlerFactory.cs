@@ -22,6 +22,8 @@ public class StateHandlerFactory
             State.Default => new DefaultStateHandler( _shapesContainer, _selectionHandler ),
             State.AddShape => new AddShapeStateHandler( context, _shapesContainer ),
             State.ChangeFillColor => new ChangeFillColorStateHandler( context, _shapesContainer ),
+            State.ChangeBorderColor => new ChangeBorderColorStateHandler( context, _shapesContainer ),
+            State.ChangeBorderSize => new ChangeBorderSizeStateHandler( context, _shapesContainer ),
             _ => throw new ArgumentOutOfRangeException( nameof( newState ), newState, null )
         };
     }

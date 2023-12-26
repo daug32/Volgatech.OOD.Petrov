@@ -4,5 +4,7 @@ public enum State
 {
     Default,
     AddShape,
-    ChangeFillColor
+    ChangeFillColor,
+    ChangeBorderColor,
+    ChangeBorderSize,
 }

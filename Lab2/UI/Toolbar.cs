@@ -38,20 +38,20 @@ public class Toolbar : Menu
         
         FloatRect toolbarSize = GetGlobalBounds();
 
-        var stateDescriptionPosition = new Vector2f( 
+        var descriptionPosition = new Vector2f( 
             toolbarSize.Width - _maxUiItemSize.X - SpaceBetweenUiItems,
-            toolbarSize.Height / 2 - _maxUiItemSize.Y / 2 );
+            toolbarSize.Height / 2 );
         
         // State description background
-        ShapeDecorator descriptionBackground = BuildStateDescriptionBackground();
-        descriptionBackground.SetPosition( stateDescriptionPosition );
+        ShapeDecorator descriptionBackground = BuildStateDescriptionBackground()
+            .SetCenterPosition( descriptionPosition );
 
         AddOrReplaceItem( StateDescriptionBackgroundMenuKey, descriptionBackground );
 
         // State description content
         descriptionContent
             .SetMaxSize( _maxUiItemSize )
-            .SetPosition( stateDescriptionPosition );
+            .SetCenterPosition( descriptionPosition );
 
         AddOrReplaceItem( StateDescriptionMenuKey, descriptionContent );
     }
@@ -77,11 +77,11 @@ public class Toolbar : Menu
                 text: new Text( "Fill color", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
-                onClick: button => Console.WriteLine( $"Change border color, {button.GetGlobalBounds()}" ),
+                onClick: _ => SwitchState( State.ChangeBorderColor ),
                 text: new Text( "Border color", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(
-                onClick: button => Console.WriteLine( $"Change border size, {button.GetGlobalBounds()}" ),
+                onClick: _ => SwitchState( State.ChangeBorderSize ),
                 text: new Text( "Border size", Resources.Fonts.Roboto, 14 ),
                 viewParams: buttonViewParams ),
             new TextButton(

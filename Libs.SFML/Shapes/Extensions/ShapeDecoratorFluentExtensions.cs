@@ -41,10 +41,14 @@ public static class ShapeDecoratorFluentExtensions
 
     public static T SetCenterPosition<T>( this T shape, Vector2f position ) where T : ShapeDecorator
     {
+        float borderOffset = shape.OutlineColor != Color.Transparent 
+            ? shape.OutlineThickness
+            : 0;
+        
         FloatRect bounds = shape.GetGlobalBounds();
         shape.Position = new Vector2f(
-            position.X - bounds.Width / 2,
-            position.Y - bounds.Height / 2 );
+            position.X - bounds.Width / 2 + borderOffset * shape.Scale.X,
+            position.Y - bounds.Height / 2 + borderOffset * shape.Scale.Y );
 
         return shape;
     }   
