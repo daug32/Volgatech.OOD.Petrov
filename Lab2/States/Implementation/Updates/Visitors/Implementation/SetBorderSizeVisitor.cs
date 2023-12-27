@@ -1,7 +1,7 @@
 ﻿using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Implementation;
 
-namespace Lab2.Handlers.States.Implementation.Updates.Visitors.Implementation;
+namespace Lab2.States.Implementation.Updates.Visitors.Implementation;
 
 internal class SetBorderSizeVisitor : IShapeVisitor
 {

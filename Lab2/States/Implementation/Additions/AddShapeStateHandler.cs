@@ -1,6 +1,6 @@
-﻿using Lab2.Handlers.States.Implementation.Additions.Commands;
-using Lab2.Handlers.States.Implementation.Additions.Commands.Implementation;
-using Lab2.Models;
+﻿using Lab2.Models;
+using Lab2.States.Implementation.Additions.Commands;
+using Lab2.States.Implementation.Additions.Commands.Implementation;
 using Libs.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
@@ -8,7 +8,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace Lab2.Handlers.States.Implementation.Additions;
+namespace Lab2.States.Implementation.Additions;
 
 internal class AddShapeStateHandler : IStateHandler
 {

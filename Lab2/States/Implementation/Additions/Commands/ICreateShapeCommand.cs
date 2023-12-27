@@ -1,6 +1,6 @@
 ﻿using Libs.SFML.Shapes;
 
-namespace Lab2.Handlers.States.Implementation.Additions.Commands;
+namespace Lab2.States.Implementation.Additions.Commands;
 
 internal interface ICreateShapeCommand
 {

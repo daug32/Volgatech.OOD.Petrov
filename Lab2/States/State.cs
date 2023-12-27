@@ -1,4 +1,4 @@
-﻿namespace Lab2.Handlers.States;
+﻿namespace Lab2.States;
 
 public enum State
 {

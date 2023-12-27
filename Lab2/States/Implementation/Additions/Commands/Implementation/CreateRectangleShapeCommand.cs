@@ -3,7 +3,7 @@ using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.Shapes.Implementation;
 using SFML.System;
 
-namespace Lab2.Handlers.States.Implementation.Additions.Commands.Implementation;
+namespace Lab2.States.Implementation.Additions.Commands.Implementation;
 
 internal class CreateRectangleShapeCommand : ICreateShapeCommand
 {

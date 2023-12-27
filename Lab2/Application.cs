@@ -1,6 +1,6 @@
 ﻿using Lab2.Handlers.Selection;
-using Lab2.Handlers.States;
 using Lab2.Models;
+using Lab2.States;
 using Lab2.UI;
 using Libs.SFML.Applications;
 using Libs.SFML.Shapes;

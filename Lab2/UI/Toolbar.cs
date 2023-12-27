@@ -1,5 +1,5 @@
-﻿using Lab2.Handlers.States;
-using Lab2.Public;
+﻿using Lab2.Public;
+using Lab2.States;
 using Libs.SFML.Colors;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;

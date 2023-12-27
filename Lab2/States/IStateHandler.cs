@@ -1,7 +1,7 @@
 ﻿using Libs.SFML.Shapes;
 using SFML.Window;
 
-namespace Lab2.Handlers.States;
+namespace Lab2.States;
 
 public interface IStateHandler
 {

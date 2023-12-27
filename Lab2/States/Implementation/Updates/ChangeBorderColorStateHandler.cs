@@ -1,44 +1,44 @@
-﻿using Lab2.Handlers.States.Implementation.Updates.Visitors.Implementation;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Models.Extensions;
+using Lab2.States.Implementation.Updates.Visitors.Implementation;
 using Libs.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
-using SFML.System;
 using SFML.Window;
 
-namespace Lab2.Handlers.States.Implementation.Updates;
+namespace Lab2.States.Implementation.Updates;
 
-internal class ChangeBorderSizeStateHandler : IStateHandler
+internal class ChangeBorderColorStateHandler : IStateHandler
 {
     private readonly ShapesContainer _shapesContainer;
     
-    private static readonly ListIterator<SetBorderSizeVisitor> _allowedBorderSizes = new( new[]
+    private static readonly ListIterator<SetBorderColorVisitor> _allowedColors = new( new[]
     {
-        new SetBorderSizeVisitor( 1 ),
-        new SetBorderSizeVisitor( 2 ),
-        new SetBorderSizeVisitor( 3 ),
-        new SetBorderSizeVisitor( 0 ),
+        new SetBorderColorVisitor( Color.Blue ),
+        new SetBorderColorVisitor( Color.Red ),
+        new SetBorderColorVisitor( Color.Yellow ),
+        new SetBorderColorVisitor( Color.Black ),
     } );
 
-    public State State => State.ChangeBorderSize;
+    public State State => State.ChangeBorderColor;
 
-    public ChangeBorderSizeStateHandler( IStateContext context, ShapesContainer shapesContainer )
+    public ChangeBorderColorStateHandler( IStateContext context, ShapesContainer shapesContainer )
     {
         _shapesContainer = shapesContainer;
 
         if ( context.CurrentState == State )
         {
-            _allowedBorderSizes.MoveToNextValue();
+            _allowedColors.MoveToNextValue();
         }
     }
 
     public IShape GetStateDescription()
     {
-        float borderSize = _allowedBorderSizes.GetCurrentValue().BorderSize;
-        return new Rectangle( new Vector2f( 20, borderSize * 2 ) )
+        return new Circle( 20 )
+            .SetOutlineThickness( 10 )
+            .SetOutlineColor( _allowedColors.GetCurrentValue().BorderColor )
             .SetFillColor( Color.Black );
     }
 
@@ -69,11 +69,11 @@ internal class ChangeBorderSizeStateHandler : IStateHandler
         {
             return;
         }
-        
-        clickedShape.AcceptVisitor( _allowedBorderSizes.GetCurrentValue() );
-        if ( clickedShape.OutlineColor == Color.Transparent )
+
+        clickedShape.AcceptVisitor( _allowedColors.GetCurrentValue() );     
+        if ( clickedShape.OutlineThickness == 0 )
         {
-            clickedShape.OutlineColor = Color.Black;
+            clickedShape.OutlineThickness = 1;
         }
     }
 

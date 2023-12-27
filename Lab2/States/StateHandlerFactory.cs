@@ -1,11 +1,10 @@
 ﻿using Lab2.Handlers.Selection;
-using Lab2.Handlers.States.Implementation;
-using Lab2.Handlers.States.Implementation.Additions;
-using Lab2.Handlers.States.Implementation.Defaults;
-using Lab2.Handlers.States.Implementation.Updates;
 using Lab2.Models;
+using Lab2.States.Implementation.Additions;
+using Lab2.States.Implementation.Defaults;
+using Lab2.States.Implementation.Updates;
 
-namespace Lab2.Handlers.States;
+namespace Lab2.States;
 
 public class StateHandlerFactory
 {

@@ -1,6 +1,6 @@
-﻿using Lab2.Handlers.States.Implementation.Updates.Visitors.Implementation;
-using Lab2.Models;
+﻿using Lab2.Models;
 using Lab2.Models.Extensions;
+using Lab2.States.Implementation.Updates.Visitors.Implementation;
 using Libs.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
@@ -8,7 +8,7 @@ using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
 using SFML.Window;
 
-namespace Lab2.Handlers.States.Implementation.Updates;
+namespace Lab2.States.Implementation.Updates;
 
 internal class ChangeFillColorStateHandler : IStateHandler
 {

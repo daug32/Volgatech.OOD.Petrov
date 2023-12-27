@@ -2,7 +2,7 @@
 using Libs.SFML.Shapes.Implementation;
 using SFML.Graphics;
 
-namespace Lab2.Handlers.States.Implementation.Updates.Visitors.Implementation;
+namespace Lab2.States.Implementation.Updates.Visitors.Implementation;
 
 internal class SetFillColorVisitor : IShapeVisitor
 {

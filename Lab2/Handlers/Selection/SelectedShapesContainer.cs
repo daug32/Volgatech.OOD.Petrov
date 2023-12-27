@@ -2,7 +2,7 @@
 
 namespace Lab2.Handlers.Selection;
 
-public class SelectedShapesContainer
+internal class SelectedShapesContainer
 {
     private readonly HashSet<IShape> _selectedShapes = new();
     private readonly HashSet<IShape> _relatedSelectedShapes = new();

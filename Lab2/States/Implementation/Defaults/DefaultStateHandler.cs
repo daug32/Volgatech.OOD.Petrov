@@ -1,10 +1,11 @@
-﻿using Lab2.Handlers.Selection;
+﻿using Lab2.Handlers;
+using Lab2.Handlers.Selection;
 using Lab2.Models;
 using Lab2.Models.Extensions;
 using Libs.SFML.Shapes;
 using SFML.Window;
 
-namespace Lab2.Handlers.States.Implementation.Defaults;
+namespace Lab2.States.Implementation.Defaults;
 
 internal class DefaultStateHandler : IStateHandler
 {
