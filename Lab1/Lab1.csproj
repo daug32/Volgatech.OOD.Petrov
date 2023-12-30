@@ -14,7 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Libs.SFML\Libs.SFML.csproj" />
-      <ProjectReference Include="..\Libs\Libs.csproj" />
+      <ProjectReference Include="..\Libs.Linq\Libs.Linq.csproj" />
     </ItemGroup>
 
 </Project>

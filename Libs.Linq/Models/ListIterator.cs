@@ -1,4 +1,4 @@
-﻿namespace Libs.Models;
+﻿namespace Libs.Linq.Models;
 
 public class ListIterator<T>
 {

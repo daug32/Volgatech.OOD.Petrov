@@ -1,7 +1,7 @@
 ﻿using Lab2.Models;
 using Lab2.States.Implementation.Additions.Commands;
 using Lab2.States.Implementation.Additions.Commands.Implementation;
-using Libs.Models;
+using Libs.Linq.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
 using SFML.Graphics;

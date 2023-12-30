@@ -12,7 +12,7 @@ public class DragAndDropHandler
 
     public bool IsDragAndDropping { get; private set; }
 
-    public void OnMousePressed( IShape? clickedShape )
+    public void OnMousePressed(  IShape? clickedShape )
     {
         _isAnyShapePressed = clickedShape != null;
     }

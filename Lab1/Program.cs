@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Lab1.Tasks;
 using Lab1.Tasks.Parsers;
-using Libs.Extensions;
+using Libs.Linq.Extensions;
 
 namespace Lab1;
 

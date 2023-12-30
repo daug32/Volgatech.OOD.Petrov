@@ -1,7 +1,7 @@
 ﻿using Lab2.Models;
 using Lab2.Models.Extensions;
 using Lab2.States.Implementation.Updates.Visitors.Implementation;
-using Libs.Models;
+using Libs.Linq.Models;
 using Libs.SFML.Shapes;
 using Libs.SFML.Shapes.Extensions;
 using Libs.SFML.Shapes.Implementation;

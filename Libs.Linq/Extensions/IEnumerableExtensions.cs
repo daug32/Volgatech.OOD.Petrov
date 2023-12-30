@@ -1,4 +1,4 @@
-﻿namespace Libs.Extensions;
+﻿namespace Libs.Linq.Extensions;
 
 // ReSharper disable once InconsistentNaming
 public static class IEnumerableExtensions

@@ -1,4 +1,4 @@
-﻿namespace Libs.Extensions;
+﻿namespace Libs.Linq.Extensions;
 
 public static class HashSetExtensions
 {

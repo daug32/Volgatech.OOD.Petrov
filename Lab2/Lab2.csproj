@@ -18,9 +18,10 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Libs.Memento\Libs.Memento.csproj" />
       <ProjectReference Include="..\Libs.SFML.UI\Libs.SFML.UI.csproj" />
       <ProjectReference Include="..\Libs.SFML\Libs.SFML.csproj" />
-      <ProjectReference Include="..\Libs\Libs.csproj" />
+      <ProjectReference Include="..\Libs.Linq\Libs.Linq.csproj" />
     </ItemGroup>
 
 </Project>
