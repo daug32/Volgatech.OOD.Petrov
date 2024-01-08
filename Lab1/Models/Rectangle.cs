@@ -5,11 +5,12 @@ namespace Lab1.Models;
 
 public class Rectangle : RectangleShape, ISurface
 {
-    public Rectangle( Vector2f p0, Vector2f p1 )
+    public Rectangle( Vector2f leftTop, Vector2f rightBottom )
         : base( new Vector2f(
-            Math.Abs( p1.X - p0.X ),
-            Math.Abs( p1.Y - p0.Y ) ) )
+            Math.Abs( rightBottom.X - leftTop.X ),
+            Math.Abs( rightBottom.Y - leftTop.Y ) ) )
     {
+        Position = leftTop;
     }
 
     public float GetArea()

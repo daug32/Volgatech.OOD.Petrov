@@ -61,7 +61,7 @@ public class Program
         }
 
         var stringBuilder = new StringBuilder();
-        foreach (ISurface surface in taskData.GetSurfaces())
+        foreach (ISurface surface in taskData.Surfaces)
         {
             stringBuilder.AppendLine(surface.GetSurfaceInfo());
         }
