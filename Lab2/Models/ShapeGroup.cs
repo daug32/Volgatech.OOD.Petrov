@@ -1,4 +1,4 @@
-﻿using Libs.Linq.Extensions;
+﻿using Libs.Extensions;
 using Libs.SFML.Shapes;
 
 namespace Lab2.Models;

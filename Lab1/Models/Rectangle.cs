@@ -3,9 +3,9 @@ using SFML.System;
 
 namespace Lab1.Models;
 
-public class RectangleDecorator : RectangleShape, ISurface
+public class Rectangle : RectangleShape, ISurface
 {
-    public RectangleDecorator( Vector2f p0, Vector2f p1 )
+    public Rectangle( Vector2f p0, Vector2f p1 )
         : base( new Vector2f(
             Math.Abs( p1.X - p0.X ),
             Math.Abs( p1.Y - p0.Y ) ) )

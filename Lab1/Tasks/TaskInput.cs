@@ -4,9 +4,9 @@ namespace Lab1.Tasks;
 
 public class TaskInput
 {
-    public List<TriangleDecorator> Triangles { get; } = new();
-    public List<CircleDecorator> Circles { get; } = new();
-    public List<RectangleDecorator> Rectangles { get; } = new();
+    public List<Triangle> Triangles { get; } = new();
+    public List<Circle> Circles { get; } = new();
+    public List<Rectangle> Rectangles { get; } = new();
 
     public IEnumerable<ISurface> GetSurfaces() => Triangles
         .Cast<ISurface>()

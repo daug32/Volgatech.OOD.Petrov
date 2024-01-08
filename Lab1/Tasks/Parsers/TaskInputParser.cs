@@ -6,20 +6,20 @@ namespace Lab1.Tasks.Parsers;
 
 public static class TaskInputParser
 {
-    public static TaskInput? ParseFromFile( string inputFilePath )
+    public static TaskInput ParseFromFile( string inputFilePath )
     {
         if ( !File.Exists( inputFilePath ) )
         {
-            Console.WriteLine( $"Входной файл не найден. Файл: {Path.GetFullPath( inputFilePath )}" );
-            return null;
+            throw new ArgumentException( 
+                $"Input file was not found. Path: {Path.GetFullPath( inputFilePath )}" );
         }
 
         return ParseFromStrings( File.ReadAllLines( inputFilePath ) );
     }
 
-    internal static TaskInput? ParseFromStrings( IEnumerable<string> rawTaskData )
+    private static TaskInput ParseFromStrings( IEnumerable<string> rawTaskData )
     {
-        var filteredData = rawTaskData
+        IEnumerable<string> filteredData = rawTaskData
             .Select( line => line.Trim() )
             .Where( line => !String.IsNullOrWhiteSpace( line ) );
         
@@ -27,7 +27,7 @@ public static class TaskInputParser
         
         foreach ( string line in filteredData )
         {
-            // Parse from something like this:
+            // Parse shape type from something like this:
             //  "TRIANGLE: ...",
             //  "TRIANGLE  : ...",
             //  "  TRIANGLE: ..."  
@@ -41,30 +41,30 @@ public static class TaskInputParser
                 case "triangle":
                     if ( !TryAddTriangle( line, data ) )
                     {
-                        Console.WriteLine( $"Не удалось прочитать данные для теругольника: \"{line}\"" ); 
-                        return null;
+                        throw new ArgumentException( 
+                            $"Couldn't parse data for a triangle: \"{line}\"" ); 
                     }
                     break;
 
                 case "circle":
                     if ( !TryAddCircle( line, data ) ) 
                     {
-                        Console.WriteLine( $"Не удалось прочитать данные для окружности: \"{line}\"" );
-                        return null;
+                        throw new ArgumentException( 
+                            $"Couldn't parse data for a circle: \"{line}\"" );
                     }
                     
                     break;
                 case "rectangle":
                     if ( !TryAddRectangle( line, data) ) 
                     {
-                        Console.WriteLine( $"Не удалось прочитать данные для прямоугольника: \"{line}\"" );
-                        return null;
+                        throw new ArgumentException( 
+                            $"Couldn't parse data for a rectangle: \"{line}\"" );
                     }
                     
                     break;
                 default:
-                    Console.WriteLine( $"Неизвестная фигура: \"{line}\"" );
-                    return null;
+                    throw new AggregateException( 
+                        $"Unknown shape: \"{line}\"" );
             }
         }
 
@@ -73,7 +73,9 @@ public static class TaskInputParser
 
     private static bool TryAddRectangle( string line, TaskInput data )
     {
-        MatchCollection pointsMatches = Regex.Matches( line, RegexDictionary.NamedVector( "P\\d+" ) );
+        MatchCollection pointsMatches = Regex.Matches(
+            line,
+            RegexDictionary.NamedVector( "P\\d+" ) );
         if ( pointsMatches.Count != 2 )
         {
             return false;
@@ -86,20 +88,24 @@ public static class TaskInputParser
             Single.Parse( pointsMatches[1].Groups[1].Value ),
             Single.Parse( pointsMatches[1].Groups[2].Value ) );
         
-        data.Rectangles.Add( new RectangleDecorator( p0, p1 ) );
+        data.Rectangles.Add( new Rectangle( p0, p1 ) );
         
         return true;
     }
 
     private static bool TryAddCircle( string line, TaskInput data )
     {
-        MatchCollection pointsMatches = Regex.Matches( line, RegexDictionary.NamedVector( "C" ) );
+        MatchCollection pointsMatches = Regex.Matches( 
+            line,
+            RegexDictionary.NamedVector( "C" ) );
         if ( pointsMatches.Count != 1 )
         {
             return false;
         }
 
-        MatchCollection radiusMatches = Regex.Matches( line, RegexDictionary.NamedNumber( "R" ) );
+        MatchCollection radiusMatches = Regex.Matches( 
+            line,
+            RegexDictionary.NamedNumber( "R" ) );
         if ( radiusMatches.Count != 1 )
         {
             return false;
@@ -111,14 +117,16 @@ public static class TaskInputParser
 
         float radius = Single.Parse( radiusMatches.First().Groups[1].Value );
         
-        data.Circles.Add( new CircleDecorator( center, radius ) );
+        data.Circles.Add( new Circle( center, radius ) );
         
         return true;
     }
 
     private static bool TryAddTriangle( string line, TaskInput data )
     {
-        MatchCollection pointsMatches = Regex.Matches( line, RegexDictionary.NamedVector( "P\\d+" ) );
+        MatchCollection pointsMatches = Regex.Matches( 
+            line,
+            RegexDictionary.NamedVector( "P\\d+" ) );
         
         if ( pointsMatches.Count != 3 )
         {
@@ -135,7 +143,7 @@ public static class TaskInputParser
             Single.Parse( pointsMatches[2].Groups[1].Value ),
             Single.Parse( pointsMatches[2].Groups[2].Value ) );
         
-        data.Triangles.Add( new TriangleDecorator( p0, p1, p2 ) );
+        data.Triangles.Add( new Triangle( p0, p1, p2 ) );
         
         return true;
     }

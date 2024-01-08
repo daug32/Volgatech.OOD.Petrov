@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1", "Lab1\Lab1.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{8BE22E04-9487-406F-9E84-168099E96542}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs.Linq", "Libs\Libs.Linq\Libs.Linq.csproj", "{50B5C498-D197-46BE-A708-A147FF993A55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs", "Libs\Libs\Libs.csproj", "{50B5C498-D197-46BE-A708-A147FF993A55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libs.Memento", "Libs\Libs.Memento\Libs.Memento.csproj", "{6DA5018C-5401-40F7-A1C9-96494B9CC50C}"
 EndProject

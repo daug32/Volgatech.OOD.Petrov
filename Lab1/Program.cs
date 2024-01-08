@@ -1,7 +1,8 @@
 ﻿using System.Text;
+using Lab1.Models;
 using Lab1.Tasks;
 using Lab1.Tasks.Parsers;
-using Libs.Linq.Extensions;
+using Libs.Extensions;
 
 namespace Lab1;
 
@@ -30,27 +31,81 @@ CIRCLE: P=300; S=500
 * Лабораторная работа № 3.
 Выполнить рефакторинг лабораторной работы №2 (из программы на оценку 3), реализуя печать площади и периметра,
 используя паттерн Посетитель.
-
  */
 
 public class Program
 {
-    private static readonly string _inputFile = "input.txt";
-    private static readonly string _outputFile = "output.txt";
-    
     public static void Main()
     {
-        TaskInput? taskData = TaskInputParser.ParseFromFile( _inputFile );
-        if ( taskData is null )
+        string? inputFile = AskForInputFilePath();
+        if (inputFile is null)
         {
             return;
         }
 
+        string? outputFile = AskForOutputFile();
+        if (outputFile is null)
+        {
+            return;
+        }
+
+        TaskInput taskData;
+        try
+        {
+            taskData = TaskInputParser.ParseFromFile(inputFile);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return;
+        }
+
         var stringBuilder = new StringBuilder();
-        taskData
-            .GetSurfaces()
-            .ForEach( surface => stringBuilder.AppendLine( surface.GetSurfaceInfo() ) );
-        
-        File.WriteAllText( _outputFile, stringBuilder.ToString() );
+        foreach (ISurface surface in taskData.GetSurfaces())
+        {
+            stringBuilder.AppendLine(surface.GetSurfaceInfo());
+        }
+
+        File.WriteAllText(outputFile, stringBuilder.ToString());
+
+        Console.WriteLine("Completed successfully");
+    }
+
+    private static string? AskForInputFilePath()
+    {
+        Console.WriteLine("Enter path to the input file:");
+
+        string? path = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            Console.WriteLine("Path to the input file was not specified");
+            return null;
+        }
+
+        path = Path.GetFullPath(path);
+
+        if (!File.Exists(path))
+        {
+            Console.WriteLine($"Input file was not found. Path: {path}");
+            return null;
+        }
+
+        return path;
+    }
+
+    private static string? AskForOutputFile()
+    {
+        Console.WriteLine("Enter path to the output file");
+
+        string? path = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            Console.WriteLine("Path to the output file was not specified");
+            return null;
+        }
+
+        path = Path.GetFullPath(path);
+
+        return path;
     }
 }

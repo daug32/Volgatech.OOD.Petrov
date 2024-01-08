@@ -21,7 +21,7 @@
       <ProjectReference Include="..\Libs\Libs.Memento\Libs.Memento.csproj" />
       <ProjectReference Include="..\Libs\Libs.SFML.UI\Libs.SFML.UI.csproj" />
       <ProjectReference Include="..\Libs\Libs.SFML\Libs.SFML.csproj" />
-      <ProjectReference Include="..\Libs\Libs.Linq\Libs.Linq.csproj" />
+      <ProjectReference Include="..\Libs\Libs\Libs.csproj" />
     </ItemGroup>
 
 </Project>

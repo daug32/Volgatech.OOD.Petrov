@@ -4,11 +4,11 @@ using SFML.System;
 
 namespace Lab1.Models;
 
-public class TriangleDecorator : ConvexShape, ISurface
+public class Triangle : ConvexShape, ISurface
 {
     public List<Vector2f> Points { get; }
 
-    public TriangleDecorator( Vector2f p0, Vector2f p1, Vector2f p2 )
+    public Triangle( Vector2f p0, Vector2f p1, Vector2f p2 )
     {
         Points = new List<Vector2f> { p0, p1, p2 };
     }

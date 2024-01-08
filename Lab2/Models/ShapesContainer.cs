@@ -1,5 +1,5 @@
 ﻿using Lab2.Data;
-using Libs.Linq.Extensions;
+using Libs.Extensions;
 using Libs.SFML.Shapes;
 
 namespace Lab2.Models;

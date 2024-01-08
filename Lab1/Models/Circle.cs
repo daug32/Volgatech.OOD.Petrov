@@ -3,9 +3,9 @@ using SFML.System;
 
 namespace Lab1.Models;
 
-public class CircleDecorator : CircleShape, ISurface
+public class Circle : CircleShape, ISurface
 {
-    public CircleDecorator( Vector2f center, float radius )
+    public Circle( Vector2f center, float radius )
         : base( radius )
     {
         Position = center;
