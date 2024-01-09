@@ -18,39 +18,41 @@ public class CircleCreator
         return _creator;
     }
 
-    public Circle Create(Vector2f center, float radius)
+    public Circle Create( Vector2f center, float radius )
     {
-        return new Circle(center, radius);
+        return new Circle( center, radius );
     }
 
-    public Circle Create(string data)
+    public Circle Create( string data )
     {
-        MatchCollection pointsMatches = Regex.Matches( 
+        MatchCollection pointsMatches = Regex.Matches(
             data,
             RegexDictionary.NamedVector( "C" ) );
+
         if ( pointsMatches.Count != 1 )
         {
-            ThrowInvalidDataException(data);
+            ThrowInvalidDataException( data );
         }
 
-        MatchCollection radiusMatches = Regex.Matches( 
+        MatchCollection radiusMatches = Regex.Matches(
             data,
             RegexDictionary.NamedNumber( "R" ) );
+
         if ( radiusMatches.Count != 1 )
         {
             ThrowInvalidDataException( data );
         }
-        
-        return Create( 
-            center: new Vector2f(
+
+        return Create(
+            new Vector2f(
                 Single.Parse( pointsMatches[0].Groups[1].Value ),
                 Single.Parse( pointsMatches[0].Groups[2].Value ) ),
-            radius: Single.Parse( radiusMatches.First().Groups[1].Value ) );
+            Single.Parse( radiusMatches.First().Groups[1].Value ) );
     }
 
     private static void ThrowInvalidDataException( string data )
     {
-        throw new ArgumentException( 
+        throw new ArgumentException(
             $"Couldn't parse data for a circle: \"{data}\"" );
     }
 }

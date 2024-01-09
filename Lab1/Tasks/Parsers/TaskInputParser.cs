@@ -9,7 +9,7 @@ public static class TaskInputParser
     {
         if ( !File.Exists( inputFilePath ) )
         {
-            throw new ArgumentException( 
+            throw new ArgumentException(
                 $"Input file was not found. Path: {Path.GetFullPath( inputFilePath )}" );
         }
 
@@ -18,12 +18,12 @@ public static class TaskInputParser
 
     private static TaskInput ParseFromStrings( IEnumerable<string> rawTaskData )
     {
-        IEnumerable<string> filteredData = rawTaskData
+        var filteredData = rawTaskData
             .Select( line => line.Trim() )
             .Where( line => !String.IsNullOrWhiteSpace( line ) );
-        
+
         var data = new TaskInput();
-        
+
         foreach ( string line in filteredData )
         {
             // Parse shape type from something like this:
@@ -36,8 +36,8 @@ public static class TaskInputParser
                 .ToLower();
 
             ISurface surface = BuildSurface( shapeType, line );
-            
-            data.Surfaces.Add(surface);
+
+            data.Surfaces.Add( surface );
         }
 
         return data;
@@ -47,10 +47,10 @@ public static class TaskInputParser
     {
         return shapeType switch
         {
-            "triangle" => TriangleCreator.GetInstance().Create(data),
-            "circle" => CircleCreator.GetInstance().Create(data),
-            "rectangle" => RectangleCreator.GetInstance().Create(data),
-            _ => throw new AggregateException($"Unknown shape: \"{data}\"")
+            "triangle" => TriangleCreator.GetInstance().Create( data ),
+            "circle" => CircleCreator.GetInstance().Create( data ),
+            "rectangle" => RectangleCreator.GetInstance().Create( data ),
+            _ => throw new AggregateException( $"Unknown shape: \"{data}\"" )
         };
     }
 }

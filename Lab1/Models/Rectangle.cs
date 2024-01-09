@@ -23,5 +23,8 @@ public class Rectangle : RectangleShape, ISurface
         return 2 * ( Size.X + Size.Y );
     }
 
-    public string GetSurfaceInfo() => $"RECTANGLE: P={GetPerimeter()}; S={GetArea()}";
+    public string GetSurfaceInfo()
+    {
+        return $"RECTANGLE: P={GetPerimeter()}; S={GetArea()}";
+    }
 }

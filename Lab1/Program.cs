@@ -38,13 +38,13 @@ public class Program
     public static void Main()
     {
         string? inputFile = AskForInputFilePath();
-        if (inputFile is null)
+        if ( inputFile is null )
         {
             return;
         }
 
         string? outputFile = AskForOutputFile();
-        if (outputFile is null)
+        if ( outputFile is null )
         {
             return;
         }
@@ -52,41 +52,41 @@ public class Program
         TaskInput taskData;
         try
         {
-            taskData = TaskInputParser.ParseFromFile(inputFile);
+            taskData = TaskInputParser.ParseFromFile( inputFile );
         }
-        catch (Exception ex)
+        catch ( Exception ex )
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine( ex.Message );
             return;
         }
 
         var stringBuilder = new StringBuilder();
-        foreach (ISurface surface in taskData.Surfaces)
+        foreach ( ISurface surface in taskData.Surfaces )
         {
-            stringBuilder.AppendLine(surface.GetSurfaceInfo());
+            stringBuilder.AppendLine( surface.GetSurfaceInfo() );
         }
 
-        File.WriteAllText(outputFile, stringBuilder.ToString());
+        File.WriteAllText( outputFile, stringBuilder.ToString() );
 
-        Console.WriteLine("Completed successfully");
+        Console.WriteLine( "Completed successfully" );
     }
 
     private static string? AskForInputFilePath()
     {
-        Console.WriteLine("Enter path to the input file:");
+        Console.WriteLine( "Enter path to the input file:" );
 
         string? path = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(path))
+        if ( string.IsNullOrWhiteSpace( path ) )
         {
-            Console.WriteLine("Path to the input file was not specified");
+            Console.WriteLine( "Path to the input file was not specified" );
             return null;
         }
 
-        path = Path.GetFullPath(path);
+        path = Path.GetFullPath( path );
 
-        if (!File.Exists(path))
+        if ( !File.Exists( path ) )
         {
-            Console.WriteLine($"Input file was not found. Path: {path}");
+            Console.WriteLine( $"Input file was not found. Path: {path}" );
             return null;
         }
 
@@ -95,16 +95,16 @@ public class Program
 
     private static string? AskForOutputFile()
     {
-        Console.WriteLine("Enter path to the output file");
+        Console.WriteLine( "Enter path to the output file" );
 
         string? path = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(path))
+        if ( string.IsNullOrWhiteSpace( path ) )
         {
-            Console.WriteLine("Path to the output file was not specified");
+            Console.WriteLine( "Path to the output file was not specified" );
             return null;
         }
 
-        path = Path.GetFullPath(path);
+        path = Path.GetFullPath( path );
 
         return path;
     }

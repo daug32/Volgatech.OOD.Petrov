@@ -21,5 +21,8 @@ public class Circle : CircleShape, ISurface
         return 2 * MathF.PI * Radius;
     }
 
-    public string GetSurfaceInfo() => $"CIRCLE: P={GetPerimeter()}; S={GetArea()}";
+    public string GetSurfaceInfo()
+    {
+        return $"CIRCLE: P={GetPerimeter()}; S={GetArea()}";
+    }
 }
