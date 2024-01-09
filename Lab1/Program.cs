@@ -1,8 +1,8 @@
-﻿using System.Text;
-using Lab1.Models;
+﻿using Lab1.Models;
 using Lab1.Tasks;
 using Lab1.Tasks.Parsers;
-using Libs.Extensions;
+using Lab1.Visitors;
+using Lab1.Visitors.Serializers;
 
 namespace Lab1;
 
@@ -43,11 +43,14 @@ public class Program
             return;
         }
 
-        string? outputFile = AskForOutputFile();
+        string? outputFile = AskForOutputFilePath();
         if ( outputFile is null )
         {
             return;
         }
+
+        // Prepare output file
+        File.Delete( outputFile );
 
         TaskInput taskData;
         try
@@ -60,15 +63,26 @@ public class Program
             return;
         }
 
-        var stringBuilder = new StringBuilder();
-        foreach ( ISurface surface in taskData.Surfaces )
-        {
-            stringBuilder.AppendLine( surface.GetSurfaceInfo() );
-        }
-
-        File.WriteAllText( outputFile, stringBuilder.ToString() );
+        ProcessTask( taskData, outputFile );
 
         Console.WriteLine( "Completed successfully" );
+    }
+
+    private static void ProcessTask( TaskInput taskData, string outputFile )
+    {
+        var visitors = new List<IVisitor>
+        {
+            new SurfaceInfoConsoleSerializer(),
+            new SurfaceInfoFileSerializer( outputFile )
+        };
+
+        foreach ( IShape taskDataSurface in taskData.Shapes )
+        {
+            foreach ( IVisitor visitor in visitors )
+            {
+                taskDataSurface.ApplyVisitor( visitor );
+            }
+        }
     }
 
     private static string? AskForInputFilePath()
@@ -83,7 +97,6 @@ public class Program
         }
 
         path = Path.GetFullPath( path );
-
         if ( !File.Exists( path ) )
         {
             Console.WriteLine( $"Input file was not found. Path: {path}" );
@@ -93,7 +106,7 @@ public class Program
         return path;
     }
 
-    private static string? AskForOutputFile()
+    private static string? AskForOutputFilePath()
     {
         Console.WriteLine( "Enter path to the output file" );
 
@@ -104,8 +117,6 @@ public class Program
             return null;
         }
 
-        path = Path.GetFullPath( path );
-
-        return path;
+        return Path.GetFullPath( path );
     }
 }

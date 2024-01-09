@@ -1,4 +1,4 @@
-﻿namespace Lab1.Tasks.Parsers;
+﻿namespace Lab1.Tasks.Parsers.Dictionaries;
 
 internal class RegexDictionary
 {

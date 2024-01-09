@@ -1,44 +1,40 @@
 using System.Text.RegularExpressions;
 using Lab1.Models;
+using Lab1.Models.Implementation;
+using Lab1.Tasks.Parsers.Dictionaries;
 using SFML.System;
 
-namespace Lab1.Tasks.Parsers.Creators;
+namespace Lab1.Tasks.Parsers.Implementation;
 
-public class RectangleCreator
+internal class RectangleParser : IShapeParser
 {
-    private static RectangleCreator? _creator;
+    private static RectangleParser? _creator;
 
-    private RectangleCreator()
+    private RectangleParser()
     {
     }
 
-    public static RectangleCreator GetInstance()
+    public static RectangleParser GetInstance()
     {
-        _creator ??= new RectangleCreator();
+        _creator ??= new RectangleParser();
         return _creator;
     }
 
-    public Rectangle Create( Vector2f leftTop, Vector2f rightBottom )
-    {
-        return new Rectangle( leftTop, rightBottom );
-    }
-
-    public Rectangle Create( string data )
+    public IShape ParseShape( string data )
     {
         MatchCollection pointsMatches = Regex.Matches(
             data,
             RegexDictionary.NamedVector( "P\\d+" ) );
-
         if ( pointsMatches.Count != 2 )
         {
             ThrowInvalidDataException( data );
         }
 
-        return Create(
-            new Vector2f(
+        return new Rectangle(
+            leftTop: new Vector2f(
                 Single.Parse( pointsMatches[0].Groups[1].Value ),
                 Single.Parse( pointsMatches[0].Groups[2].Value ) ),
-            new Vector2f(
+            rightBottom: new Vector2f(
                 Single.Parse( pointsMatches[1].Groups[1].Value ),
                 Single.Parse( pointsMatches[1].Groups[2].Value ) ) );
     }

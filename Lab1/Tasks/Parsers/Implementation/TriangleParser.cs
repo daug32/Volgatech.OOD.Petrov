@@ -1,47 +1,43 @@
 using System.Text.RegularExpressions;
 using Lab1.Models;
+using Lab1.Models.Implementation;
+using Lab1.Tasks.Parsers.Dictionaries;
 using SFML.System;
 
-namespace Lab1.Tasks.Parsers.Creators;
+namespace Lab1.Tasks.Parsers.Implementation;
 
-public class TriangleCreator
+internal class TriangleParser : IShapeParser
 {
-    private static TriangleCreator? _creator;
+    private static TriangleParser? _creator;
 
-    private TriangleCreator()
+    private TriangleParser()
     {
     }
 
-    public static TriangleCreator GetInstance()
+    public static TriangleParser GetInstance()
     {
-        _creator ??= new TriangleCreator();
+        _creator ??= new TriangleParser();
         return _creator;
     }
 
-    public Triangle Create( Vector2f p0, Vector2f p1, Vector2f p2 )
-    {
-        return new Triangle( p0, p1, p2 );
-    }
-
-    public Triangle Create( string data )
+    public IShape ParseShape( string data )
     {
         MatchCollection pointsMatches = Regex.Matches(
             data,
             RegexDictionary.NamedVector( "P\\d+" ) );
-
         if ( pointsMatches.Count != 3 )
         {
             ThrowInvalidDataException( data );
         }
 
-        return Create(
-            new Vector2f(
+        return new Triangle(
+            p0: new Vector2f(
                 Single.Parse( pointsMatches[0].Groups[1].Value ),
                 Single.Parse( pointsMatches[0].Groups[2].Value ) ),
-            new Vector2f(
+            p1: new Vector2f(
                 Single.Parse( pointsMatches[1].Groups[1].Value ),
                 Single.Parse( pointsMatches[1].Groups[2].Value ) ),
-            new Vector2f(
+            p2: new Vector2f(
                 Single.Parse( pointsMatches[2].Groups[1].Value ),
                 Single.Parse( pointsMatches[2].Groups[2].Value ) ) );
     }

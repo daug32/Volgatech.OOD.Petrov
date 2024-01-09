@@ -2,7 +2,7 @@
 
 namespace Lab1.Tasks;
 
-public class TaskInput
+internal class TaskInput
 {
-    public List<ISurface> Surfaces { get; } = new();
+    public List<IShape> Shapes { get; } = new();
 }

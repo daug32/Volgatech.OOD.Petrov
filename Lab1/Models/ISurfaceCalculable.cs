@@ -1,8 +1,7 @@
 ﻿namespace Lab1.Models;
 
-public interface ISurface
+public interface ISurfaceCalculable
 {
     public float GetArea();
     public float GetPerimeter();
-    public string GetSurfaceInfo();
 }

@@ -1,14 +1,17 @@
-﻿using Libs.SFML.Vertices;
+﻿using Lab1.Visitors;
+using Libs.SFML.Vertices;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Lab1.Models;
+namespace Lab1.Models.Implementation;
 
-public class Triangle : ConvexShape, ISurface
+public class Triangle : ConvexShape, IShape, ISurfaceCalculable
 {
-    public List<Vector2f> Points { get; }
+    public ShapeType ShapeType => ShapeType.Triangle;
+    
+    public IReadOnlyList<Vector2f> Points { get; }
 
-    public Triangle( Vector2f p0, Vector2f p1, Vector2f p2 )
+    public Triangle( Vector2f p0, Vector2f p1, Vector2f p2 ) : base( 3 )
     {
         Points = new List<Vector2f> { p0, p1, p2 };
     }
@@ -29,5 +32,8 @@ public class Triangle : ConvexShape, ISurface
         return ab + bc + ac;
     }
 
-    public string GetSurfaceInfo() => $"TRIANGLE: P={GetPerimeter()}; S={GetArea()}";
+    public void ApplyVisitor( IVisitor visitor )
+    {
+        visitor.Visit( this );
+    }
 }

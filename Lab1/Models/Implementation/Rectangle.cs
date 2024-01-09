@@ -1,10 +1,13 @@
-﻿using SFML.Graphics;
+﻿using Lab1.Visitors;
+using SFML.Graphics;
 using SFML.System;
 
-namespace Lab1.Models;
+namespace Lab1.Models.Implementation;
 
-public class Rectangle : RectangleShape, ISurface
+public class Rectangle : RectangleShape, IShape, ISurfaceCalculable
 {
+    public ShapeType ShapeType => ShapeType.Rectangle;
+
     public Rectangle( Vector2f leftTop, Vector2f rightBottom )
         : base( new Vector2f(
             Math.Abs( rightBottom.X - leftTop.X ),
@@ -23,8 +26,8 @@ public class Rectangle : RectangleShape, ISurface
         return 2 * ( Size.X + Size.Y );
     }
 
-    public string GetSurfaceInfo()
+    public void ApplyVisitor( IVisitor visitor )
     {
-        return $"RECTANGLE: P={GetPerimeter()}; S={GetArea()}";
+        visitor.Visit( this );
     }
 }

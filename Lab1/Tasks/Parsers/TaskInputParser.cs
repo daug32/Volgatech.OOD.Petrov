@@ -1,10 +1,12 @@
 ﻿using Lab1.Models;
-using Lab1.Tasks.Parsers.Creators;
+using Lab1.Tasks.Parsers.Implementation;
 
 namespace Lab1.Tasks.Parsers;
 
-public static class TaskInputParser
+internal static class TaskInputParser
 {
+    private static readonly Dictionary<ShapeType, IShapeParser> _parsers = BuildShapeParsers();
+
     public static TaskInput ParseFromFile( string inputFilePath )
     {
         if ( !File.Exists( inputFilePath ) )
@@ -26,31 +28,36 @@ public static class TaskInputParser
 
         foreach ( string line in filteredData )
         {
-            // Parse shape type from something like this:
-            //  "TRIANGLE: ...",
-            //  "TRIANGLE  : ...",
-            //  "  TRIANGLE: ..."  
-            string shapeType = line
-                .Substring( 0, line.IndexOf( ':' ) )
-                .Trim()
-                .ToLower();
-
-            ISurface surface = BuildSurface( shapeType, line );
-
-            data.Surfaces.Add( surface );
+            IShapeParser shapeParser = _parsers[ParseShapeType( line )];
+            data.Shapes.Add( shapeParser.ParseShape( line ) );
         }
 
         return data;
     }
 
-    private static ISurface BuildSurface( string shapeType, string data )
+    private static ShapeType ParseShapeType( string line )
     {
-        return shapeType switch
+        // Parse shape type from something like this:
+        //  "TRIANGLE: ...",
+        //  "TRIANGLE  : ...",
+        //  "  TRIANGLE: ..." 
+        string rawShapeType = line
+            .Substring( 0, line.IndexOf( ':' ) )
+            .Trim()
+            .ToLower();
+
+        if ( !Enum.TryParse( rawShapeType, true, out ShapeType shapeType ) )
         {
-            "triangle" => TriangleCreator.GetInstance().Create( data ),
-            "circle" => CircleCreator.GetInstance().Create( data ),
-            "rectangle" => RectangleCreator.GetInstance().Create( data ),
-            _ => throw new AggregateException( $"Unknown shape: \"{data}\"" )
-        };
+            throw new AggregateException( $"Unknown shape: \"{line}\"" );
+        }
+
+        return shapeType;
     }
+
+    private static Dictionary<ShapeType, IShapeParser> BuildShapeParsers() => new()
+    {
+        { ShapeType.Triangle, TriangleParser.GetInstance() },
+        { ShapeType.Circle, CircleParser.GetInstance() },
+        { ShapeType.Rectangle, RectangleParser.GetInstance() }
+    };
 }

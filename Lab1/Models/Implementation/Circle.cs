@@ -1,10 +1,13 @@
-﻿using SFML.Graphics;
+﻿using Lab1.Visitors;
+using SFML.Graphics;
 using SFML.System;
 
-namespace Lab1.Models;
+namespace Lab1.Models.Implementation;
 
-public class Circle : CircleShape, ISurface
+public class Circle : CircleShape, IShape, ISurfaceCalculable
 {
+    public ShapeType ShapeType => ShapeType.Circle;
+    
     public Circle( Vector2f center, float radius )
         : base( radius )
     {
@@ -21,8 +24,8 @@ public class Circle : CircleShape, ISurface
         return 2 * MathF.PI * Radius;
     }
 
-    public string GetSurfaceInfo()
+    public void ApplyVisitor( IVisitor visitor )
     {
-        return $"CIRCLE: P={GetPerimeter()}; S={GetArea()}";
+        visitor.Visit( this );
     }
 }
